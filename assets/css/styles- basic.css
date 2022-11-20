@@ -1,0 +1,139 @@
+/*===== GOOGLE FONTS =====*/
+@import url("https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Nunito:wght@400;600;700&display=swap");
+/*===== VARIABLES CSS =====*/
+:root {
+  /*===== colors =====*/
+  --header-color: #ffffff;
+  --text-color: #d4d4d4;
+  --main-color: #2d88ff;
+  --second-color: #6aaaff;
+  --bg-color: #000000;
+  --bg2-color: #272727;
+  /*===== z index =====*/
+  --z-back: -10;
+  --z-normal: 1;
+  --z-tooltip: 10;
+  --z-fixed: 100;
+  --z-top: 1000;
+
+  --header-height: 3rem;
+  /*===== font =====*/
+  --header-font: "Kaushan Script", cursive;
+  --body-font: "Nunito", sans-serif;
+
+  --biggest-font-size: 2.5rem;
+  --h1-font-size: 1.5rem;
+  --h2-font-size: 1.25rem;
+  --h3-font-size: 1rem;
+  --normal-font-size: 0.938rem;
+  --small-font-size: 0.813rem;
+  --smaller-font-size: 0.75rem;
+
+  --font-medium: 400;
+  --font-semi-bold: 600;
+  --font-bold: 700;
+  /*===== Margins =====*/
+  --mb-1: 0.5rem;
+  --mb-2: 1rem;
+  --mb-3: 1.5rem;
+  --mb-4: 2rem;
+}
+a {
+  text-decoration: none;
+}
+/*===== LAYOUT =====*/
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-size: var(--normal-font-size);
+  font-weight: var(--font-medium);
+  list-style: none;
+  box-sizing: border-box;
+  background: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+ul,
+p {
+  margin: 0;
+}
+
+h2,
+h3 {
+  font-weight: var(--font-semi-bold);
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+/*===== CLASS CSS =====*/
+.section {
+  padding: 4rem 0.5rem 2rem;
+}
+.section-title,
+.section-subtitle {
+  text-align: center;
+}
+.section-title {
+  font-size: var(--h1-font-size);
+  color: var(--first-color);
+  margin-bottom: var(--mb-3);
+}
+.section-subtitle {
+  display: block;
+  font-size: var(--smaller-font-size);
+  font-size: var(--font-semi-bold);
+}
+.bg-container {
+  width: calc(100% - 2rem);
+  margin-left: var(--mb-2);
+  margin-right: var(--mb-2);
+}
+.bg-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin: 1rem;
+}
+.landing__header {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--z-fixed);
+  transition: 0.4s;
+}
+/*===== Nav =====*/
+nav {
+  position: fixed;
+  z-index: var(--z-top);
+  height: 8vh;
+  width: 96%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+}
+.nav__logo {
+  font-family: "Kaushan Script", cursive;
+  color: var(--header-color);
+}
+.nav__menu {
+}

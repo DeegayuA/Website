@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="author" content="Deeghayu Adhikari">
+    <meta name="keywords"
+        content="Deeghayu Adhikari, Web developer, Student, Sri lanka, Data scientists, Machine learning engineer, A.I, artificial intelligence engineer">
+    <!-- ===== SWIPER CSS ===== -->
+    <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
+
+    <!-- ===== BOX ICONS ===== -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- ===== CSS ===== -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/pagecustomizer.css">
+    <!-- ===== Dark mode by system ===== ---->
+    <link rel="stylesheet" href="assets/css/light-styles.css"
+        media="(prefers-color-scheme:light), (prefers-color-scheme:no-preference)">
+    <link rel="stylesheet" href="assets/css/dark-styles.css" media="(prefers-color-scheme:dark)">
+
+    <!-- ===== head ===== -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧛</text></svg>">
+    <title>N Deeghayu Adhikari </title>
+</head>
+
+<body>
+    <!--===== Cursor and Loader, detect browser =====-->
+    <div id="info"></div>
+    <div class="cursor"></div>
+    <div id="loader-wrapper">
+        <div class="loader ">
+            <div class="loader__nav ">
+                <div class="loader__logo color__loader skeleton"></div>
+                <div class="loader__nav__menu">
+                    <ul class="loader__nav__list">
+                        <li class="loader__nav__item color__loader skeleton"></li>
+                        <li class="loader__nav__item color__loader skeleton"></li>
+                        <li class="loader__nav__item color__loader skeleton"></li>
+                        <li class="loader__nav__item color__loader skeleton"></li>
+                        <li class="loader__nav__item color__loader skeleton"></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="home__main__flex">
+                <div class="loader__home__data color__loader">
+                    <div class="loader__home__content">
+                        <div class="loader__emoji color__loader skeleton"></div>
+                        <div class="loader__home__text">
+                            <div class="loader__home__greeting color__loader skeleton"></div>
+                            <div class="loader__home__name__padding color__loader skeleton">
+                                <span class="chrome__text">For best view, Use <b>Chrome</b></span>
+                            </div>
+                            <div class="loader__button color__loader skeleton"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="loader__img color__loader skeleton"></div>
+            </div>
+            <div class="loader__home__social__container">
+                <div class="loader__home__social">
+                    <div class="loader__home__social__icon color__loader skeleton"></div>
+                    <div class="loader__home__social__icon color__loader skeleton"></div>
+                    <div class="loader__home__social__icon color__loader skeleton"></div>
+                    <div class="loader__home__social__icon color__loader skeleton"></div>
+                    <div class="loader__home__social__icon color__loader skeleton"></div>
+                    <div class="loader__home__social__icon color__loader skeleton"></div>
+                </div>
+            </div>
+        </div>
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+    </div>
+    <!--===== SCROLL TOP =====-->
+    <a href="#" class="scrolltop glassmorphism__button-2" id="scroll-top">
+        <i class='bx bxs-chevrons-up scrolltop__icon'></i>
+    </a>
+
+    <!--===== HEADER =====-->
+    <header class="l-header " id="header">
+        <nav class="nav bd-container">
+            <a href="" class="nav__logo"> 🧛 Mr.Drac</a>
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="#home" class="nav__link active-link"><span>Home</span></a></li>
+                    <li class="nav__item"><a href="#about" class="nav__link"><span>About</span></a></li>
+                    <li class="nav__item"><a href="#services" class="nav__link"><span>Service</span></a></li>
+                    <li class="nav__item"><a href="#portfolio" class="nav__link"><span>Portfolio</span></a></li>
+                    <li class="nav__item"><a href="#contact" class="nav__link"><span>Contact</span></a></li>
+                </ul>
+            </div>
+            <div class="nav__toggle" id="nav-toggle">
+                <i class='bx bx-menu'></i>
+            </div>
+        </nav>
+    </header>
+
+    <main class="l-main">
+        <!--===== HOME =====-->
+        <section class="home" id="home">
+            <div class="home__container bd-container bd-grid">
+                <div class="home__data glassmorphism">
+                    <div class="home__content">
+                        <span class="greeting__emoji">👋</span>
+                        <div>
+                            <span class="home__greeting">Hi, I am</span>
+                            <div class="home__name__padding">
+                                <h1 class="home__name">Deeghayu Adhikari </h1>
+                                <!--<h1 class="home__name">Adhikari</h1>-->
+                                <!-- <span class="home__profession">Still a Student</span> -->
+                                <a href="#contact" class="button button-light glassmorphism__button">Contact Me</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="home__social">
+                    <a href="#" id="dark-mode-toggle" class="home__social-icon  glassmorphism__button"><i
+                            class='bx bx-sun'></i>
+                        <span class="tooltip">Dark mode toggle<br>If system dark mode is on, this toggle will not
+                            work</span>
+                        <a href="https://www.facebook.com/Deeghayuadhikari"
+                            class="home__social-icon  glassmorphism__button"><i class='bx bxl-facebook'></i></a>
+                        <a href="https://www.instagram.com/_mr.drac_/"
+                            class="home__social-icon  glassmorphism__button"><i class='bx bxl-instagram'></i></a>
+                        <a href="https://twitter.com/DeegayuA" class="home__social-icon glassmorphism__button"><i
+                                class='bx bxl-twitter'></i></a>
+                        <a href="https://github.com/DeegayuA" class="home__social-icon glassmorphism__button"><i
+                                class='bx bxl-github'></i></a>
+                        <a href="https://www.linkedin.com/in/deeghayu-adhikari-1994051a3/"
+                            class="home__social-icon glassmorphism__button"><i class='bx bxl-linkedin'></i></a>
+                </div>
+                <div class="home__img__group">
+                    <div class="home__img">
+                        <div id="scene">
+                            <img src="assets/img/3D_man.png" id="home__img" data-depth=".5"
+                                alt="3d animation will upload soon">
+                            <img src="assets/img/object1.png" class="home__objects objects1" data-depth="0.75">
+                            <img src="assets/img/object2.png" class="home__objects objects2" data-depth="1.0">
+                            <img src="assets/img/object3.png" class="home__objects objects3" data-depth="0.25">
+                        </div>
+                    </div>
+        </section>
+        <!--===== ABOUT =====-->
+        <section class="about section bd-container" id="about">
+            <span class="section-subtitle">Past</span>
+            <h2 class="section-title">About me</h2>
+            <div class="about__container bd-grid">
+                <div class="about__data bd-grid">
+                    <p class="about__description"><span>Under construction, <br>There is no much, but<br></span>
+                        I am a 1st-year university student who wants to become a good machine learning engineer someday.
+                        This portfolio website is the 1st step to that goal.
+                        <br><br>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda sed iure aspernatur
+                        repudiandae maxime animi, voluptatem nisi quo id dolore magnam, earum ducimus perspiciatis ab
+                        incidunt alias autem unde. Corporis sunt voluptates repudiandae itaque non deserunt commodi,
+                        alias modi dolores aliquid accusantium suscipit at, vitae perferendis veniam sequi similique rem
+                        repellendus quas consequatur minima nostrum molestias expedita facilis. Fugiat nostrum
+                        accusantium animi, error soluta odio sint quaerat aliquam molestiae adipisci omnis ducimus,
+                        maiores magnam consequatur alias esse culpa dolore ratione deserunt aliquid eaque distinctio
+                        doloremque exercitationem dolorum? Doloremque excepturi cupiditate necessitatibus iusto aut
+                        asperiores, neque totam, a nihil voluptates tempore! Omnis non dolorum aspernatur voluptate
+                        accusantium temporibus veritatis debitis totam doloribus nobis. In recusandae et culpa!
+                        Voluptatum, tenetur nam ut qui a excepturi iusto, distinctio cumque minima quos deserunt
+                        mollitia quasi non modi quae doloremque odit itaque? Totam est repellat beatae labore? Corporis
+                        non itaque exercitationem quibusdam, quis ipsa cum odio rem commodi aliquid quam voluptates
+                        quia, eveniet ipsam. Possimus ex cum reiciendis aliquid sequi consectetur, ab enim, eligendi
+                        placeat nam facilis unde quam atque quibusdam expedita deserunt nesciunt nulla recusandae maxime
+                        amet totam sunt et fugiat provident? Tempore illum veniam animi nisi fuga laudantium delectus
+                        aut ratione. Dolorem, itaque.
+                    </p>
+                    <div>
+                        <span class="about__number">00</span>
+                        <span class="about__achievement">Certifications</span>
+                    </div>
+                    <div>
+                        <span class="about__number">00</span>
+                        <span class="about__achievement">Degrees</span>
+                    </div>
+                    <div>
+                        <span class="about__number">00+</span>
+                        <span class="about__achievement">Projects</span>
+                    </div>
+                </div>
+                <img src="assets/img/About.jpg" alt="This image will also upload soon" class="about__img glassmorphism">
+            </div>
+        </section>
+        <!--===== DID YOU KNOW =====-->
+        <section class="did-you-know section bd-container">
+            <span class="section-subtitle">Did you know</span>
+            <h2 class="section-title">Features of this website</h2>
+            <div class="did-you-know__container bd-grid glassmorphism">
+                <h1 class="did-you-know__title">This web site is,</h1>
+                <h3 class="did-you-know__subtitle">Not using any cookies but website will uniquely making own changes
+                    based your devices system setting.</h3>
+                <h3 class="did-you-know__subtitle">Don't like animations, turn on "reduce animations" from your device's
+                    settings to terminate every custom animations.</h3>
+                <ul class="did-you-know__ul">
+                    <li>Fully responsive and change items based on display size (up to 4k resolution).</li>
+                    <li>Save your previous selected theme on your device locally.</li>
+                    <li><a
+                            href="https://www.theverge.com/2019/3/22/18270975/how-to-dark-mode-iphone-android-mac-windows-xbox-ps4-nintendo-switch">Changing
+                            colors based on your system’s dark and light mode.</a></li>
+                    <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion">Turn
+                            off animation based on your system settings</a><a
+                            href="https://caniuse.com/?search=prefers-reduced-motion">(Update your browser).</a></li>
+                    <li>Portfolio content will store by category and can filter out easily. </li>
+                    <li>Contact form is working with external API.</li>
+                    <li>Animate based on scroll <b>(in future).</b></li>
+                    <li>Animate based on mouse position.</li>
+                    <li>Based on Neumorphism UI and 3D.</li>
+                    <li>Custom mouse pointer. (only working on devices with mouse pointer)</li>
+                    <li>Custom scroll bar.</li>
+                    <li><b>Try old browsers like internet Explorer, if you are curious.</b></li>
+                </ul>
+            </div>
+        </section>
+        <!--===== QUALIFICATION =====-->
+        <section class="qualification section bd-container">
+            <span class="section-subtitle">Experience and Education</span>
+            <h2 class="section-title">Qualification</h2>
+
+            <div class="qualification__container bd-grid">
+                <div class="qualification__content">
+                    <h2 class="qualification__title">
+                        <i class="bx bx-briefcase-alt qualification__title-icon"></i>
+                        Work Experience
+                    </h2>
+                    <div class="bd-grid">
+                        <div class="qualification__data">
+                            <h3 class="qualification__area">Job position</h3>
+                            <div class="qualification__box">
+                                <span class="qualification__work">
+                                    <i class="bx bx-briefcase-alt qualification__title-icon"></i>
+                                    Unemployed
+                                </span>
+                                <span class="qualification__work">
+                                    <i class="bx bx-calendar-alt qualification__title-icon"></i>
+                                    Jan 20** - Dec 20**
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="qualification__data">
+                            <h3 class="qualification__area">Job position</h3>
+                            <div class="qualification__box">
+                                <span class="qualification__work">
+                                    <i class="bx bx-briefcase-alt qualification__title-icon"></i>
+                                    Unemployed
+                                </span>
+                                <span class="qualification__work">
+                                    <i class="bx bx-calendar-alt qualification__title-icon"></i>
+                                    Jan 20** - Dec 20**
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="qualification__content">
+                    <h2 class="qualification__title">
+                        <i class="bx bx-bookmark-alt qualification__title-icon"></i>
+                        Education
+                    </h2>
+
+                    <div class="bd-grid">
+
+                        <div class="qualification__data">
+                            <h3 class="qualification__area">Edu 1</h3>
+                            <div class="qualification__box">
+                                <span class="qualification__work">
+                                    <i class="bx bxs-graduation qualification__title-icon"></i>
+                                    ### - _____ of _________
+                                </span>
+                                <span class="qualification__work">
+                                    <i class="bx bx-calendar-alt qualification__title-icon"></i>
+                                    Jan 20** - Dec 20**
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="qualification__data">
+                            <h3 class="qualification__area">Edu 2</h3>
+                            <div class="qualification__box">
+                                <span class="qualification__work">
+                                    <i class="bx bx-book-alt qualification__title-icon"></i>
+                                    ### - _____ of _________
+                                </span>
+                                <span class="qualification__work">
+                                    <i class="bx bx-calendar-alt qualification__title-icon"></i>
+                                    Jan 20** - Dec 20**
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--===== SERVICES =====-->
+        <section class="services section bd-container" id="services">
+            <span class="section-subtitle">What I will do for you</span>
+            <h2 class="section-title">Services</h2>
+
+            <div class="services__container bd-grid">
+                <div class="services__data glassmorphism">
+                    <i class='bx bxs-file-doc services__icon'></i>
+                    <h3 class="services__title">Service-01</h3>
+                    <p class="services__description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi,
+                        vero?</p>
+                    <a href="#" class="button button-dark">Find more</a>
+                </div>
+
+                <div class="services__data glassmorphism">
+                    <i class='bx bxs-user services__icon'></i>
+                    <h3 class="services__title">Service-02</h3>
+                    <p class="services__description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi,
+                        vero?</p>
+                    <a href="#" class="button  button-dark">Find more</a>
+                </div>
+
+                <div class="services__data glassmorphism">
+                    <i class='bx bx-paint-roll services__icon'></i>
+                    <h3 class="services__title">Service-03</h3>
+                    <p class="services__description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi,
+                        vero?</p>
+                    <a href="#" class="button button-dark">Find more</a>
+                </div>
+            </div>
+        </section>
+
+        <!--===== PROJECT IN MIND =====-->
+        <section class="project section bd-container">
+            <div class="project__container bd-grid">
+                <div class="project__data">
+                    <i class='bx bx-task-x project__icon'></i>
+
+                    <div>
+                        <h2 class="project__title">Project in my mind</h2>
+                        <p class="project__description">these project is still on my mind, who knows which will become
+                            true</p>
+                    </div>
+                    <div>
+                        <a href="#" class="button button-white">More projects</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--===== PORTFOLIO =====-->
+        <section class="portfolio section bd-container" id="portfolio">
+            <span class="section-subtitle">Previously I did</span>
+            <h2 class="section-title">Portfolio</h2>
+            <div class="portfolio__nav">
+                <span class="portfolio__item active-portfolio" data-filter="all">All</span>
+                <span class="portfolio__item" data-filter=".web">Web</span>
+                <span class="portfolio__item" data-filter=".ml">ML</span>
+                <span class="portfolio__item" data-filter=".java">java</span>
+                <span class="portfolio__item" data-filter=".other">Other</span>
+            </div>
+
+            <div class="portfolio__container bd-grid">
+                <div class="portfolio__content mix web glassmorphism">
+                    <a href="https://assauok.netlify.app/"><img src="assets/img/work0.png" alt="" class="portfolio__img"></a>
+                    <div class="portfolio__data">
+                        <span class="portfolio__subtitle">ASSA | UOK</span>
+                        <a href="https://assauok.netlify.app/">
+                            <h2 class="portfolio__title">Website of ASSA society of university of kelaniya</h2>
+                        </a>
+                        <a href="https://assauok.netlify.app/" class="button button-link">More...</a>
+                    </div>
+                </div>
+
+                <div class="portfolio__content mix web glassmorphism">
+                    <a href="./assets/Vega/veg.html"><img src="assets/img/work1.png" alt="" class="portfolio__img"></a>
+                    <div class="portfolio__data">
+                        <span class="portfolio__subtitle">Not finished yet,</span>
+                        <a href="./assets/Vega/veg.html">
+                            <h2 class="portfolio__title">Vega 2020 car fan made website design</h2>
+                        </a>
+                        <a href="./assets/Vega/veg.html" class="button button-link">More...</a>
+                    </div>
+                </div>
+
+                <div class="portfolio__content mix web glassmorphism">
+                    <a href="https://naviya.netlify.app/"><img src="assets/img/work2.png" alt="" class="portfolio__img"></a>
+                    <div class="portfolio__data">
+                        <span class="portfolio__subtitle">Naviya.netlify.app</span>
+                        <a href="./assets/css/x.html">
+                            <h2 class="portfolio__title">The Naviya Photography official website</h2>
+                        </a>
+                        <a href="https://naviya.netlify.app/" class="button button-link">More...</a>
+                    </div>
+                </div>
+
+                <div class="portfolio__content mix ml glassmorphism">
+                    <a href="./assets/404/404.html"><img src="assets/img/work3.jpg" alt="" class="portfolio__img"></a>
+                    <div class="portfolio__data">
+                        <span class="portfolio__subtitle">My_Old_Work_03</span>
+                        <a href="#">
+                            <h2 class="portfolio__title">404, missing web page. do not open.</h2>
+                        </a>
+                        <a href="#" class="button button-link">More...</a>
+                    </div>
+                </div>
+                <!--
+                    <div class="portfolio__content mix ml glassmorphism">
+                        <a href="#"><img src="assets/img/work4.jpg" alt="" class="portfolio__img"></a>
+                        <div class="portfolio__data">
+                            <span class="portfolio__subtitle">My_Old_Work_04</span>
+                            <a href="#"><h2 class="portfolio__title">What I did for someone someday, which I like to share with you all</h2></a>
+                            <a href="#" class="button button-link">More...</a>
+                        </div>
+                    </div>
+
+                    <div class="portfolio__content mix other glassmorphism">
+                        <a href="#"><img src="assets/img/work5.jpg" alt="" class="portfolio__img"></a>
+                        <div class="portfolio__data">
+                            <span class="portfolio__subtitle">My_Old_Work_05</span>
+                            <a href="#"><h2 class="portfolio__title">What I did for someone someday, which I like to share with you all</h2></a>
+                            <a href="#" class="button button-link">More...</a>
+                        </div>
+                    </div>
+                    <div class="portfolio__content mix other glassmorphism">
+                        <a href="#"><img src="assets/img/work6.jpg" alt="" class="portfolio__img"></a>
+                        <div class="portfolio__data">
+                            <span class="portfolio__subtitle">My_Old_Work_06</span>
+                            <a href="#"><h2 class="portfolio__title">What I did for someone someday, which I like to share with you all</h2></a>
+                            <a href="#" class="button button-link">More...</a>
+                        </div>
+                    </div> -->
+
+            </div>
+        </section>
+
+        <!--===== TESTIMONIAL =====-->
+        <section class="testimonial section bd-container">
+            <span class="section-subtitle">What other satisfied people</span>
+            <h2 class="section-title">Says about me,</h2>
+
+            <div class="testimonial__container swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="testimonial__content swiper-slide">
+                        <img src="assets/img/testimonial1.jpg" alt="" class="testimonial__img">
+                        <h3 class="testimonial__title">Name_01</h3>
+                        <span class="testimonial__client">Professor </span>
+                        <p class="testimonial__description">Anything about me</p>
+                    </div>
+
+                    <div class="testimonial__content swiper-slide">
+                        <img src="assets/img/testimonial2.jpg" alt="" class="testimonial__img">
+                        <h3 class="testimonial__title">Name_02</h3>
+                        <span class="testimonial__client">Client</span>
+                        <p class="testimonial__description">Anything about me</p>
+                    </div>
+
+                    <div class="testimonial__content swiper-slide">
+                        <img src="assets/img/testimonial3.jpg" alt="" class="testimonial__img">
+                        <h3 class="testimonial__title">Name_03</h3>
+                        <span class="testimonial__client">Friend</span>
+                        <p class="testimonial__description">Anything about me</p>
+                    </div>
+                    <div class="testimonial__content swiper-slide">
+                        <img src="assets/img/testimonial1.jpg" alt="" class="testimonial__img">
+                        <h3 class="testimonial__title">Name_04</h3>
+                        <span class="testimonial__client">IDK</span>
+                        <p class="testimonial__description">Anything about me</p>
+                    </div>
+                    <div class="testimonial__content swiper-slide">
+                        <img src="assets/img/testimonial5.jpg" alt="" class="testimonial__img">
+                        <h3 class="testimonial__title">Name_05</h3>
+                        <span class="testimonial__client">IdfgfgDK</span>
+                        <p class="testimonial__description">Anything about me</p>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </section>
+
+        <!--===== CONTACTME =====-->
+        <section class="contact section bd-container" id="contact">
+            <span class="section-subtitle">Feel free to</span>
+            <h2 class="section-title">Contact me</h2>
+            <div class="contact__container bd-grid">
+                <div class="contact__content bd-grid">
+                    <div class="contact__box glassmorphism">
+                        <i class='bx bx-home-heart contact__icon'></i>
+                        <h3 class="contact__title">Location</h3>
+                        <span class="contact__description"><a href="https://goo.gl/maps/gNUBb7oCYTCLjALT8"
+                                class="contact__text">Kadawatha, Sri Lanka</a></span>
+                    </div>
+
+                    <div class="contact__box glassmorphism">
+                        <i class='bx bx-phone contact__icon'></i>
+                        <h3 class="contact__title">Phone</h3>
+                        <span class="contact__description"><a href="tel:+94777-329-760"
+                                class="contact__text">+94-777-329-760</a></span>
+                    </div>
+
+                    <div class="contact__box glassmorphism">
+                        <i class='bx bx-envelope contact__icon'></i>
+                        <h3 class="contact__title">Mail</h3>
+                        <span class="contact__description"><a
+                                href="mailto:Deeghayuoffice@gmail.com?subject=Mail%20from%20website"
+                                class="contact__text">Deegayuoffice@gmail.com</a></span>
+                    </div>
+
+                    <div class="contact__box glassmorphism">
+                        <i class='bx bx-chat contact__icon'></i>
+                        <h3 class="contact__title">Chat</h3>
+                        <div>
+                            <a href="https://wa.link/x3r32z" class="contact__social"><i class='bx bxl-whatsapp'></i></a>
+                            <a href="sms:+94777329760;?&body=This%20message%20from%20your%20website"
+                                class="contact__social"><i class='bx bxs-message-detail'></i></a>
+                            <a href="https://t.me/MrDrac01" class="contact__social"><i class='bx bxl-telegram'></i></a>
+                        </div>
+                    </div>
+                </div>
+                <form action="https://formspree.io/f/xnqljrpj" method="POST" class="contact__form">
+                    <div class="contact__inputs">
+                        <div class="contact__duo">
+                            <input type="text" placeholder="Name" name="name" class="contact__input">
+                            <span class="contact__header">Name</span>
+                        </div>
+                        <div class="contact__duo">
+                            <input type="email" placeholder="E-mail" name="email" class="contact__input">
+                            <span class="contact__header">E-mail</span>
+                        </div>
+                    </div>
+                    <div class="contact__duo">
+                        <input type="text" placeholder="Topic" name="reason" class="contact__input">
+                        <span class="contact__header">Topic</span>
+                    </div>
+                    <div class="contact__duo">
+                        <textarea input type="text" id="Message" cols="0" rows="7" placeholder="Message" name="message"
+                            class="contact__input"></textarea>
+                        <span class="contact__header">Message</span>
+                    </div>
+                    <input type="Submit" value="Send Message" class="button contact__button">
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!--===== FOOTER =====-->
+    <footer class="footer">
+        <div class="footer__container bd-container">
+            <h1 class="footer__title">&#169;2021 Deeghayu Adhikari</h1>
+            <p class="footer__copy">Special thanks to YouTube and Stackoverflow</p>
+        </div>
+    </footer>
+    <!-- ===== Parallax.js ===== -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
+    <!-- ===== MIXITUP FILTER ===== -->
+    <script src="assets/js/mixitup.min.js"></script>
+
+    <!-- ===== SWIPER JS ===== -->
+    <script src="assets/js/swiper-bundle.min.js"></script>
+
+    <!-- ===== GSAP js===== -->
+    <script src="assets/js/gsap.min.js"></script>
+    <script src="assets/js/ScrollTrigger.min.js"></script>
+
+    <!--===== MAIN JS and Parallax animation Js=====-->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/Parallax_animation.js"></script>
+
+    <!--===== detect_browser =====-->
+    <script src="assets/js/detect_browser.js"></script>
+
+    <!--===== Jquary js =====-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script>
+        const cursor = $('.cursor');
+        cursor.hide();
+        $(document).mouseleave(function (e) {
+            const cursor = $('.cursor');
+            cursor.hide()
+        });
+        $(document).mouseenter(function (e) {
+            const cursor = $('.cursor');
+            cursor.show()
+        });
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('body').addClass('loaded');
+            }, 1500);
+        });
+    </script>
+</body>
+
+</html>

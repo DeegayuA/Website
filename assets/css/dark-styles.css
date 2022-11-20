@@ -1,0 +1,12 @@
+:root {
+  --first-color: #ffffff;
+  --first-color-dark: #1e88e5;
+  /*   --first-color-dark-highlight: #7b4bf5; */
+  --header-color: #ffffff;
+  --text-color: #a0a0a0;
+  --first-color-light: #7033ff;
+  --first-color-lighten: #272727;
+  --first-color-lighten-highlight: #00000040;
+  --card-light_bg: #00000020;
+  --gradient: linear-gradient(45deg, #0e0429, #1d1041, #422691);
+}

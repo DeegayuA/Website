@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+        <link rel="stylesheet" href="./vega.css">
+         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚗 </text></svg>">
+       
+        <title>Vega Sri Lanka - Landing page</title>
+    </head>
+    <body>
+        <header class="l-header">
+            <nav class="nav bd-grid">
+                <div class="nav__logo">
+                    <img src="vega-logo.png" alt="">
+                </div>
+
+                <div class="nav__menu" id="nav-menu">
+                    <ul class="nav__list">
+                        <li class="nav__item"><a href="https://www.vega.lk/" class="nav__link">VEGA INNOVATIONS</a></li>
+                        <li class="nav__item"><a href="" class="nav__link">Battery Pack</a></li>
+                        <li class="nav__item"><a href="" class="nav__link">Motor controller</a></li>
+                        <li class="nav__item"><a href="" class="nav__link">Social links</a></li>
+                    </ul>
+                </div>
+
+                <div class="nav__toggle" id="nav__toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+            </nav>
+        </header>
+
+        <main class="main-home">
+            <div class="home">
+                <h1 class="home__title">VEGA 2020</h1>
+
+                <div class="home__img">
+                    <img src="vega.png" alt="vega car">
+                </div>
+
+                <div class="home__information">
+                    <h2 class="home__subtitle">VEGA</h2>
+                    <p class="home__description">Fully electric, two-seater supercar, in a handmade carbon fiber body powered by a dual-motor all-wheel-drive drivetrain. All automotive electronics, including the liquid-cooled motor controllers and Li-ion battery pack, are designed and manufactured in-house, showcasing some of the most advanced technologies in the EV supercar space.</p>
+                </div>
+
+                <div class="box">
+                    <div class="box__medium box--dark">
+                        <ion-icon name="speedometer-outline" class="icon-box"></ion-icon>
+                        <h3 class="box__medium-title">3.1 Sec.</h3>
+                        <span class="box__medium-detail">0-100 km/h</span>
+                    </div>
+
+                    <div>
+                        <div class="box__small box--dark">
+                            <ion-icon name="trending-up-outline" class="icon-box icon-box--small"></ion-icon>
+                            <span class="box__small-title d-block"> 804hp </span>
+                            <span class="box__small-detail">Power</span>
+                        </div>
+                        <div class="box__small box--dark">
+                            <ion-icon name="car-sport-outline" class="icon-box icon-box--small"></ion-icon>
+                            <span class="box__small-title d-block"> 300KM </span>
+                            <span class="box__small-detail">Range</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <section class="contact section bd-grid">
+            <div class="container">
+                <h2 class="section-title">Contact VEGA</h2>
+                <div class="contact__container bd-grid">
+                    <div class="contact__content bd-grid">
+                        <div class="box__large box--dark">
+                            <ion-icon name="navigate-outline" class="icon-box"></ion-icon>
+                            <h3 class="contact__title">Location</h3>
+                            <span class="contact__description"><a href="https://goo.gl/maps/bkxY5HpKhnSXrcTUA" class="contact__text">Trace Expert City,<br>Tripoli Market,<br>Maradana, Sri Lanka.</a></span>  
+                        </div>
+
+                        <div class="box__large box--dark">
+                            <ion-icon name="call-outline" class="icon-box"></ion-icon>
+                            <h3 class="contact__title">Phone</h3>
+                            <span class="contact__description"><a href="tel:+94-11-5551-551" class="contact__text">+94-11-5551-551</a></span>
+                        </div>
+
+                        <div class="box__large box--dark">
+                            <ion-icon name="mail-outline" class="icon-box"></ion-icon>
+                            <h3 class="contact__title">Mail</h3>
+                            <span class="contact__description"><a href="mailto:info@vega.lk?subject=From%20https://deeghayu.netlify.app%20website" class="contact__text">info@vega.lk</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </section>
+            <footer class="footer section bd-grid">
+                <div class="footer__container bd-container">
+                    <h1 class="footer__title">All images and tech is &#169; by VEGA INNOVATIONS 2020</h1>
+                    <p class="footer__subtitle">Fan-website design by &#169;2021 Deeghayu Adhikari</p>
+                    <p class="footer__subtitle">Not finished yet</p>
+                </div>
+            </footer>
+        </main>
+        <!-- ICONOS -->
+        <script  type="module" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.esm.js"></script>
+        
+        <!-- MAIN -->
+        <script src="/assets/Vega page/vega.js"></script>
+
+        <!-- GSAP -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.4/gsap.min.js"></script>
+        <script>
+            gsap.from('.home__title', {opacity: -1, duration: 1.5, delay:.5})
+            gsap.from('.home__img', {opacity: 0, duration: 1, delay:1.5})
+            gsap.from('.home__information', {opacity: 0, duration: 1, delay:2, y: 30, stagger:.3})
+
+            gsap.from('.box__medium', {opacity: 0, duration: 1.5, delay:2.5, y: 50, stagger:.3})
+            gsap.from('.box__small', {opacity: -1, duration: 1.5, delay:2.5, x: 50, stagger:.3})
+        </script>
+    </body>
+</html>
