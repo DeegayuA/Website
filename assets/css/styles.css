@@ -145,6 +145,13 @@ img {
   font-size: var(--font-semi-bold);
 }
 /*==== TIMER ========*/
+.new-text{
+  line-height: 1.5rem !important;
+  text-align: center;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+  
+}
 .launch-time {
   line-height: 2.5rem !important;
   display: flex;
@@ -320,7 +327,6 @@ img {
   top: 5.5rem;
 }
 .home__data {
-  width: min-content;
   color: var(--header-color);
   background-color: var(--card-light_bg);
   padding: 0.5rem;
