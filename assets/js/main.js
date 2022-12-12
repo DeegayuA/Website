@@ -191,8 +191,9 @@ if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
 if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
   gsap.from('.home__data', { opacity: 0, duration: 2, delay: 1.5, y: 20 })
   gsap.from('.home__img', { opacity: 0, duration: 2, delay: 1.75, x: 60 })
-  gsap.from('.home__greeting, .home__profession, .button-light', { opacity: 0, duration: 2, delay: 2, y: 20, ease: 'expo.out', stagger: .4 })
+  gsap.from('.home__greeting, .home__profession', { opacity: 0, duration: 2, delay: 2, y: 20, ease: 'expo.out', stagger: .4 })
   gsap.from('.new-text, .time-format', { opacity: 0, duration: 2, delay: 3, y: 20, ease: 'expo.out', stagger: .3 })
+  gsap.from('.button-light', { opacity: 0, duration: 2, delay: 4.5, y: 20, ease: 'expo.out', stagger: .3 })
   gsap.from('.home__name', { opacity: 0, duration: 2, delay: 2.3, y: 20, ease: 'expo.out', stagger: .3 })
   gsap.from('.nav__logo, .nav__toggle', { opacity: 0, duration: 2, delay: 2.4, y: 20, ease: 'expo.out', stagger: .3 })
   gsap.from('.nav__item', { opacity: 0, duration: 2, delay: 2.6, y: 20, ease: 'expo.out', stagger: .3 })
