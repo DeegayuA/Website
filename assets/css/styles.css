@@ -144,6 +144,26 @@ img {
   font-size: var(--smaller-font-size);
   font-size: var(--font-semi-bold);
 }
+/*==== TIMER ========*/
+.launch-time {
+  line-height: 2.5rem !important;
+  display: flex;
+  position: relative;
+}
+
+.launch-time div {
+  flex-basis: 100vw;
+  text-align: center;
+}
+
+.launch-time div p {
+  font-size: var(--biggest-font-size);
+  font-weight: var(--font-bold);
+}
+
+.time-format span {
+  text-align: center;
+}
 
 /*===== LAYOUT =====*/
 .bd-container {
