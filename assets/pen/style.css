@@ -37,10 +37,14 @@ canvas {
   .ball-text {
     font-size: 2rem;
     right: 50%;
-    bottom: 25%;
+    bottom: 75%;
     transform: translate(50%, 50%);
   }
   h1 {
     font-size: 2rem;
   }
+    canvas {
+    object-fit: cover;
+      object-position: 0% 50%;
+    }
 }

@@ -31,9 +31,9 @@ gsap.to(ball, {
   snap: "frame",
   ease: "none",
   scrollTrigger: {
-    scrub: 0.5,
+    scrub: 0.8,
     pin: "canvas",
-    end: "500%",
+    end: "250%",
   },
   onUpdate: render,
 });
@@ -48,7 +48,7 @@ gsap.fromTo(
     scrollTrigger: {
       scrub: 1,
 
-      start: "50%",
+      start: "30%",
       end: "60%",
     },
     onComplete: () => {
