@@ -3,12 +3,21 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const context = canvas.getContext("2d");
-const frameCount = 150;
+const frameCount = 73;
 
-const currentFrame = (index) => `./best-ball/${(index + 1).toString()}.jpg`;
+const getZeroes = (index) => {
+    if (index < 9) {
+        return "000";
+    } else if (index < 100) {
+        return "00";
+    } else {
+        return "0";
+    }
+};
+const currentFrame = (index) => `./pen1/${getZeroes(index)}${(index + 1).toString()}.png`;
 
 const images = [];
-let image = { frame: 0 };
+let ball = { frame: 0 };
 
 for (let i = 0; i < frameCount; i++) {
   const img = new Image();
@@ -17,7 +26,7 @@ for (let i = 0; i < frameCount; i++) {
   images.push(img);
 }
 
-gsap.to(image, {
+gsap.to(ball, {
   frame: frameCount - 1,
   snap: "frame",
   ease: "none",
@@ -30,7 +39,7 @@ gsap.to(image, {
 });
 
 gsap.fromTo(
-  ".main__header",
+  ".ball-text",
   {
     opacity: 0,
   },
@@ -43,7 +52,7 @@ gsap.fromTo(
       end: "60%",
     },
     onComplete: () => {
-      gsap.to(".main__header", { opacity: 0 });
+      gsap.to(".ball-text", { opacity: 0 });
     },
   }
 );
