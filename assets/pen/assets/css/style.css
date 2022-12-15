@@ -32,30 +32,38 @@ canvas {
   align-items: center;
   font-size: 2rem;
 }
-
+.main__content{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .ball-text {
   position: fixed;
+  top: 10vh;
+  margin: 2rem;
   z-index: 2;
   color: black;
   font-size: 5rem;
-  right: 20%;
-  bottom: 40%;
-  transform: translate(-20%, -40%);
+}
+.ball-sub-text{
+  position: fixed;
+    top: 20vh;
+    margin: 2rem;
+    z-index: 2;
+    color: black;
+    font-size: 2rem;
 }
 
 @media screen and (max-width: 1024px) {
   .ball-text {
     font-size: 3rem;
-    right: 50%;
-    bottom: 55%;
-    transform: translate(50%, -55%);
   }
   h1 {
     font-size: 2rem;
   }
     canvas {
     object-fit: cover;
-      object-position: 35% 50%;
+      object-position: 30% 50%;
     }
 }
 
