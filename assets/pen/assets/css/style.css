@@ -24,6 +24,8 @@ canvas {
 }
 
 .details {
+  background-color: black;
+  color: var(--bg-color);
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -53,7 +55,7 @@ canvas {
   }
     canvas {
     object-fit: cover;
-      object-position: 30% 50%;
+      object-position: 40% 50%;
     }
 }
 
