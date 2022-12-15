@@ -37,13 +37,12 @@
     animation-timing-function: ease-in-out;
     overflow: hidden;
 }
-
 .loader__head{
         display: flex;
         align-content: center;
         justify-content: center;
         position: relative;
-        top: 40vh;
+        top: calc(50vh - 60px);
 }
 
 .blob:before {
@@ -104,7 +103,7 @@
 @media screen and (max-width: 767px) {
     .loader__head {
         font-size: 1rem;
-        top: 45vh;
+        top: calc(50vh - 40px);
     }
     .blob {
     width: 50px;
