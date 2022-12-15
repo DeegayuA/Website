@@ -32,9 +32,44 @@ gsap.to(ball, {
       gsap.to("ball", { opacity: 0 });
     },
 });
+gsap.fromTo(
+  ".logo",
+  {
+    opacity: 0,
+  },
+  {
+    opacity: 1,
+    scrollTrigger: {
+      scrub: 1,
 
+      start: "10%",
+      end: "50%",
+    },
+    onComplete: () => {
+      gsap.to(".logo", { opacity: 0 });
+    },
+  }
+);
 gsap.fromTo(
   ".ball-text",
+  {
+    opacity: 0,
+  },
+  {
+    opacity: 1,
+    scrollTrigger: {
+      scrub: 1,
+
+      start: "20%",
+      end: "50%",
+    },
+    onComplete: () => {
+      gsap.to(".ball-text", { opacity: 0 });
+    },
+  }
+);
+gsap.fromTo(
+  ".ball-sub-text",
   {
     opacity: 0,
   },
@@ -47,11 +82,10 @@ gsap.fromTo(
       end: "50%",
     },
     onComplete: () => {
-      gsap.to(".ball-text", { opacity: 0 });
+      gsap.to(".ball-sub-text", { opacity: 0 });
     },
   }
 );
-
 
 
 images[0].onload = render;
