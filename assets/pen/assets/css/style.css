@@ -1,0 +1,59 @@
+
+ 
+ :root{
+--bg-color: #ffffff;
+ }
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+body {
+  font-family: "Lato", sans-serif;
+  overflow-x: hidden;
+}
+/* ------ Landing page ------*/
+canvas {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+}
+
+.details {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+}
+
+.ball-text {
+  position: fixed;
+  z-index: 2;
+  color: black;
+  font-size: 5rem;
+  right: 20%;
+  bottom: 40%;
+  transform: translate(-20%, -40%);
+}
+
+@media screen and (max-width: 1024px) {
+  .ball-text {
+    font-size: 2rem;
+    right: 50%;
+    bottom: 75%;
+    transform: translate(50%, -75%);
+  }
+  h1 {
+    font-size: 2rem;
+  }
+    canvas {
+    object-fit: cover;
+      object-position: 30% 50%;
+    }
+}
+

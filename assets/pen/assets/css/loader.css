@@ -1,0 +1,103 @@
+:root {
+    --bg-color: #ffffff;
+}
+.wrap {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    color: #5f5f5f;
+    background-color: var(--bg-color);
+    animation-name: animationBlobColor;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-direction: alternate;
+    z-index: 9999;
+}
+
+.blob {
+    display: block;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    background-color: currentColor;
+    border-top-left-radius: 0%;
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+    border-bottom-left-radius: 50%;
+    animation-name: animationBlobCorners;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    overflow: hidden;
+}
+
+.loader__head{
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        position: relative;
+        top: 40vh;
+}
+
+.blob:before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: top;
+    transform: translate(-50%, 0%) rotate(-45deg);
+    width: 50%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .1);
+}
+
+.blob:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    height: 50%;
+    background-color: var(--bg-color);
+    border-radius: 50%;
+}
+
+@keyframes animationBlobColor {
+    from {
+        color: rgb(0, 0, 0);
+    }
+
+    to {
+        color: rgb(70, 70, 70);
+    }
+}
+
+@keyframes animationBlobCorners {
+
+    from,
+    to {
+        border-top-left-radius: 50%;
+        border-top-right-radius: 50%;
+        border-bottom-right-radius: 50%;
+        border-bottom-left-radius: 00%;
+    }
+
+
+    50% {
+        border-top-left-radius: 50%;
+        border-top-right-radius: 50%;
+        border-bottom-right-radius: 50%;
+        border-bottom-left-radius: 50%;
+    }
+
+}
