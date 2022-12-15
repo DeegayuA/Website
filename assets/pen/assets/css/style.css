@@ -45,17 +45,17 @@ canvas {
 
 @media screen and (max-width: 1024px) {
   .ball-text {
-    font-size: 2rem;
+    font-size: 3rem;
     right: 50%;
-    bottom: 75%;
-    transform: translate(50%, -75%);
+    bottom: 55%;
+    transform: translate(50%, -55%);
   }
   h1 {
     font-size: 2rem;
   }
     canvas {
     object-fit: cover;
-      object-position: 40% 50%;
+      object-position: 35% 50%;
     }
 }
 
