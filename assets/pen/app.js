@@ -3,18 +3,9 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const context = canvas.getContext("2d");
-const frameCount = 73;
+const frameCount = 250;
 
-const getZeroes = (index) => {
-    if (index < 9) {
-        return "000";
-    } else if (index < 100) {
-        return "00";
-    } else {
-        return "0";
-    }
-};
-const currentFrame = (index) => `./pen1/${getZeroes(index)}${(index + 1).toString()}.png`;
+const currentFrame = (index) => `./pen1/0${(index + 1).toString()}.png`;
 
 const images = [];
 let ball = { frame: 0 };
@@ -33,7 +24,7 @@ gsap.to(ball, {
   scrollTrigger: {
     scrub: 0.8,
     pin: "canvas",
-    end: "250%",
+    end: "500%",
   },
   onUpdate: render,
 });
@@ -49,7 +40,7 @@ gsap.fromTo(
       scrub: 1,
 
       start: "30%",
-      end: "60%",
+      end: "50%",
     },
     onComplete: () => {
       gsap.to(".ball-text", { opacity: 0 });

@@ -26,7 +26,7 @@ canvas {
 .ball-text {
   position: fixed;
   z-index: 2;
-  color: white;
+  color: black;
   font-size: 5rem;
   right: 20%;
   bottom: 40%;
@@ -38,13 +38,13 @@ canvas {
     font-size: 2rem;
     right: 50%;
     bottom: 75%;
-    transform: translate(50%, 50%);
+    transform: translate(50%, -75%);
   }
   h1 {
     font-size: 2rem;
   }
     canvas {
     object-fit: cover;
-      object-position: 0% 50%;
+      object-position: 30% 50%;
     }
 }
