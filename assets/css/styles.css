@@ -1221,8 +1221,8 @@ img {
 }
 
 @media  screen and (max-width: 1024px){
-  .mobile-only{
-    display: none;
+  .computer-only{
+    display: none !important;
   
   }
 }

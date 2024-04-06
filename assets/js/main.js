@@ -345,3 +345,27 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
 });
 
+
+    // Function to check screen width and add/remove class accordingly
+    function toggleClassBasedOnScreenWidth() {
+        var screenWidth = window.innerWidth;
+        var elements = document.querySelectorAll('.computer-only');
+
+        for (var i = 0; i < elements.length; i++) {
+            if (screenWidth > 1024) {
+                elements[i].classList.add('show');
+            } else {
+                elements[i].classList.remove('show');
+            }
+        }
+    }
+
+    // Initial call to set classes based on screen width
+    toggleClassBasedOnScreenWidth();
+
+    // Add event listener for window resize
+    window.addEventListener('resize', function() {
+        toggleClassBasedOnScreenWidth();
+    });
+
+
