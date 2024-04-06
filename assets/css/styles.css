@@ -20,7 +20,7 @@
   --first-color-dark: #8c643c; /* Use the original dark mode color */ 
   --header-color: #121212; 
   --text-color: #1B1A17; 
-  --first-color-light: #8c643c; /* Same as dark mode */
+  --first-color-light: #6d461e; /* Same as dark mode */
   --first-color-lighten: #f0f0f0;  /* Use the lightened first-color */
   --first-color-lighten-highlight: rgba(171, 171, 171, 0.357); 
   --card-light_bg: #ffffff3d; 
