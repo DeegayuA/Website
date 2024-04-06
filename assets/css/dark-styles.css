@@ -5,8 +5,8 @@
   --text-color: #ffffff;
   --first-color-light: #ffa952;
   --first-color-lighten: #1B1A17;
-  --first-color-lighten-highlight: rgba(0, 0, 0, 0.2);
-  --card-light_bg: rgba(0, 0, 0, 0.4);
-  --gradient: linear-gradient(45deg, #814911, #87694b, #1B1A17);
+  --first-color-lighten-highlight: #eeeeee10;
+  --card-light_bg: #ff9a3621;
+  --gradient: linear-gradient(45deg, #272727, #000000);
   --BG-image: url("/assets/img/BG-dark.jpg"); 
 }

@@ -9,9 +9,9 @@
   --text-color: #ffffff;
   --first-color-light: #ffa952;
   --first-color-lighten: #1B1A17;
-  --first-color-lighten-highlight: rgba(0, 0, 0, 0.2);
-  --card-light_bg: rgba(0, 0, 0, 0.4);
-  --gradient: linear-gradient(45deg, #814911, #87694b, #1B1A17);
+  --first-color-lighten-highlight: #eeeeee10;
+  --card-light_bg: #ff9a3621;
+  --gradient: linear-gradient(45deg, #272727, #000000);
   --BG-image: url("/assets/img/BG-dark.jpg"); 
 }
 
@@ -22,9 +22,9 @@
   --text-color: #1B1A17; 
   --first-color-light: #8c643c; /* Same as dark mode */
   --first-color-lighten: #f0f0f0;  /* Use the lightened first-color */
-  --first-color-lighten-highlight: rgba(255, 255, 255, 0.2); 
-  --card-light_bg: rgba(255, 255, 255, 0.4); 
-  --gradient: linear-gradient(45deg, #e7bb85, #e7cda3, #f5e4d0); /* Updated gradient */
+  --first-color-lighten-highlight: rgba(171, 171, 171, 0.357); 
+  --card-light_bg: #ffffff3d; 
+  --gradient: linear-gradient(45deg, #f0f0f0, #cecece, #9e9e9e); /* Updated gradient */
   --BG-image: url("/assets/img/BG-light.jpg"); /* Consider a lighter background image*/
 
 
@@ -204,26 +204,32 @@ img {
 @media screen and (max-width: 768px) {
   .nav__menu {
     position: fixed;
-    top: -150%;
+    top: -100vh;
     left: 0;
     width: 100%;
+    height: 100vh;
     padding-top: 1.5rem;
     text-align: center;
-    border-radius: 0 0 1rem 1rem;
+    border-radius: 0 0 0.5rem 0.5rem;
     transition: 0.4s;
-    background: var(--first-color-lighten-highlight);
-    box-shadow: 2px 8px 24px 0 var(--first-color-lighten);
-    backdrop-filter: blur(6px);
+    background: var(--card-light_bg);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(6px);
-    border: 1px solid var(--first-color-lighten-highlight);
+    border: 1px solid var(--card-light_bg);
     padding-top: var(--header-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--h2-font-size);
+    font-weight: var(--font-semi-bold);
   }
 }
 .nav__item {
   margin-bottom: var(--mb-3);
 }
 .nav__link {
-  color: var(--header-color);
+  color: var(--first-color-light);
   transition: 0.4s;
 }
 .nav__link:hover {
@@ -231,7 +237,7 @@ img {
 }
 .nav__logo,
 .nav__toggle {
-  color: var(--header-color);
+  color: var(--first-color-light);
   z-index: var(--z-fixed);
 }
 .nav__toggle {
@@ -259,14 +265,16 @@ img {
 
 /* Change background header */
 .scroll-header {
-  background-color: var(--first-color-lighten);
+  background-color: var(--card-light_bg);
+  backdrop-filter: blur(10px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 .scroll-header .nav__logo,
 .scroll-header .nav__toggle,
 .scroll-header .nav__link {
-  color: var(--first-color-dark);
+  color: var(--header-color);
   transition: 0.4s;
+  text-shadow: 0px 0px 4px var(--card-light_bg);
 }
 .scroll-header .nav__link:hover {
   color: var(--header-color);
