@@ -705,11 +705,16 @@
             const cursor = $('.cursor');
             cursor.show()
         });
-        $(document).ready(function () {
-            setTimeout(function () {
-                $('body').addClass('loaded');
+        $(document).mousemove(function (e) {
+            const cursor = $('.cursor');
+            cursor.show()
+            cursor.css({
+                top: e.pageY - cursor.height() / 2,
+                left: e.pageX - cursor.width() / 2
             });
+
         });
+        
     </script>
     <script src="./assets/js/timer.js"></script>
 </body>

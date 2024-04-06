@@ -105,8 +105,8 @@ const swiper = new Swiper('.testimonial__container', {
   },
 });
 /*===== dark mode =====*/
+let darkMode = localStorage.getItem('darkMode');
 {
-  let darkMode = localStorage.getItem('darkMode');
   const darkModeToggle = document.querySelector('#dark-mode-toggle');
 
   const enableDarkMode = () => {
@@ -218,12 +218,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
       .from('.new-text, .time-format, .button-light', { y: 20, opacity: 0, stagger: 0.3 }, '-=1.5')
       .from('.nav__logo, .nav__toggle, .nav__item, .home__social-icon', { y: 20, opacity: 0, stagger: 0.2 }, '-=2');
 
-    function isDarkModePreferred() {
-      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    }
-
-    // Determine the initial color scheme
-    const isDarkMode = isDarkModePreferred();
 
     // SKELETON LOADING ANIMATION
     gsap.timeline({ repeat: -1, repeatDelay: 0 }) // Repeat indefinitely
@@ -233,14 +227,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
         ease: 'power1.inOut',
         stagger: 0.3,
         delay: 0.5,
-        yoyo: false, // Repeat back to the start
+        yoyo: true, // Repeat back to the start
       })
       .from('.skeleton', {
         duration: 0.5,
         opacity: 0,
         ease: 'power1.inOut',
         stagger: 0.1,
-        yoyo: false, // Repeat back to the start
+        yoyo: true, // Repeat back to the start
       }, '-=1')
       .to('.skeleton', {
         duration: 1,
@@ -248,7 +242,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         stagger: 0.1, // Optional stagger
         backgroundPosition: '100% 50%',
         opacity: 1,
-        background: isDarkMode ? 'transparent' : '#a7a7a7', // Dark mode color and light mode color
+        background: 'transparent',
         delay: 0.5,
         yoyo: true, // Repeat back to the start
       }, '-=1.5')
@@ -256,11 +250,25 @@ document.addEventListener("DOMContentLoaded", (event) => {
         duration: 0.5,
         opacity: 0,
         stagger: 0.05,
-      }, '-=0.5').to('.skeleton2', {
+      }, '-=0.5')
+      .to('.skeleton2', {
         duration: 0.5,
         opacity: 0,
         stagger: 0.05,
       });
+
+    // Fade out the loading animation 3 seconds after the window is fully loaded
+    window.onload = function () {
+      setTimeout(() => {
+        gsap.to('.skeleton, .skeleton2', {
+          duration: 0.5,
+          opacity: 0,
+          onComplete: function () {
+            document.body.classList.add('loaded');
+          }
+        });
+      }, 3000); // Delay execution by 3 seconds
+    };
 
 
 
