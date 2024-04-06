@@ -1,12 +1,12 @@
 :root {
-  --first-color: #ffffff;
-  --first-color-dark: #1e88e5;
-  /*   --first-color-dark-highlight: #7b4bf5; */
+  --first-color: #c89562;
+  --first-color-dark: #d9a169;  /* Ensure sufficient contrast */
   --header-color: #ffffff;
-  --text-color: #a0a0a0;
-  --first-color-light: #7033ff;
-  --first-color-lighten: #272727;
-  --first-color-lighten-highlight: #00000040;
-  --card-light_bg: #00000020;
-  --gradient: linear-gradient(45deg, #0e0429, #1d1041, #422691);
+  --text-color: #ffffff;
+  --first-color-light: #ffa952;
+  --first-color-lighten: #1B1A17;
+  --first-color-lighten-highlight: rgba(0, 0, 0, 0.2);
+  --card-light_bg: rgba(0, 0, 0, 0.4);
+  --gradient: linear-gradient(45deg, #814911, #87694b, #1B1A17);
+  --BG-image: url("/assets/img/BG-dark.jpg"); 
 }

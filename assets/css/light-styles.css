@@ -1,12 +1,12 @@
 :root {
-  --first-color: #2b2b2b;
-  --first-color-dark: #0d47a1;
-  /*--first-color-dark-highlight: #7b4bf5;*/
-  --header-color: #000000;
-  --text-color: #222222;
-  --first-color-light: #3700b3;
-  --first-color-lighten: #f3f3f3;
-  --first-color-lighten-highlight: #d8d8d880;
-  --card-light_bg: #c4c4c440;
-  --gradient: linear-gradient(45deg, #a17eff, #673be0, #4b2ba3);
+  --first-color: #9d611d; /* Lightened version of first-color */
+  --first-color-dark: #8c643c; /* Use the original dark mode color */ 
+  --header-color: #121212; 
+  --text-color: #1B1A17; 
+  --first-color-light: #8c643c; /* Same as dark mode */
+  --first-color-lighten: #f0f0f0;  /* Use the lightened first-color */
+  --first-color-lighten-highlight: rgba(255, 255, 255, 0.2); 
+  --card-light_bg: rgba(255, 255, 255, 0.4); 
+  --gradient: linear-gradient(45deg, #e7bb85, #e7cda3, #f5e4d0); /* Updated gradient */
+  --BG-image: url("/assets/img/BG-light.jpg"); /* Consider a lighter background image*/
 }
