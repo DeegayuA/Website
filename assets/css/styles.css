@@ -366,7 +366,7 @@ img {
   grid-template-rows: repeat(2, max-content);
   align-content: space-around;
   row-gap: 2rem;
-  top: 3.5rem;
+  top: 6rem;
 }
 
 .home__data {
@@ -453,7 +453,7 @@ img {
 
 .home__social {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   margin-bottom: 6rem;
   z-index: var(--z-tooltip);
 }
@@ -1219,6 +1219,14 @@ img {
     font-size: 10rem;
   }
 }
+
+@media  screen and (max-width: 1024px){
+  .mobile-only{
+    display: none;
+  
+  }
+}
+  
 
 @media screen and (prefers-reduced-motion: reduce) {
 
