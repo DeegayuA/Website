@@ -187,92 +187,146 @@ if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
   })();
 }
 
-/*===== GSAP intro ANIMATION =====*/
-if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
-  gsap.from('.home__data', { opacity: 0, duration: 2, delay: 1.5, y: 20 })
-  gsap.from('.home__img', { opacity: 0, duration: 2, delay: 1.75, x: 60 })
-  gsap.from('.home__greeting, .home__profession', { opacity: 0, duration: 2, delay: 2, y: 20, ease: 'expo.out', stagger: .4 })
-  gsap.from('.new-text, .time-format', { opacity: 0, duration: 2, delay: 3, y: 20, ease: 'expo.out', stagger: .3 })
-  gsap.from('.button-light', { opacity: 0, duration: 2, delay: 4.5, y: 20, ease: 'expo.out', stagger: .3 })
-  gsap.from('.home__name', { opacity: 0, duration: 2, delay: 2.3, y: 20, ease: 'expo.out', stagger: .3 })
-  gsap.from('.nav__logo, .nav__toggle', { opacity: 0, duration: 2, delay: 2.4, y: 20, ease: 'expo.out', stagger: .3 })
-  gsap.from('.nav__item', { opacity: 0, duration: 2, delay: 2.6, y: 20, ease: 'expo.out', stagger: .3 })
-  gsap.from('.home__social-icon', { opacity: 0, duration: 2, delay: 3, y: 20, ease: 'expo.out', stagger: .3 })
-}
+/*===== GSAP ANIMATIONS =====*/
+document.addEventListener("DOMContentLoaded", (event) => {
+  gsap.registerPlugin(
+    Flip,
+    ScrollTrigger,
+    Observer,
+    ScrollToPlugin,
+    Draggable,
+    MotionPathPlugin,
+    EaselPlugin,
+    PixiPlugin,
+    TextPlugin,
+    RoughEase,
+    ExpoScaleEase,
+    SlowMo,
+    CustomEase
+  );
 
-/*===== GSAP scroll ANIMATION =====*/
+  if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+    // INTRO ANIMATION
+    const introTL = gsap.timeline({  // Create a named timeline for clarity
+      delay: 1.5, // Delay the entire intro animation sequence
+      defaults: { duration: 2, ease: 'expo.out' } // Common defaults
+    });
 
-if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
-  ScrollTrigger.matchMedia({
-    "(min-width:576px)": function () {
-      /*===== pinned image =====*/
-      gsap.to(".did-you-know", {
-        pinReparent: true,
-        scrollTrigger: {
-          pin: ".about__img",
-          endTrigger: ".did-you-know",
-          start: "top 20%",
-          end: "top bottom",
-        }
-      })
-      /*===== pinned next =====*/
-    },
+    introTL
+      .from('.home__data, .home__greeting, .home__profession, .home__name', { y: 20, opacity: 0, stagger: 0.3 })
+      .from('.home__img', { x: 60, opacity: 0 }, '-=1.5') // Overlap with previous animations
+      .from('.new-text, .time-format, .button-light', { y: 20, opacity: 0, stagger: 0.3 }, '-=1.5')
+      .from('.nav__logo, .nav__toggle, .nav__item, .home__social-icon', { y: 20, opacity: 0, stagger: 0.2 }, '-=2');
 
-    "all": function () {
-      /*===== image fade =====*/
-      gsap.registerPlugin(ScrollTrigger);
-      gsap.from(".about__img", {
-        opacity: 0,
-        duration: 1,
-        scrollTrigger: {
-          trigger: ".about__img",
-          toggleActions: "play pause play reset",
-          start: "top 60%",
-          end: "bottom bottom",
-          scrub: 2,
-          stagger: .5,
-        }
-      });
-      /*===== headings fade =====
-     let headings = gsap.utils.toArray(".section-title, .section-subtitle");
- 
-     headings.forEach(function (element, index) {
-       gsap.from(element, {
-         opacity: 0,
-         y: -50,
-         delay: 0.25,
-         duration: .5,
-         ease: "power2.inOut",
-         scrollTrigger: {
-           trigger: element[0],
-           start: "top 80%",
-           end: "top 60%",
-           scrub: 1,
-           stagger: 2,
-         }
-       });
-     });
-     */
-      /*===== section =====*/
-      ScrollTrigger.batch(".section", {
-        onEnter: (elements, triggers) => {
-          gsap.from(elements, {
-            ease: "power1.inOut",
-            delay: 0.25,
-            opacity: 0,
-            stagger: 0.25,
-            toggleActions: "play none none none",
-            scrollTrigger: {
-              trigger: elements[0],
-              start: "top 70%",
-              end: "top 50%",
-              scrub: 2,
-            },
-            duration: 0.6,
-          });
-        }
-      });
-
+    function isDarkModePreferred() {
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     }
-  });
-}
+
+    // Determine the initial color scheme
+    const isDarkMode = isDarkModePreferred();
+
+    // SKELETON LOADING ANIMATION
+    gsap.timeline({ repeat: -1, repeatDelay: 0 }) // Repeat indefinitely
+      .from('.skeleton2', {
+        duration: 0.8,
+        opacity: 0,
+        ease: 'power1.inOut',
+        stagger: 0.3,
+        delay: 0.5,
+        yoyo: false, // Repeat back to the start
+      })
+      .from('.skeleton', {
+        duration: 0.5,
+        opacity: 0,
+        ease: 'power1.inOut',
+        stagger: 0.1,
+        yoyo: false, // Repeat back to the start
+      }, '-=1')
+      .to('.skeleton', {
+        duration: 1,
+        ease: 'power1.inOut',
+        stagger: 0.1, // Optional stagger
+        backgroundPosition: '100% 50%',
+        opacity: 1,
+        background: isDarkMode ? 'transparent' : '#a7a7a7', // Dark mode color and light mode color
+        delay: 0.5,
+        yoyo: true, // Repeat back to the start
+      }, '-=1.5')
+      .to('.skeleton', {
+        duration: 0.5,
+        opacity: 0,
+        stagger: 0.05,
+      }, '-=0.5').to('.skeleton2', {
+        duration: 0.5,
+        opacity: 0,
+        stagger: 0.05,
+      });
+
+
+
+
+    // ***** SCROLL ANIMATIONS *****
+    ScrollTrigger.matchMedia({
+      "(min-width: 576px)": function () {
+        gsap.to(".did-you-know", {
+          pinReparent: true,
+          scrollTrigger: {
+            pin: ".about__img",
+            endTrigger: ".did-you-know",
+            start: "top 20%",
+            end: "top bottom"
+          }
+        })
+      },
+
+      "all": function () {
+        gsap.from(".about__img", {
+          opacity: 0,
+          duration: 1,
+          scrollTrigger: {
+            trigger: ".about__img",
+            toggleActions: "play pause play reset",
+            start: "top 60%",
+            end: "bottom bottom",
+            scrub: 2
+          }
+        });
+
+        // Headings Fade (Optimized)
+        gsap.from(".section-title, .section-subtitle", {
+          opacity: 0,
+          y: -50,
+          delay: 0.25,
+          duration: 0.5,
+          ease: "power2.inOut",
+          scrollTrigger: {
+            trigger: ".section-title, .section-subtitle", // Target all at once
+            start: "top 80%",
+            end: "top 60%",
+            scrub: 1
+          }
+        });
+
+        // Generic Section Fade-in
+        ScrollTrigger.batch(".section", {
+          onEnter: (elements) => { // Batching handles elements together
+            gsap.from(elements, {
+              opacity: 0,
+              stagger: 0.25,
+              ease: "power1.inOut",
+              delay: 0.25,
+              scrollTrigger: {
+                trigger: elements[0],
+                start: "top 70%",
+                end: "top 50%",
+                scrub: 2,
+              },
+              duration: 0.6
+            });
+          }
+        });
+      }
+    });
+  }
+});
+

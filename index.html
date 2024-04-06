@@ -33,7 +33,7 @@
     <div id="info"></div>
     <div class="cursor"></div>
     <div id="loader-wrapper">
-        <div class="loader ">
+        <div class="loader skeleton2">
             <div class="loader__nav ">
                 <div class="loader__logo color__loader skeleton"></div>
                 <div class="loader__nav__menu">
@@ -47,7 +47,7 @@
                 </div>
             </div>
             <div class="home__main__flex">
-                <div class="loader__home__data color__loader">
+                <div class="loader__home__data color__loader skeleton2">
                     <div class="loader__home__content">
                         <div class="loader__emoji color__loader skeleton"></div>
                         <div class="loader__home__text">
@@ -668,8 +668,22 @@
     <script src="assets/js/swiper-bundle.min.js"></script>
 
     <!-- ===== GSAP js===== -->
-    <script src="assets/js/gsap.min.js"></script>
-    <script src="assets/js/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Flip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Observer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/Draggable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/MotionPathPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/EaselPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/PixiPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/TextPlugin.min.js"></script>
+    
+    
+    <!-- RoughEase, ExpoScaleEase and SlowMo are all included in the EasePack file -->    
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/EasePack.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/CustomEase.min.js"></script>    <script src="assets/js/ScrollTrigger.min.js"></script>
 
     <!--===== MAIN JS and Parallax animation Js=====-->
     <script src="assets/js/main.js"></script>
@@ -694,7 +708,7 @@
         $(document).ready(function () {
             setTimeout(function () {
                 $('body').addClass('loaded');
-            }, 1500);
+            });
         });
     </script>
     <script src="./assets/js/timer.js"></script>

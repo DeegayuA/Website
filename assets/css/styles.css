@@ -23,7 +23,7 @@
   --first-color-light: #6d461e; /* Same as dark mode */
   --first-color-lighten: #f0f0f0;  /* Use the lightened first-color */
   --first-color-lighten-highlight: rgba(171, 171, 171, 0.357); 
-  --card-light_bg: #ffffff3d; 
+  --card-light_bg: #ff9a3621; 
   --gradient: linear-gradient(45deg, #f0f0f0, #cecece, #9e9e9e); /* Updated gradient */
   --BG-image: url("/assets/img/BG-light.jpg"); /* Consider a lighter background image*/
 
