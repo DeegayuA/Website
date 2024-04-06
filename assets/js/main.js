@@ -135,6 +135,12 @@ let darkMode = localStorage.getItem('darkMode');
 
 /*===== Custom mouse =====*/
 if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+  // paralex animation
+
+  var scene = document.getElementById('scene');
+  var parallaxInstance = new Parallax(scene, {
+      relativeInput: true
+  });
   /*===== Mouse =====*/
   (function () {
     // mouse move function
@@ -221,6 +227,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     // SKELETON LOADING ANIMATION
     gsap.timeline({ repeat: -1, repeatDelay: 0 }) // Repeat indefinitely
+      // .defaults({ opacity: 0 }) // Common defaults
       .from('.skeleton2', {
         duration: 0.8,
         opacity: 0,
