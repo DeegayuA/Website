@@ -139,7 +139,7 @@ if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
 
   var scene = document.getElementById('scene');
   var parallaxInstance = new Parallax(scene, {
-      relativeInput: true
+    relativeInput: true
   });
   /*===== Mouse =====*/
   (function () {
@@ -212,6 +212,19 @@ document.addEventListener("DOMContentLoaded", (event) => {
   );
 
   if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+    document.addEventListener("DOMContentLoaded", function () {
+      // Select the loader element
+      var loader = document.querySelector('.loader.skeleton2');
+
+      // Hide the loader initially
+      loader.style.display = 'none';
+
+      // Show the loader after a delay
+      setTimeout(function () {
+        loader.style.display = 'block';
+      }, 1);
+    });
+
     // INTRO ANIMATION
     const introTL = gsap.timeline({  // Create a named timeline for clarity
       delay: 1.5, // Delay the entire intro animation sequence
@@ -225,44 +238,28 @@ document.addEventListener("DOMContentLoaded", (event) => {
       .from('.nav__logo, .nav__toggle, .nav__item, .home__social-icon', { y: 20, opacity: 0, stagger: 0.2 }, '-=2');
 
 
-    // SKELETON LOADING ANIMATION
-    gsap.timeline({ repeat: -1, repeatDelay: 0 }) // Repeat indefinitely
-      // .defaults({ opacity: 0 }) // Common defaults
-      .from('.skeleton2', {
-        duration: 0.8,
-        opacity: 0,
-        ease: 'power1.inOut',
-        stagger: 0.3,
-        delay: 0.5,
-        yoyo: true, // Repeat back to the start
-      })
-      .from('.skeleton', {
-        duration: 0.5,
-        opacity: 0,
-        ease: 'power1.inOut',
-        stagger: 0.1,
-        yoyo: true, // Repeat back to the start
-      }, '-=1')
-      .to('.skeleton', {
-        duration: 1,
-        ease: 'power1.inOut',
-        stagger: 0.1, // Optional stagger
-        backgroundPosition: '100% 50%',
-        opacity: 1,
-        background: 'transparent',
-        delay: 0.5,
-        yoyo: true, // Repeat back to the start
-      }, '-=1.5')
-      .to('.skeleton', {
-        duration: 0.5,
-        opacity: 0,
-        stagger: 0.05,
-      }, '-=0.5')
-      .to('.skeleton2', {
-        duration: 0.5,
-        opacity: 0,
-        stagger: 0.05,
-      });
+// SKELETON LOADING ANIMATION
+gsap.timeline({ repeat: -1, repeatDelay: 0}) // Repeat indefinitely
+  .from('.skeleton2, .skeleton', {
+    duration: 0.5,
+    opacity: 0,
+    ease: 'power1.inOut',
+    stagger: 0.07,
+    delay: 0.5,
+  })
+  .to('.skeleton', {
+    duration: 1,
+    opacity: 0,
+    stagger: 0.07,
+    ease: 'power1.inOut',
+  }, '-=0.5') // Delay the start of the fade-out animation for .skeleton elements
+  .to('.skeleton2', {
+    duration: 1,
+    opacity: 0,
+    stagger: 0.05,
+    ease: 'power1.inOut',
+  }, '-=0.5'); // Delay the start of the fade-out animation for .skeleton2 elements
+
 
     // Fade out the loading animation 3 seconds after the window is fully loaded
     window.onload = function () {
@@ -346,26 +343,26 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 
-    // Function to check screen width and add/remove class accordingly
-    function toggleClassBasedOnScreenWidth() {
-        var screenWidth = window.innerWidth;
-        var elements = document.querySelectorAll('.computer-only');
+// Function to check screen width and add/remove class accordingly
+function toggleClassBasedOnScreenWidth() {
+  var screenWidth = window.innerWidth;
+  var elements = document.querySelectorAll('.computer-only');
 
-        for (var i = 0; i < elements.length; i++) {
-            if (screenWidth > 1024) {
-                elements[i].classList.add('show');
-            } else {
-                elements[i].classList.remove('show');
-            }
-        }
+  for (var i = 0; i < elements.length; i++) {
+    if (screenWidth > 1024) {
+      elements[i].classList.add('show');
+    } else {
+      elements[i].classList.remove('show');
     }
+  }
+}
 
-    // Initial call to set classes based on screen width
-    toggleClassBasedOnScreenWidth();
+// Initial call to set classes based on screen width
+toggleClassBasedOnScreenWidth();
 
-    // Add event listener for window resize
-    window.addEventListener('resize', function() {
-        toggleClassBasedOnScreenWidth();
-    });
+// Add event listener for window resize
+window.addEventListener('resize', function () {
+  toggleClassBasedOnScreenWidth();
+});
 
 
