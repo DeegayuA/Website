@@ -148,11 +148,11 @@
   }
   .loader__img {
     position: fixed;
-    padding: 15vw;
+    padding: 8vw;
     aspect-ratio: 0.6;
     border-radius: 0.5rem;
     bottom: 2vw;
-    right: 2vw;
+    right: 2.5vw;
   }
   .loader__home__social__container {
     position: absolute;
@@ -256,8 +256,6 @@
     }
     .loader__img {
       aspect-ratio: 0.75;
-      padding: 10vw;
-      right: 2.5vw;
     }
     .loader__home__social {
       flex-direction: row;
