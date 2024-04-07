@@ -271,7 +271,7 @@ gsap.timeline({ repeat: -1, repeatDelay: 0}) // Repeat indefinitely
             document.body.classList.add('loaded');
           }
         });
-      }, 3000); // Delay execution by 3 seconds
+      }, 300000); // Delay execution by 3 seconds
     };
 
 

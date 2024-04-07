@@ -116,6 +116,7 @@
     border-radius: 0.5rem;
     width: max-content;
     height: max-content;
+    padding: 0.5rem;
   }
   .loader__home__content {
     display: flex;
@@ -147,8 +148,8 @@
   }
   .loader__img {
     position: fixed;
-    padding: 4rem;
-    aspect-ratio: 0.65;
+    padding: 15vw;
+    aspect-ratio: 0.6;
     border-radius: 0.5rem;
     bottom: 2vw;
     right: 2vw;
@@ -227,9 +228,10 @@
       top: 8vw;
     }
     .loader__home__data {
-      border-radius: 1rem;
+      border-radius: 0.5rem;
       width: 28vw;
       height: max-content;
+
     }
     .loader__emoji {
       margin: 1rem;
@@ -253,8 +255,9 @@
       height: 1vw;
     }
     .loader__img {
-      aspect-ratio: 1;
-      padding: 10rem;
+      aspect-ratio: 0.75;
+      padding: 10vw;
+      right: 2.5vw;
     }
     .loader__home__social {
       flex-direction: row;
