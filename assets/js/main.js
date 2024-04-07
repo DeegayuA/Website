@@ -195,6 +195,7 @@ if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
 
 /*===== GSAP ANIMATIONS =====*/
 document.addEventListener("DOMContentLoaded", (event) => {
+  var delayTime = 3000; 
   gsap.registerPlugin(
     Flip,
     ScrollTrigger,
@@ -232,10 +233,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
     });
 
     introTL
-      .from('.home__data, .home__greeting, .home__profession, .home__name', { y: 20, opacity: 0, stagger: 0.3 })
+      .from('.home__data, .home__greeting, .home__profession, .home__name', { y: -20, opacity: 0, stagger: 0.2, delay: delayTime/1000})
       .from('.home__img', { x: 60, opacity: 0 }, '-=1.5') // Overlap with previous animations
-      .from('.new-text, .time-format, .button-light', { y: 20, opacity: 0, stagger: 0.3 }, '-=1.5')
-      .from('.nav__logo, .nav__toggle, .nav__item, .home__social-icon', { y: 20, opacity: 0, stagger: 0.2 }, '-=2');
+      .from('.new-text, .time-format, .button-light', { y: -20, opacity: 0, stagger: 0.3 }, '-=2.0')
+      .from('.nav__logo, .nav__toggle, .nav__item, .home__social-icon', { y: -20, opacity: 0, stagger: 0.2 }, '-=3');
 
 
 // SKELETON LOADING ANIMATION
@@ -271,7 +272,7 @@ gsap.timeline({ repeat: -1, repeatDelay: 0}) // Repeat indefinitely
             document.body.classList.add('loaded');
           }
         });
-      }, 3000); // Delay execution by 3 seconds
+      }, delayTime); // Delay execution by 3 seconds
     };
 
 
