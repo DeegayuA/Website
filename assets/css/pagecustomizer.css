@@ -93,18 +93,20 @@
     padding: 0.5rem;
   }
   .loader__logo {
-    border-radius: 0.5vw;
+    border-radius: 0.5rem;
     width: 5vw;
     height: 1.5vw;
+    padding: 0.5rem;
   }
   .loader__nav__list {
     display: flex;
   }
   .loader__nav__item {
-    border-radius: 0.5vw;
+    border-radius: 0.5rem;
     width: 4vw;
     height: 1.5vw;
     margin: 1vw;
+    padding: 0.5rem;
   }
   .home__main__flex {
     position: relative;
@@ -126,6 +128,7 @@
     margin: 0.5rem;
     width: 6vh;
     height: 6vh;
+    padding: 0.5rem;
   }
   .loader__home__text {
     display: block;
@@ -139,6 +142,7 @@
     border-radius: 0.25rem;
     margin-top: 0.25rem;
     min-height: min-content;
+    padding: 0.25rem 0.55rem;
   }
   .loader__button {
     border-radius: 0.25rem;

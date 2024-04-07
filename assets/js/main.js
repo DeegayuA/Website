@@ -195,7 +195,7 @@ if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
 
 /*===== GSAP ANIMATIONS =====*/
 document.addEventListener("DOMContentLoaded", (event) => {
-  var delayTime = 3000; 
+  var delayTime = 300000; 
   gsap.registerPlugin(
     Flip,
     ScrollTrigger,
