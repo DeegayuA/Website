@@ -1,12 +1,12 @@
 :root {
-  --first-color: #c89562;
-  --first-color-dark: #d9a169;  /* Ensure sufficient contrast */
+  --first-color: #8662c8;
+  --first-color-dark: #8969d9;  /* Ensure sufficient contrast */
   --header-color: #ffffff;
   --text-color: #ffffff;
-  --first-color-light: #ffa952;
-  --first-color-lighten: #1B1A17;
+  --first-color-light: #6c52ff;
+  --first-color-lighten: #18171b;
   --first-color-lighten-highlight: #eeeeee10;
-  --card-light_bg: #ff9a3621;
+  --card-light_bg: #6c36ff21;
   --gradient: linear-gradient(45deg, #272727, #000000);
   --BG-image: url("/assets/img/BG-dark.jpg"); 
 }

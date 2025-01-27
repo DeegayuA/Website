@@ -3,36 +3,30 @@
 
 /*===== VARIABLES CSS =====*/
 .darkmode {
-  --first-color: #c89562;
-  --first-color-dark: #d9a169;
-  /* Ensure sufficient contrast */
+  --first-color: #8662c8;
+  --first-color-dark: #8969d9;  /* Ensure sufficient contrast */
   --header-color: #ffffff;
   --text-color: #ffffff;
-  --first-color-light: #ffa952;
-  --first-color-lighten: #1B1A17;
+  --first-color-light: #6c52ff;
+  --first-color-lighten: #18171b;
   --first-color-lighten-highlight: #eeeeee10;
-  --card-light_bg: #ff9a3621;
+  --card-light_bg: #6c36ff21;
   --gradient: linear-gradient(45deg, #272727, #000000);
-  --BG-image: url("/assets/img/BG-dark.jpg");
+  --BG-image: url("/assets/img/BG-dark.jpg"); 
 }
 
 :root {
-  --first-color: #9d611d;
-  /* Lightened version of first-color */
-  --first-color-dark: #8c643c;
-  /* Use the original dark mode color */
-  --header-color: #121212;
-  --text-color: #1B1A17;
-  --first-color-light: #6d461e;
-  /* Same as dark mode */
-  --first-color-lighten: #f0f0f0;
-  /* Use the lightened first-color */
-  --first-color-lighten-highlight: rgba(171, 171, 171, 0.357);
-  --card-light_bg: #ff9a3621;
-  --gradient: linear-gradient(45deg, #f0f0f0, #cecece, #9e9e9e);
-  /* Updated gradient */
-  --BG-image: url("/assets/img/BG-light.jpg");
-  /* Consider a lighter background image*/
+  --first-color: #461d9d; /* Lightened version of first-color */
+  --first-color-dark: #543c8c; /* Use the original dark mode color */ 
+  --header-color: #121212; 
+  --text-color: #18171b; 
+  --first-color-light: #211e6d; /* Same as dark mode */
+  --first-color-lighten: #f0f0f0;  /* Use the lightened first-color */
+  --first-color-lighten-highlight: rgba(171, 171, 171, 0.357); 
+  --card-light_bg: #5e36ff21; 
+  --gradient: linear-gradient(45deg, #e3daf0, #a69acc, #7b74a0); /* Updated gradient */
+  --BG-image: url("/assets/img/BG-light.jpg"); /* Consider a lighter background image*/
+
 
 
   --header-height: 3rem;
