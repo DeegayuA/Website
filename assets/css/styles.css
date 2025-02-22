@@ -435,14 +435,15 @@ img {
 
 @keyframes home__objects_hue__change {
   0% {
-    filter: hue-rotate(40deg);
-    /* Start with pure yellow */
+    filter: hue-rotate(180deg);
+    /* Start with blue */
   }
 
   100% {
-    filter: hue-rotate(-40deg);
-    /* Shift towards red */
+    filter: hue-rotate(240deg);
+    /* Shift towards hot pink */
   }
+}
 }
 
 .home__social {
