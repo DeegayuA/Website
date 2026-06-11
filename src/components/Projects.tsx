@@ -25,22 +25,20 @@ const cell: Variants = {
   },
 };
 
-/* Bento tile sizes (lg, 6-col grid + 6.5rem auto-rows). Featured projects get
-   the hero tile; the rest cycle through a mix of wide/tall/standard so the
-   grid never looks like a uniform deck. Index-based so any filtered set still
-   tiles cleanly. */
+/* Bento tile sizes (lg = 4-col track + auto-rows). These six shapes — big,
+   small, two tall, wide, small — tile a perfect 4×5 block, so the grid mixes
+   sizes yet always fills four across with no empty cells. Assigned by index,
+   so every block (and every filtered set) starts fresh and packs cleanly. */
 const BENTO = [
-  "lg:col-span-2 lg:row-span-3",
-  "lg:col-span-2 lg:row-span-4",
-  "lg:col-span-3 lg:row-span-3",
-  "lg:col-span-3 lg:row-span-4",
-  "lg:col-span-2 lg:row-span-3",
-  "lg:col-span-4 lg:row-span-3",
+  "sm:col-span-2 lg:col-span-2 lg:row-span-3", // big
+  "sm:col-span-1 lg:col-span-1 lg:row-span-2", // small
+  "sm:col-span-1 lg:col-span-1 lg:row-span-3", // tall
+  "sm:col-span-1 lg:col-span-1 lg:row-span-3", // tall
+  "sm:col-span-2 lg:col-span-2 lg:row-span-2", // wide
+  "sm:col-span-1 lg:col-span-1 lg:row-span-2", // small
 ];
-function tileClass(i: number, featured?: boolean) {
-  return featured
-    ? "sm:col-span-2 lg:col-span-4 lg:row-span-5"
-    : `sm:col-span-1 ${BENTO[i % BENTO.length]}`;
+function tileClass(i: number) {
+  return BENTO[i % BENTO.length];
 }
 
 export function Projects() {
@@ -93,7 +91,7 @@ export function Projects() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-60px" }}
-        className="grid grid-flow-row-dense grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-6 lg:auto-rows-[6.5rem]"
+        className="grid grid-flow-row-dense grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:auto-rows-[9rem]"
         aria-live="polite"
         aria-label={`${visible.length} projects shown`}
       >
@@ -101,7 +99,7 @@ export function Projects() {
           <motion.li
             key={project.title}
             variants={cell}
-            className={cn("min-w-0", tileClass(i, project.featured))}
+            className={cn("min-w-0", tileClass(i))}
           >
             <ProjectCard project={project} />
           </motion.li>
