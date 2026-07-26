@@ -25,35 +25,44 @@ const cell: Variants = {
   },
 };
 
-/* Bento tile sizes (lg = 4-col track + auto-rows). These six shapes — big,
-   small, two tall, wide, small — tile a perfect 4×5 block, so the grid mixes
-   sizes yet always fills four across with no empty cells. Assigned by index,
-   so every block (and every filtered set) starts fresh and packs cleanly. */
+/* Bento widths only — each card grows to fit its own content (no fixed row
+   height), so nothing ever clips. Featured/wide cards span two columns for
+   emphasis; dense flow packs the single-column cards around them. */
 const BENTO = [
-  "sm:col-span-2 lg:col-span-2 lg:row-span-3", // big
-  "sm:col-span-1 lg:col-span-1 lg:row-span-2", // small
-  "sm:col-span-1 lg:col-span-1 lg:row-span-3", // tall
-  "sm:col-span-1 lg:col-span-1 lg:row-span-3", // tall
-  "sm:col-span-2 lg:col-span-2 lg:row-span-2", // wide
-  "sm:col-span-1 lg:col-span-1 lg:row-span-2", // small
+  "sm:col-span-2 lg:col-span-2", // wide (featured)
+  "sm:col-span-1 lg:col-span-1",
+  "sm:col-span-1 lg:col-span-1",
+  "sm:col-span-1 lg:col-span-1",
+  "sm:col-span-2 lg:col-span-2", // wide
+  "sm:col-span-1 lg:col-span-1",
 ];
 function tileClass(i: number) {
   return BENTO[i % BENTO.length];
 }
 
+function isCompactTile(i: number) {
+  return BENTO[i % BENTO.length].includes("col-span-1");
+}
+
 export function Projects() {
   const [filter, setFilter] = useState<Filter>("all");
 
-  const visible =
+  const filtered =
     filter === "all"
       ? projects
       : projects.filter((p) => p.categories.includes(filter));
 
+  const visible = [...filtered].sort((a, b) => {
+    const aFeatured = a.featured ? 1 : 0;
+    const bFeatured = b.featured ? 1 : 0;
+    return bFeatured - aFeatured;
+  });
+
   return (
-    <Section id="projects" eyebrow="Selected work" title="Projects">
+    <Section id="projects" eyebrow="Selected work" title="Projects" index="02 / Work">
       <Reveal>
         <div
-          className="glass glass-lens mb-8 inline-flex max-w-full flex-wrap items-center gap-1 rounded-full p-1.5 sm:mb-12"
+          className="glass glass-lens bevel mb-8 inline-flex max-w-full flex-wrap items-center gap-1 rounded-full p-1.5 sm:mb-12"
           role="group"
           aria-label="Filter projects by category"
         >
@@ -66,8 +75,8 @@ export function Projects() {
                 aria-pressed={isActive}
                 onClick={() => setFilter(category.value)}
                 className={cn(
-                  "relative rounded-full px-4 py-2 text-sm font-medium transition active:scale-95",
-                  isActive ? "text-white" : "text-muted hover:text-foreground",
+                  "relative rounded-full px-4 py-2 text-sm font-semibold transition-[color,transform] active:scale-95",
+                  isActive ? "text-background" : "text-muted hover:text-foreground",
                 )}
               >
                 {isActive && (
@@ -85,14 +94,14 @@ export function Projects() {
       </Reveal>
 
       {/* Keyed by filter: the grid re-enters with a staggered rise on change */}
+      <p className="sr-only" aria-live="polite">Showing {visible.length} projects</p>
       <motion.ul
         key={filter}
         variants={grid}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-60px" }}
-        className="grid grid-flow-row-dense grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:auto-rows-[9rem]"
-        aria-live="polite"
+        className="grid grid-flow-row-dense grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4"
         aria-label={`${visible.length} projects shown`}
       >
         {visible.map((project, i) => (
@@ -101,7 +110,7 @@ export function Projects() {
             variants={cell}
             className={cn("min-w-0", tileClass(i))}
           >
-            <ProjectCard project={project} />
+            <ProjectCard project={project} compact={isCompactTile(i)} />
           </motion.li>
         ))}
       </motion.ul>

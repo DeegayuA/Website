@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import { Providers } from "@/components/Providers";
 import { AuroraBackground } from "@/components/AuroraBackground";
 import { Navbar } from "@/components/Navbar";
@@ -11,37 +11,46 @@ import { CustomCursor } from "@/components/CustomCursor";
 import { site } from "@/data/site";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const display = Space_Grotesk({
+  variable: "--font-display",
   subsets: ["latin"],
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const sans = Inter({
+  variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
 });
 
+const mono = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const TITLE = `${site.name} — Software + Electronic Engineer`;
 const description = `${site.name} — ${site.tagline} Based in ${site.location}.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — Full-Stack Developer · AI & IoT`,
+    default: TITLE,
     template: `%s — ${site.name}`,
   },
   description,
   keywords: [
     "Deeghayu Adhikari",
-    "Full-Stack Developer",
+    "Software Engineer",
+    "Electronic Engineer",
     "Sri Lanka",
-    "Machine Learning Engineer",
     "AI Engineer",
+    "Machine Learning Engineer",
     "IoT Developer",
+    "Embedded Systems",
     "Next.js Developer",
     "React Developer",
-    "University of Kelaniya",
+    "Visiting Lecturer",
   ],
   authors: [{ name: site.name, url: site.url }],
   creator: site.name,
@@ -50,13 +59,13 @@ export const metadata: Metadata = {
     type: "website",
     url: site.url,
     siteName: site.name,
-    title: `${site.name} — Full-Stack Developer · AI & IoT`,
+    title: TITLE,
     description,
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} — Full-Stack Developer · AI & IoT`,
+    title: TITLE,
     description,
     creator: "@DeegayuA",
   },
@@ -76,8 +85,8 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#eef0f4" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0f" },
+    { media: "(prefers-color-scheme: light)", color: "#e9edf3" },
+    { media: "(prefers-color-scheme: dark)", color: "#070b12" },
   ],
 };
 
@@ -90,7 +99,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${display.variable} ${sans.variable} ${mono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <Providers>
@@ -100,7 +109,7 @@ export default function RootLayout({
           <SmoothScroll />
           <a
             href="#main"
-            className="glass-strong fixed left-4 top-4 z-100 -translate-y-24 rounded-full px-5 py-3 text-sm font-semibold transition-transform focus:translate-y-0"
+            className="glass-strong fixed left-4 top-4 z-[100] -translate-y-24 rounded-full px-5 py-3 text-sm font-semibold transition-transform focus:translate-y-0"
           >
             Skip to content
           </a>

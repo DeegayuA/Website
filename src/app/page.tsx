@@ -3,6 +3,7 @@ import { SkillsMarquee } from "@/components/SkillsMarquee";
 import { About } from "@/components/About";
 import { Projects } from "@/components/Projects";
 import { Experience } from "@/components/Experience";
+import { Certifications } from "@/components/Certifications";
 import { Contact } from "@/components/Contact";
 import { site, socials } from "@/data/site";
 import { work, education } from "@/data/experience";
@@ -16,7 +17,7 @@ function JsonLd() {
     url: site.url,
     email: `mailto:${site.email}`,
     telephone: site.phone,
-    jobTitle: site.roles[0],
+    jobTitle: site.roles,
     description: site.tagline,
     address: {
       "@type": "PostalAddress",
@@ -44,7 +45,9 @@ function JsonLd() {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify([person, website]) }}
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify([person, website]).replace(/</g, "\\u003c"),
+      }}
     />
   );
 }
@@ -58,6 +61,7 @@ export default function Home() {
       <About />
       <Projects />
       <Experience />
+      <Certifications />
       <Contact />
     </>
   );

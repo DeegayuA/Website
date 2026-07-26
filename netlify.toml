@@ -5,14 +5,17 @@
   command = "npm run build"
   publish = ".next"
 
+[build.environment]
+  NODE_VERSION = "20"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# Long-lived caching for immutable static assets
+# Screenshot files get overwritten in place (not content-hashed), so no `immutable`
 [[headers]]
   for = "/images/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
 
 # Sensible security headers
 [[headers]]
