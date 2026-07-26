@@ -1,0 +1,613 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ──────────────────────────────────────────────────────────────
+   Living palette — one animated hue drives every accent site-wide
+   (gradients, buttons, the hero name, nav, links, cursor, the bg wash),
+   so the whole colour identity slowly, smoothly evolves. OKLCH keeps the
+   sweep perceptually even and confined to a tasteful cool→magenta band.
+   ────────────────────────────────────────────────────────────── */
+@property --hue {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 250;
+}
+@keyframes hue-cycle {
+  from {
+    --hue: 196;
+  }
+  to {
+    --hue: 300;
+  }
+}
+:root {
+  animation: hue-cycle 32s ease-in-out infinite alternate;
+}
+/* Freeze the cycle where frame budget is tight or motion is unwanted */
+:root[data-quality="low"] {
+  animation: none;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Design tokens — liquid glass system
+   ────────────────────────────────────────────────────────────── */
+:root {
+  --background: #eef0f4;
+  --foreground: #1d1d1f;
+  --muted: #585862;
+  /* Live accent triad — same hue, fanned out for rich gradients */
+  --accent: oklch(0.58 0.18 var(--hue));
+  --accent-2: oklch(0.56 0.19 calc(var(--hue) + 28));
+  --accent-3: oklch(0.6 0.2 calc(var(--hue) + 54));
+  --accent-soft: oklch(0.58 0.18 var(--hue) / 0.1);
+
+  --surface: rgba(255, 255, 255, 0.42);
+  --surface-strong: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.65);
+  --glass-highlight: rgba(255, 255, 255, 0.9);
+  --glass-shine: rgba(255, 255, 255, 0.55);
+  --glass-shade: rgba(16, 24, 40, 0.05);
+  --glass-shadow:
+    0 1px 1px rgba(16, 24, 40, 0.03),
+    0 12px 36px -8px rgba(16, 24, 40, 0.14);
+
+  --aurora-a: rgba(56, 132, 255, 0.26);
+  --aurora-b: rgba(124, 104, 246, 0.22);
+  --aurora-c: rgba(90, 170, 255, 0.2);
+  --aurora-d: rgba(150, 120, 255, 0.18);
+  --spotlight: rgba(0, 113, 227, 0.08);
+}
+
+.dark {
+  --background: #0a0a0f;
+  --foreground: #f5f5f7;
+  --muted: #a7a7b0;
+  /* Live accent triad — lighter L for legibility on the dark canvas */
+  --accent: oklch(0.72 0.16 var(--hue));
+  --accent-2: oklch(0.7 0.17 calc(var(--hue) + 28));
+  --accent-3: oklch(0.74 0.18 calc(var(--hue) + 54));
+  --accent-soft: oklch(0.72 0.16 var(--hue) / 0.14);
+
+  --surface: rgba(22, 24, 33, 0.44);
+  --surface-strong: rgba(30, 32, 44, 0.56);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-highlight: rgba(255, 255, 255, 0.22);
+  --glass-shine: rgba(255, 255, 255, 0.12);
+  --glass-shade: rgba(0, 0, 0, 0.22);
+  --glass-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.2),
+    0 16px 44px -10px rgba(0, 0, 0, 0.55);
+
+  --aurora-a: rgba(48, 122, 255, 0.26);
+  --aurora-b: rgba(132, 96, 255, 0.22);
+  --aurora-c: rgba(70, 150, 255, 0.18);
+  --aurora-d: rgba(150, 110, 255, 0.16);
+  --spotlight: rgba(120, 170, 255, 0.07);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
+  --color-accent-soft: var(--accent-soft);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Base
+   ────────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Accessible, consistent focus ring everywhere */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Thin, theme-aware scrollbar */
+@media (pointer: fine) {
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--muted) 35%, transparent);
+    border-radius: 8px;
+    border: 3px solid var(--background);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--muted) 55%, transparent);
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Liquid glass surfaces
+   (inside @layer components so Tailwind utilities can override)
+   ────────────────────────────────────────────────────────────── */
+@layer components {
+.glass {
+  position: relative;
+  /* directional shine over the frosted tint — light source top-left */
+  background:
+    linear-gradient(
+      125deg,
+      var(--glass-shine) -15%,
+      transparent 38%,
+      transparent 68%,
+      color-mix(in srgb, var(--glass-shine) 45%, transparent) 108%
+    ),
+    linear-gradient(150deg, var(--surface-strong), var(--surface));
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  backdrop-filter: blur(22px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 1px var(--glass-shade),
+    inset 1px 0 0 rgba(255, 255, 255, 0.08),
+    var(--glass-shadow);
+}
+
+/* Heavier frost for floating chrome (nav, toasts) */
+.glass-strong {
+  position: relative;
+  background:
+    linear-gradient(
+      125deg,
+      var(--glass-shine) -15%,
+      transparent 38%,
+      transparent 68%,
+      color-mix(in srgb, var(--glass-shine) 45%, transparent) 108%
+    ),
+    linear-gradient(150deg, var(--surface-strong), var(--surface));
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  backdrop-filter: blur(28px) saturate(200%);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -1px 1px var(--glass-shade),
+    var(--glass-shadow);
+}
+
+/* True refraction (Chromium only — html.lens set by GlassFilter).
+   The SVG displacement lens replaces the heavy blur: the backdrop
+   visibly bends through the surface like Apple's Liquid Glass. */
+.lens .glass-lens {
+  -webkit-backdrop-filter: url(#glass-lens) blur(5px) saturate(190%)
+    brightness(1.04);
+  backdrop-filter: url(#glass-lens) blur(5px) saturate(190%) brightness(1.04);
+}
+
+/* Liquid sheen that sweeps across on hover */
+.glass-sheen {
+  overflow: hidden;
+}
+.glass-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 42%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 58%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.9s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+.glass-sheen:hover::after,
+.glass-sheen:focus-within::after {
+  transform: translateX(130%);
+}
+
+/* Interactive press feel for glass buttons */
+.glass-button {
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.35s ease,
+    background-color 0.35s ease;
+}
+.glass-button:hover {
+  transform: translateY(-2px);
+}
+.glass-button:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* Gradient display text (remains real, selectable text) */
+.text-shine {
+  background: linear-gradient(
+    92deg,
+    var(--foreground) 0%,
+    var(--accent) 35%,
+    var(--accent-2) 60%,
+    var(--accent-3) 85%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine 9s ease-in-out infinite alternate;
+}
+@keyframes shine {
+  to {
+    background-position: 100% 0;
+  }
+}
+
+/* Film-grain overlay to avoid gradient banding */
+.noise {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Ambient gradient backdrop. Huge, ultra-soft pools of light breathe and
+   drift slowly behind the glass — diffuse enough that they never read as a
+   discrete shape, just shifting atmosphere. Cohesive blue→violet palette.
+   Motion is transform-only (GPU-composited); each pool fades fully to
+   transparent before the viewport edge, so no hard clip line is ever shown. */
+.mesh-base {
+  position: absolute;
+  inset: 0;
+  /* Non-blurred wash tinted by the live accents — recolours cheaply each
+     frame (no blur layer to re-rasterize), so the whole backdrop's hue
+     drifts in lock-step with the rest of the site. */
+  background:
+    radial-gradient(
+      120% 90% at 50% -20%,
+      color-mix(in srgb, var(--accent) 22%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      120% 90% at 50% 120%,
+      color-mix(in srgb, var(--accent-3) 20%, transparent),
+      transparent 60%
+    );
+}
+.mesh-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(110px);
+  opacity: 0.55;
+  will-change: transform;
+}
+.mesh-blob--a {
+  width: 85vmax;
+  height: 85vmax;
+  left: -10vmax;
+  top: -25vmax;
+  background: radial-gradient(circle, var(--aurora-a), transparent 62%);
+  animation: mesh-a 32s ease-in-out infinite alternate;
+}
+.mesh-blob--b {
+  width: 75vmax;
+  height: 75vmax;
+  right: -18vmax;
+  top: 0vmax;
+  background: radial-gradient(circle, var(--aurora-c), transparent 62%);
+  animation: mesh-b 38s ease-in-out infinite alternate;
+}
+.mesh-blob--c {
+  width: 80vmax;
+  height: 80vmax;
+  left: 0vmax;
+  bottom: -30vmax;
+  background: radial-gradient(circle, var(--aurora-d), transparent 62%);
+  animation: mesh-c 34s ease-in-out infinite alternate;
+}
+.mesh-blob--d {
+  width: 60vmax;
+  height: 60vmax;
+  right: 8vmax;
+  bottom: -18vmax;
+  background: radial-gradient(circle, var(--aurora-b), transparent 62%);
+  animation: mesh-d 28s ease-in-out infinite alternate;
+}
+@keyframes mesh-a {
+  to {
+    transform: translate3d(7vw, 6vh, 0) scale(1.1);
+  }
+}
+@keyframes mesh-b {
+  to {
+    transform: translate3d(-6vw, 7vh, 0) scale(1.08);
+  }
+}
+@keyframes mesh-c {
+  to {
+    transform: translate3d(6vw, -5vh, 0) scale(1.12);
+  }
+}
+@keyframes mesh-d {
+  to {
+    transform: translate3d(-5vw, -6vh, 0) scale(1.06);
+  }
+}
+
+/* Waving hand in the hero greeting chip */
+@keyframes wave {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(18deg);
+  }
+  50% {
+    transform: rotate(-8deg);
+  }
+  75% {
+    transform: rotate(12deg);
+  }
+}
+
+/* Bouncing scroll cue */
+@keyframes cue {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 1;
+  }
+}
+.scroll-cue {
+  animation: cue 2.2s ease-in-out infinite;
+}
+
+/* Infinite skills marquee, edge-faded; pauses on hover */
+.marquee {
+  display: flex;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    black 12%,
+    black 88%,
+    transparent
+  );
+}
+.marquee__track {
+  animation: marquee 30s linear infinite;
+  will-change: transform;
+}
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* Hollow display text used by alternating marquee items */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px
+    color-mix(in srgb, var(--foreground) 38%, transparent);
+}
+
+/* Floating glass orb — sphere shading + frost */
+.orb {
+  background:
+    radial-gradient(
+      circle at 32% 28%,
+      rgba(255, 255, 255, 0.85),
+      rgba(255, 255, 255, 0.16) 30%,
+      transparent 48%
+    ),
+    radial-gradient(
+      circle at 72% 78%,
+      color-mix(in srgb, var(--accent-2) 38%, transparent),
+      transparent 62%
+    ),
+    linear-gradient(150deg, var(--surface-strong), var(--surface));
+  -webkit-backdrop-filter: blur(6px) saturate(160%);
+  backdrop-filter: blur(6px) saturate(160%);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 -10px 18px var(--glass-shade),
+    var(--glass-shadow);
+}
+
+/* Cursor-tracked specular glow on project cards. Driven by --spot-x/--spot-y
+   (set on pointer move); soft-light keeps it a gentle sheen over text. */
+.card-spot {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(
+    260px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    color-mix(in srgb, var(--accent) 32%, transparent),
+    transparent 60%
+  );
+  mix-blend-mode: soft-light;
+}
+.group:hover .card-spot {
+  opacity: 1;
+}
+
+/* Cursor-follow glow. Pre-painted 1280px radial moved only via transform
+   (the JS offsets the pointer by half its size), so there are no per-frame
+   background repaints. Hidden until the pointer first moves. */
+.spotlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1280px;
+  width: 1280px;
+  border-radius: 9999px;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    circle,
+    var(--spotlight) 0%,
+    color-mix(in srgb, var(--spotlight) 50%, transparent) 28%,
+    transparent 62%
+  );
+  transition: opacity 0.4s ease;
+  will-change: transform, opacity;
+}
+
+/* Gentle vertical float for orbs and chips */
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(-10px);
+  }
+  50% {
+    transform: translateY(12px);
+  }
+}
+.float-slow {
+  animation: float-y 9s ease-in-out infinite;
+}
+.float-slower {
+  animation: float-y 13s ease-in-out -4s infinite;
+}
+.float-fast {
+  animation: float-y 6.5s ease-in-out -2s infinite;
+}
+
+/* Pulsing "open to work" dot */
+.pulse-dot {
+  position: relative;
+}
+.pulse-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  70%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+}
+
+/* Custom cursor active: hide the native pointer except in text fields */
+html.cursor-none body,
+html.cursor-none a,
+html.cursor-none button,
+html.cursor-none [role="button"],
+html.cursor-none summary,
+html.cursor-none label {
+  cursor: none;
+}
+html.cursor-none input,
+html.cursor-none textarea,
+html.cursor-none select {
+  cursor: auto;
+}
+
+/* Lenis drives scrolling when active — disable native smooth behavior */
+html.lenis {
+  height: auto;
+  scroll-behavior: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+/* Off-screen sections skip layout/paint/compositing entirely — so the many
+   frosted-glass cards below the fold stop re-blurring on every scroll frame.
+   `contain-intrinsic-size: auto …` caches each section's real height after its
+   first paint, so re-entering it never shifts the scroll position. */
+.cv-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 720px;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Per-device quality scaling (data-quality set by QualityProvider).
+   Weakest devices keep the exact same layout — only the most expensive
+   decoration is dialled back so they hold a steady frame rate.
+   ────────────────────────────────────────────────────────────── */
+[data-quality="low"] .spotlight {
+  display: none;
+}
+[data-quality="low"] .mesh-blob {
+  filter: blur(48px);
+}
+[data-quality="low"] .mesh-blob--c,
+[data-quality="low"] .mesh-blob--d {
+  animation: none;
+}
+[data-quality="low"] .glass,
+[data-quality="low"] .glass-strong {
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  backdrop-filter: blur(12px) saturate(150%);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Reduced motion — kill all decorative animation
+   ────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .mesh-blob,
+  .scroll-cue,
+  .text-shine,
+  .marquee__track,
+  .float-slow,
+  .float-slower,
+  .float-fast,
+  .pulse-dot::after {
+    animation: none !important;
+  }
+  .marquee {
+    flex-wrap: wrap;
+  }
+  .glass-sheen::after {
+    display: none;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
