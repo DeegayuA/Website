@@ -44,8 +44,12 @@ function isCompactTile(i: number) {
   return BENTO[i % BENTO.length].includes("col-span-1");
 }
 
+/** Cards shown on phones before the "Show all" expander. */
+const MOBILE_LIMIT = 6;
+
 export function Projects() {
   const [filter, setFilter] = useState<Filter>("all");
+  const [expanded, setExpanded] = useState(false);
 
   const filtered =
     filter === "all"
@@ -62,7 +66,7 @@ export function Projects() {
     <Section id="projects" eyebrow="Selected work" title="Projects" index="02 / Work">
       <Reveal>
         <div
-          className="glass glass-lens bevel mb-8 inline-flex max-w-full flex-wrap items-center gap-1 rounded-full p-1.5 sm:mb-12"
+          className="glass glass-lens bevel mb-8 inline-flex max-w-full flex-wrap items-center gap-1 rounded-[1.4rem] p-1.5 sm:mb-12 sm:rounded-full"
           role="group"
           aria-label="Filter projects by category"
         >
@@ -96,6 +100,7 @@ export function Projects() {
       {/* Keyed by filter: the grid re-enters with a staggered rise on change */}
       <p className="sr-only" aria-live="polite">Showing {visible.length} projects</p>
       <motion.ul
+        id="projects-grid"
         key={filter}
         variants={grid}
         initial="hidden"
@@ -108,12 +113,31 @@ export function Projects() {
           <motion.li
             key={project.title}
             variants={cell}
-            className={cn("min-w-0", tileClass(i))}
+            className={cn(
+              "min-w-0",
+              tileClass(i),
+              // Phones start collapsed; sm+ always shows everything
+              !expanded && i >= MOBILE_LIMIT && "hidden sm:block",
+            )}
           >
             <ProjectCard project={project} compact={isCompactTile(i)} />
           </motion.li>
         ))}
       </motion.ul>
+
+      {visible.length > MOBILE_LIMIT && (
+        <div className="mt-6 flex justify-center sm:hidden">
+          <button
+            type="button"
+            aria-expanded={expanded}
+            aria-controls="projects-grid"
+            onClick={() => setExpanded((v) => !v)}
+            className="glass glass-lens rounded-full px-5 py-2.5 text-sm font-semibold text-foreground transition-[color,transform] active:scale-95"
+          >
+            {expanded ? "Show less" : `Show all ${visible.length} projects`}
+          </button>
+        </div>
+      )}
     </Section>
   );
 }
