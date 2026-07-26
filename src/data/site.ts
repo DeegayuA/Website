@@ -1,3 +1,6 @@
+import { projects } from "./projects";
+import { certifications } from "./certifications";
+
 /**
  * ─────────────────────────────────────────────────────────────────
  *  SITE-WIDE CONTENT — edit this file to update your name, links,
@@ -10,17 +13,17 @@ export const site = {
   sinhalaName: "දීඝායු සුවහස් අධිකාරි",
   /** Shown under your name in the hero — rotates through these. */
   roles: [
-    "Full-Stack Developer",
-    "AI & ML Engineer",
-    "IoT Builder",
-    "Researcher",
+    "R&D Engineer @ Alta Vision",
+    "Visiting Lecturer @ GWUIM",
+    "AI & Data Science Specialist",
+    "IoT & Electronics Engineer",
   ],
   tagline:
-    "I design and build AI-powered web platforms, IoT systems and accessible digital experiences.",
-  bio: "Developer and researcher from Sri Lanka with a background spanning computer science, electronics and physics. Currently teaching electronics and reading for a Master's in IT at the University of Kelaniya — while shipping projects that mix the web, machine learning and hardware.",
+    "Research & Development Engineer at Alta Vision PLC and Visiting Lecturer. Building AI-powered SCADA systems, smart solar grids & next-gen web platforms.",
+  bio: "Research and Development Engineer at Alta Vision PLC, Visiting Lecturer at Gampaha Wickramarachchi University of Indigenous Medicine, and researcher from Sri Lanka. Currently reading for an MSc in Data Science & AI at the University of Moratuwa (CSE) and a Master of IT at the University of Kelaniya (FOS). Specializing in renewable energy SCADA platforms, AI forecasting, IoT, and high-performance web engineering.",
   location: "Kadawatha, Sri Lanka",
   locationUrl: "https://goo.gl/maps/gNUBb7oCYTCLjALT8",
-  email: "Deeghayuadhikari01@gmail.com",
+  email: "deeghayuadhikari01@gmail.com",
   phone: "+94 70 220 70 70",
   phoneHref: "tel:+94702207070",
   whatsapp: "https://wa.link/x3r32z",
@@ -50,11 +53,12 @@ export const socials = [
   },
 ] as const;
 
+/** Dynamic Stats calculated automatically from array lengths and current year */
 export const stats = [
-  { value: 14, suffix: "+", label: "Projects shipped" },
-  { value: 4, suffix: "+", label: "Certifications" },
-  { value: 5, suffix: "+", label: "Years building" },
-] as const;
+  { value: projects.length, suffix: "+", label: "Projects shipped" },
+  { value: certifications.length, suffix: "+", label: "Certifications" },
+  { value: new Date().getFullYear() - 2021, suffix: "+", label: "Years building" },
+];
 
 export const skills = [
   "React",
@@ -78,5 +82,6 @@ export const nav = [
   { label: "About", href: "#about" },
   { label: "Projects", href: "#projects" },
   { label: "Experience", href: "#experience" },
+  { label: "Certifications", href: "#certifications" },
   { label: "Contact", href: "#contact" },
 ] as const;

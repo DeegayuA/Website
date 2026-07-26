@@ -14,30 +14,54 @@ export interface TimelineEntry {
 
 export const work: TimelineEntry[] = [
   {
-    title: "Graduate Teaching Assistant — Electronics",
-    org: "Department of Physics and Electronics, University of Kelaniya",
-    period: "Jul 2024 — Present",
-    detail: "Teaching undergraduate electronics labs and supporting coursework.",
+    title: "Visiting Lecturer",
+    org: "Gampaha Wickramarachchi University of Indigenous Medicine",
+    period: "Sep 2025 — Present",
+    detail: "Lecturing Web Application Development (BHBM 21061 P), Mobile App Development (HICT 33013), and Artificial Intelligence (HICT 41052 & HICT 41061 P).",
   },
   {
-    title: "Volunteer Research Assistant",
-    org: "Electronics Design & Innovation Centre, FOS, University of Kelaniya",
-    period: "May 2024 — Present",
-    detail: "Prototyping and research support across IoT and embedded projects.",
+    title: "Research and Development Engineer",
+    org: "Alta Vision PLC",
+    period: "Apr 2025 — Present",
+    detail: "Engineered full SCADA system for 2.6 MW Ground-Mounted Solar Project using React + Next.js with AI-assisted configuration & mini-grid optimization.",
+  },
+  {
+    title: "Graduate Teaching Assistant",
+    org: "Department of Physics & Electronics, University of Kelaniya",
+    period: "Jul 2024 — Mar 2025",
+    detail: "Conducting electronics laboratory sessions, tutorials, PCB design, microprocessor programming, and undergraduate mentorship.",
+  },
+  {
+    title: "Voluntary Research Assistant",
+    org: "Electronics Design & Innovation Centre (EDIC), FOS, University of Kelaniya",
+    period: "May 2024 — Mar 2025",
+    detail: "Prototyping, AIoT research, embedded systems, and machine learning research support.",
+  },
+  {
+    title: "Electronics Lead",
+    org: "Project E-WASTE, University of Kelaniya",
+    period: "Dec 2023 — Nov 2024",
+    detail: "Leading e-waste recycling initiatives and hardware electronics design.",
   },
 ];
 
 export const education: TimelineEntry[] = [
   {
-    title: "Master of Information Technology",
-    org: "University of Kelaniya",
-    period: "Jul 2024 — Present",
-    detail: "Postgraduate studies focused on modern software systems and AI.",
+    title: "Master of Data Science & AI",
+    org: "Department of Computer Science & Engineering, University of Moratuwa (UOM)",
+    period: "Apr 2025 — Apr 2026",
+    detail: "Postgraduate specialization in machine learning, deep learning, artificial intelligence, and computer vision.",
+  },
+  {
+    title: "Master of Information Technology (MIT)",
+    org: "Faculty of Science, University of Kelaniya (UOK)",
+    period: "Aug 2024 — Nov 2025",
+    detail: "Postgraduate studies focused on modern software systems, web engineering, and IT architecture.",
   },
   {
     title: "BSc in Physical Science",
-    org: "University of Kelaniya",
+    org: "Faculty of Science, University of Kelaniya (UOK)",
     period: "Jul 2021 — Apr 2024",
-    detail: "Computer Science, Electronics and Physics.",
+    detail: "Computer Studies, Electronics, and Physics.",
   },
 ];

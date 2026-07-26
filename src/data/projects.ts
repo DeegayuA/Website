@@ -31,25 +31,73 @@ export const categories: { label: string; value: Category | "all" }[] = [
 
 export const projects: Project[] = [
   {
-    title: "SCADA for Renewable Power Plants",
-    tagline: "Drag-and-drop SCADA with a best-in-class UI/UX",
+    title: "Solar SCADA & Mini-Grid Management Platform (Alta Vision)",
+    tagline: "Commercial SCADA & multi-plant monitoring platform for solar power plants",
     description:
-      "A highly configurable SCADA interface for renewable energy systems featuring a React Flow based drag-and-drop editor for custom monitoring layouts. Talks to industrial devices over OPC UA and generates UI components dynamically, with an AI-enhanced user experience.",
-    image: "/images/scada.jpg",
+      "Engineered Alta Vision's commercial SCADA & mini-grid management platform, actively deployed across multiple utility-scale solar farms and mini-grid installations. Built with React + Next.js, featuring real-time GoodWe 120HT Series inverter telemetry, SEC3000 controllers, weather station IoT, AI-assisted configuration, and multi-source load optimization.",
+    image: "/images/web_scada.png",
     categories: ["web", "ai", "iot", "software"],
-    tech: ["Next.js", "React Flow", "TypeScript", "OPC UA", "Tailwind CSS", "shadcn/ui"],
-    links: [{ label: "GitHub", href: "https://github.com/DeegayuA/AV_SCADA_RPP" }],
+    tech: ["Next.js", "React", "TypeScript", "OPC UA", "GoodWe SEC3000", "AI Optimization"],
+    links: [
+      { label: "Live SCADA Demo", href: "https://av-scada-demo.netlify.app/" },
+      { label: "GitHub", href: "https://github.com/DeegayuA/AV_SCADA_RPP" },
+    ],
     featured: true,
+  },
+  {
+    title: "AmpereArc Production Floor Management System",
+    tagline: "Production floor & factory management software for BESS battery manufacturing",
+    description:
+      "Engineered AmpereArc's digital production floor management platform for battery energy storage systems (BESS) manufacturing, workflow automation, quality control tracking, and real-time factory analytics.",
+    image: "/images/web_amperearc.png",
+    categories: ["web", "software"],
+    tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "BESS Energy Systems"],
+    links: [{ label: "Live Site", href: "https://production.amperearc.com/" }],
+    featured: true,
+  },
+  {
+    title: "Alta Vision Solar Portals (LK & UK)",
+    tagline: "Official solar energy portals for Sri Lanka & United Kingdom",
+    description:
+      "Web applications driving commercial and residential solar adoption across Sri Lanka and the UK. Features custom solar ROI calculators, yield estimation, and clean energy solution showcases.",
+    image: "/images/web_solar.png",
+    categories: ["web"],
+    tech: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+    links: [
+      { label: "Solar Sri Lanka", href: "https://solar.altavision.lk" },
+      { label: "Alta Vision UK", href: "https://altavision.co.uk" },
+    ],
+    featured: true,
+  },
+  {
+    title: "Alta Vision Power Systems",
+    tagline: "Industrial power monitoring & grid telemetry portal",
+    description:
+      "Industrial power management portal providing utility operators and enterprise clients with real-time solar yield metrics, grid power telemetry, and load balance analytics.",
+    image: "/images/web_power.png",
+    categories: ["web", "iot"],
+    tech: ["React", "Next.js", "REST APIs", "IoT Data Viz"],
+    links: [{ label: "Power Portal", href: "https://power.altavision.lk" }],
+  },
+  {
+    title: "Alta Vision Workforce Attendance System",
+    tagline: "Internal employee attendance & workforce management portal",
+    description:
+      "Custom internal workforce management portal for Alta Vision PLC managing staff check-ins, duty logs, leave approvals, schedule tracking, and workforce analytics.",
+    image: "/images/web_attendance.png",
+    categories: ["web", "software"],
+    tech: ["Next.js", "React", "Database", "Authentication", "Analytics"],
+    links: [{ label: "Attendance Portal", href: "http://attendance.altavision.lk/" }],
   },
   {
     title: "LifeSight",
     tagline: "AI-powered vision assistance for visually impaired people",
     description:
       "Enhances accessibility for visually and hearing-impaired users with AI, OCR and voice recognition. WCAG 2.2 compliant with customizable interfaces and interactive tools.",
-    image: "/images/lifesight.jpg",
+    image: "/images/web_lifesight.png",
     categories: ["web", "ai"],
     tech: ["React", "Next.js", "Google Cloud Vision", "Web Speech API", "Vercel"],
-    links: [{ label: "Live site", href: "https://lifesight.vercel.app/" }],
+    links: [{ label: "Live site", href: "https://lifesight.vercel.app/web" }],
     featured: true,
   },
   {

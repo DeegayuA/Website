@@ -3,6 +3,7 @@ import { SkillsMarquee } from "@/components/SkillsMarquee";
 import { About } from "@/components/About";
 import { Projects } from "@/components/Projects";
 import { Experience } from "@/components/Experience";
+import { Certifications } from "@/components/Certifications";
 import { Contact } from "@/components/Contact";
 import { site, socials } from "@/data/site";
 import { work, education } from "@/data/experience";
@@ -58,6 +59,7 @@ export default function Home() {
       <About />
       <Projects />
       <Experience />
+      <Certifications />
       <Contact />
     </>
   );
