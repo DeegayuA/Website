@@ -5,14 +5,14 @@ import { motion, type Variants } from "motion/react";
 import { certifications } from "@/data/certifications";
 import { Section } from "./Section";
 import { Reveal } from "./Reveal";
-import { ChevronDown, ChevronUp, ShieldCheck } from "lucide-react";
+import { BrandIcon } from "./BrandIcon";
+import { ChevronDown, ChevronUp, BadgeCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const gridVariants: Variants = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.05 } },
 };
-
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 16 },
   visible: {
@@ -22,20 +22,28 @@ const itemVariants: Variants = {
   },
 };
 
-const brand: Record<string, { label: string; color: string }> = {
-  nvidia: { label: "NVIDIA", color: "#76B900" },
-  aws: { label: "AWS", color: "#FF9900" },
-  freecodecamp: { label: "freeCodeCamp", color: "#0A0A23" },
+/** Official issuer marks + brand accent (mark rendered white on a brand-tile). */
+const issuer: Record<string, { label: string; hex: string }> = {
+  nvidia: { label: "NVIDIA", hex: "#76B900" },
+  aws: { label: "AWS", hex: "#FF9900" },
+  freecodecamp: { label: "freeCodeCamp", hex: "#0A0A23" },
 };
 
 export function Certifications() {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <Section id="certifications" eyebrow="Credentials &amp; Badges" title="Licenses &amp; Certifications">
+    <Section
+      id="certifications"
+      eyebrow="Credentials"
+      title="Licenses & Certifications"
+      index="04 / Proof"
+    >
       <Reveal>
-        <p className="-mt-6 mb-10 max-w-2xl text-pretty text-base text-muted sm:text-lg">
-          Verified professional certifications in Artificial Intelligence, Deep Learning, AWS Cloud Engineering, and Full-Stack Software Engineering.
+        <p className="-mt-4 mb-10 max-w-2xl text-pretty text-base text-muted sm:text-lg">
+          Verified certifications across AI, deep learning, cloud data
+          engineering, and full-stack software — from NVIDIA, AWS, and
+          freeCodeCamp.
         </p>
       </Reveal>
 
@@ -47,62 +55,84 @@ export function Certifications() {
         className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
       >
         {certifications.map((cert, i) => {
-          const b = cert.issuerIcon ? brand[cert.issuerIcon] : undefined;
-
+          const meta = cert.issuerIcon ? issuer[cert.issuerIcon] : undefined;
           return (
             <motion.li
               key={cert.title}
               variants={itemVariants}
               className={cn("h-full", i >= 4 && !expanded && "hidden sm:block")}
             >
-              <article className="glass glass-lens glass-sheen group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-glass-border p-5 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-xl">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    {b && (
-                      <span
-                        className="flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold shadow-sm"
-                        style={{
-                          color: b.color,
-                          backgroundColor: `${b.color}1A`,
-                          border: `1px solid ${b.color}4D`,
-                        }}
-                      >
+              <article
+                className="glass glass-lens glass-sheen bevel glint-host group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl p-5"
+                style={
+                  meta
+                    ? ({
+                        ["--spot" as string]: meta.hex,
+                      } as React.CSSProperties)
+                    : undefined
+                }
+              >
+                <span aria-hidden="true" className="glint" />
+                {meta && (
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-x-0 top-0 h-0.5"
+                    style={{ backgroundColor: meta.hex }}
+                  />
+                )}
+
+                <div className="relative z-[4] space-y-4">
+                  <div className="flex items-center justify-between gap-2">
+                    {meta && cert.issuerIcon ? (
+                      <span className="flex items-center gap-2">
                         <span
-                          className="h-2 w-2 rounded-full"
-                          style={{ backgroundColor: b.color }}
-                        />
-                        {b.label}
+                          className="flex h-9 w-9 items-center justify-center rounded-xl text-white shadow-sm"
+                          style={{ backgroundColor: meta.hex }}
+                        >
+                          <BrandIcon
+                            name={cert.issuerIcon}
+                            size={18}
+                            title={`${meta.label} logo`}
+                          />
+                        </span>
+                        <span className="text-xs font-bold">{meta.label}</span>
                       </span>
+                    ) : (
+                      <span />
                     )}
-                    <span className="text-[10px] font-mono text-muted/70 glass px-2 py-0.5 rounded-full border border-glass-border">
-                      {cert.issued}
+                    <span className="glass rounded-full border border-(--glass-border) px-2 py-0.5 font-mono text-[10px] text-muted">
+                      {cert.issued.replace("Issued ", "")}
                     </span>
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-bold text-foreground group-hover:text-accent transition-colors leading-snug">
+                    <h3 className="text-sm font-bold leading-snug transition-colors group-hover:text-accent">
                       {cert.title}
                     </h3>
-                    <p className="mt-1 text-xs text-muted font-medium">
+                    <p className="mt-1 text-xs font-medium text-muted">
                       {cert.issuer}
                     </p>
                   </div>
                 </div>
 
-                <div className="mt-4 space-y-2 pt-3 border-t border-glass-border/40 text-[11px]">
+                <div className="relative z-[4] mt-4 space-y-2 border-t border-(--glass-border) pt-3 text-[11px]">
                   {cert.credentialId && (
-                    <div className="flex items-center justify-between text-muted/80 font-mono">
-                      <span className="truncate max-w-[170px]">ID: {cert.credentialId}</span>
-                      <ShieldCheck className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
+                    <div className="flex items-center justify-between gap-2 font-mono text-muted/80">
+                      <span className="max-w-[170px] truncate">
+                        ID: {cert.credentialId}
+                      </span>
+                      <BadgeCheck
+                        className="h-3.5 w-3.5 shrink-0 text-accent"
+                        aria-hidden="true"
+                      />
                     </div>
                   )}
-
                   {cert.skills && cert.skills.length > 0 && (
                     <div className="flex flex-wrap gap-1">
                       {cert.skills.map((sk) => (
                         <span
                           key={sk}
-                          className="rounded-md bg-surface-strong/40 px-2 py-0.5 text-[10px] font-medium text-muted border border-glass-border/30"
+                          className="rounded-md border border-(--glass-border) px-2 py-0.5 text-[10px] font-medium text-muted"
                         >
                           {sk}
                         </span>
@@ -120,9 +150,13 @@ export function Certifications() {
         <div className="mt-8 flex justify-center sm:hidden">
           <button
             onClick={() => setExpanded(!expanded)}
-            className="glass glass-lens glass-button inline-flex items-center gap-2 rounded-full px-6 py-3 text-xs font-bold text-accent border border-glass-border shadow-md"
+            className="glass glass-lens glass-button inline-flex items-center gap-2 rounded-full border border-(--glass-border) px-6 py-3 text-xs font-bold text-accent"
           >
-            <span>{expanded ? "Show Less" : `Show All ${certifications.length} Certifications`}</span>
+            <span>
+              {expanded
+                ? "Show less"
+                : `Show all ${certifications.length} certifications`}
+            </span>
             {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </button>
         </div>

@@ -23,7 +23,7 @@ export const work: TimelineEntry[] = [
     title: "Research and Development Engineer",
     org: "Alta Vision PLC",
     period: "Apr 2025 — Present",
-    detail: "Engineered full SCADA system for 2.6 MW Ground-Mounted Solar Project using React + Next.js with AI-assisted configuration & mini-grid optimization.",
+    detail: "Building full-stack platforms, AI-assisted tooling, and embedded/IoT integrations end to end — from data pipelines and device firmware to production web interfaces.",
   },
   {
     title: "Graduate Teaching Assistant",

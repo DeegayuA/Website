@@ -53,7 +53,7 @@ export function Preloader() {
     };
   }, []);
 
-  const chars = "Explore my portfolio".split("");
+  const chars = "Software + electronics".split("");
 
   return (
     <AnimatePresence>
@@ -76,15 +76,14 @@ export function Preloader() {
             initial={{ scale: 0.5, opacity: 0, rotate: -8 }}
             animate={{ scale: 1, opacity: 1, rotate: 0 }}
             transition={{ type: "spring", stiffness: 230, damping: 20 }}
-            className="glass flex h-18 w-18 items-center justify-center rounded-[1.5rem] text-4xl"
+            className="orb flex h-18 w-18 items-center justify-center rounded-[1.5rem] font-display text-2xl font-bold text-accent"
           >
-            <span>👦🏻</span>
+            DA
           </motion.div>
 
-          {/* Per-letter masked rise */}
           <p
             aria-hidden="true"
-            className="mt-7 flex max-w-[92vw] justify-center overflow-hidden text-balance px-4 text-2xl font-bold tracking-tight sm:text-4xl"
+            className="mt-7 flex max-w-[92vw] justify-center overflow-hidden text-balance px-4 font-display text-2xl font-bold tracking-tight sm:text-4xl"
           >
             {chars.map((ch, i) =>
               ch === " " ? (
@@ -105,7 +104,6 @@ export function Preloader() {
             )}
           </p>
 
-          {/* Hairline progress */}
           <motion.div
             aria-hidden="true"
             className="mt-8 h-0.5 w-44 overflow-hidden rounded-full bg-foreground/10"
@@ -118,16 +116,15 @@ export function Preloader() {
             />
           </motion.div>
 
-          {/* Oversized percentage, bottom-right */}
           <motion.span
             aria-hidden="true"
-            className="absolute bottom-6 right-8 text-7xl font-bold tabular-nums tracking-tighter text-foreground/15 sm:text-8xl"
+            className="absolute bottom-6 right-8 font-mono text-7xl font-bold tabular-nums tracking-tighter text-foreground/15 sm:text-8xl"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4, delay: 0.2 }}
           >
             {count}
-            <span className="text-3xl align-top sm:text-4xl">%</span>
+            <span className="align-top text-3xl sm:text-4xl">%</span>
           </motion.span>
 
           <span className="sr-only">Loading portfolio</span>

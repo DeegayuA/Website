@@ -13,14 +13,15 @@ export const site = {
   sinhalaName: "දීඝායු සුවහස් අධිකාරි",
   /** Shown under your name in the hero — rotates through these. */
   roles: [
-    "R&D Engineer @ Alta Vision",
-    "Visiting Lecturer @ GWUIM",
-    "AI & Data Science Specialist",
-    "IoT & Electronics Engineer",
+    "Software Engineer",
+    "Electronic Engineer",
+    "AI / ML Engineer",
+    "IoT & Embedded Systems",
+    "Visiting Lecturer",
   ],
   tagline:
-    "Research & Development Engineer at Alta Vision PLC and Visiting Lecturer. Building AI-powered SCADA systems, smart solar grids & next-gen web platforms.",
-  bio: "Research and Development Engineer at Alta Vision PLC, Visiting Lecturer at Gampaha Wickramarachchi University of Indigenous Medicine, and researcher from Sri Lanka. Currently reading for an MSc in Data Science & AI at the University of Moratuwa (CSE) and a Master of IT at the University of Kelaniya (FOS). Specializing in renewable energy SCADA platforms, AI forecasting, IoT, and high-performance web engineering.",
+    "Software + electronic engineer crafting AI-driven platforms, embedded IoT systems, and premium web products.",
+  bio: "Software and electronic engineer from Sri Lanka. I build production web platforms, AI/ML models, and embedded IoT systems end to end — from silicon to interface — as an R&D Engineer at Alta Vision PLC. Alongside the work I lecture in web, mobile, and AI, while reading for a Master of Data Science & AI at the University of Moratuwa and a Master of IT at the University of Kelaniya.",
   location: "Kadawatha, Sri Lanka",
   locationUrl: "https://goo.gl/maps/gNUBb7oCYTCLjALT8",
   email: "deeghayuadhikari01@gmail.com",

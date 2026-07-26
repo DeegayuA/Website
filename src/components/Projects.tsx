@@ -50,10 +50,10 @@ export function Projects() {
       : projects.filter((p) => p.categories.includes(filter));
 
   return (
-    <Section id="projects" eyebrow="Selected work" title="Projects">
+    <Section id="projects" eyebrow="Selected work" title="Projects" index="02 / Work">
       <Reveal>
         <div
-          className="glass glass-lens mb-8 inline-flex max-w-full flex-wrap items-center gap-1 rounded-full p-1.5 sm:mb-12"
+          className="glass glass-lens bevel mb-8 inline-flex max-w-full flex-wrap items-center gap-1 rounded-full p-1.5 sm:mb-12"
           role="group"
           aria-label="Filter projects by category"
         >
@@ -66,8 +66,8 @@ export function Projects() {
                 aria-pressed={isActive}
                 onClick={() => setFilter(category.value)}
                 className={cn(
-                  "relative rounded-full px-4 py-2 text-sm font-medium transition active:scale-95",
-                  isActive ? "text-white" : "text-muted hover:text-foreground",
+                  "relative rounded-full px-4 py-2 text-sm font-semibold transition active:scale-95",
+                  isActive ? "text-background" : "text-muted hover:text-foreground",
                 )}
               >
                 {isActive && (
