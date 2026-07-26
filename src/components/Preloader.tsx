@@ -1,7 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { animate, motion, AnimatePresence, type Variants } from "motion/react";
+
+const KEY = "dw-preloaded";
+
+// Client-only gate: skip on revisits and under reduced motion. Server
+// snapshot is `false`, so SSR renders nothing and hydration matches.
+const emptySubscribe = () => () => {};
+const getCanPlay = () =>
+  !(
+    sessionStorage.getItem(KEY) ||
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+const getServerCanPlay = () => false;
 
 const letter: Variants = {
   hidden: { y: "115%", rotate: 4 },
@@ -18,56 +30,83 @@ const letter: Variants = {
 
 /**
  * Entry sequence: monogram pop, per-letter name rise, percentage
- * count-up, then the sheet sweeps away with a curved hem.
- * Collapses instantly under reduced motion.
+ * count-up, then the sheet sweeps away with a static rounded bottom.
+ * Skips on revisits or under reduced motion.
  */
 export function Preloader() {
-  const [done, setDone] = useState(false);
-  const [count, setCount] = useState(0);
+  const countRef = useRef<HTMLSpanElement>(null);
+  const canPlay = useSyncExternalStore(emptySubscribe, getCanPlay, getServerCanPlay);
+  const [shouldShow, setShouldShow] = useState(true);
+  const show = canPlay && shouldShow;
 
+  // Mark as preloaded when skipped
   useEffect(() => {
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    if (!reduced) {
-      document.documentElement.style.overflow = "hidden";
+    if (!canPlay) {
+      document.documentElement.dataset.preloaded = "true";
     }
-    const counter = reduced
-      ? null
-      : animate(0, 100, {
-          duration: 1.5,
-          ease: [0.6, 0.05, 0.3, 1],
-          onUpdate: (v) => setCount(Math.round(v)),
-        });
-    const t = setTimeout(
-      () => {
-        setDone(true);
-        document.documentElement.style.overflow = "";
-      },
-      reduced ? 0 : 1700,
-    );
-    return () => {
-      counter?.stop();
-      clearTimeout(t);
-      document.documentElement.style.overflow = "";
-    };
-  }, []);
+  }, [canPlay]);
 
-  const chars = "Explore my portfolio".split("");
+  // Handle animation and lifecycle when showing
+  useEffect(() => {
+    if (!show) return;
+
+    document.documentElement.style.overflow = "hidden";
+    const mainElement = document.getElementById("main");
+    if (mainElement) {
+      mainElement.setAttribute("inert", "");
+    }
+
+    // Animate counter via motion value: zero React re-renders
+    let animationControl: ReturnType<typeof animate> | null = null;
+    if (countRef.current) {
+      animationControl = animate(0, 100, {
+        duration: 1.05,
+        ease: [0.6, 0.05, 0.3, 1],
+        onUpdate: (v) => {
+          if (countRef.current) {
+            countRef.current.textContent = String(Math.round(v));
+          }
+        },
+      });
+    }
+
+    // Exit timing: counter ends at 1050ms, then exit animation plays
+    const exitTimer = setTimeout(() => {
+      sessionStorage.setItem(KEY, "1");
+      setShouldShow(false);
+    }, 1050);
+
+    return () => {
+      animationControl?.stop();
+      clearTimeout(exitTimer);
+      document.documentElement.style.overflow = "";
+      if (mainElement) {
+        mainElement.removeAttribute("inert");
+      }
+    };
+  }, [show]);
+
+  const chars = "Deeghayu Adhikari".split("");
 
   return (
     <AnimatePresence>
-      {!done && (
+      {show && (
         <motion.div
           role="status"
           aria-label="Loading"
-          className="fixed inset-0 z-[999] flex flex-col items-center justify-center overflow-hidden bg-background"
+          className="fixed inset-0 z-[999] flex flex-col items-center justify-center overflow-hidden bg-background rounded-b-[3rem]"
           exit={{
             y: "-100%",
-            borderBottomLeftRadius: ["0%", "45%", "8%"],
-            borderBottomRightRadius: ["0%", "45%", "8%"],
+            opacity: 0,
           }}
-          transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}
+          transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
+          onAnimationComplete={() => {
+            document.documentElement.dataset.preloaded = "true";
+            const mainElement = document.getElementById("main");
+            if (mainElement) {
+              mainElement.removeAttribute("inert");
+            }
+          }}
         >
           <div aria-hidden="true" className="noise" />
 
@@ -76,15 +115,14 @@ export function Preloader() {
             initial={{ scale: 0.5, opacity: 0, rotate: -8 }}
             animate={{ scale: 1, opacity: 1, rotate: 0 }}
             transition={{ type: "spring", stiffness: 230, damping: 20 }}
-            className="glass flex h-18 w-18 items-center justify-center rounded-[1.5rem] text-4xl"
+            className="orb flex h-18 w-18 items-center justify-center rounded-[1.5rem] font-display text-2xl font-bold text-accent"
           >
-            <span>👦🏻</span>
+            DA
           </motion.div>
 
-          {/* Per-letter masked rise */}
           <p
             aria-hidden="true"
-            className="mt-7 flex max-w-[92vw] justify-center overflow-hidden text-balance px-4 text-2xl font-bold tracking-tight sm:text-4xl"
+            className="mt-7 flex max-w-[92vw] justify-center overflow-hidden text-balance px-4 font-display text-2xl font-bold tracking-tight sm:text-4xl"
           >
             {chars.map((ch, i) =>
               ch === " " ? (
@@ -105,7 +143,6 @@ export function Preloader() {
             )}
           </p>
 
-          {/* Hairline progress */}
           <motion.div
             aria-hidden="true"
             className="mt-8 h-0.5 w-44 overflow-hidden rounded-full bg-foreground/10"
@@ -114,20 +151,19 @@ export function Preloader() {
               className="h-full rounded-full bg-gradient-to-r from-accent via-accent-2 to-accent-3"
               initial={{ x: "-100%" }}
               animate={{ x: "0%" }}
-              transition={{ duration: 1.5, ease: [0.6, 0.05, 0.3, 1] }}
+              transition={{ duration: 1.05, ease: [0.6, 0.05, 0.3, 1] }}
             />
           </motion.div>
 
-          {/* Oversized percentage, bottom-right */}
           <motion.span
             aria-hidden="true"
-            className="absolute bottom-6 right-8 text-7xl font-bold tabular-nums tracking-tighter text-foreground/15 sm:text-8xl"
+            className="absolute bottom-6 right-8 font-mono text-7xl font-bold tabular-nums tracking-tighter text-foreground/15 sm:text-8xl"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4, delay: 0.2 }}
           >
-            {count}
-            <span className="text-3xl align-top sm:text-4xl">%</span>
+            <span ref={countRef}>0</span>
+            <span className="align-top text-3xl sm:text-4xl">%</span>
           </motion.span>
 
           <span className="sr-only">Loading portfolio</span>

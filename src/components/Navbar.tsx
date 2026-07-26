@@ -19,7 +19,6 @@ function useActiveSection() {
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
         if (visible[0]) setActive(visible[0].target.id);
       },
-      // narrow band around the upper-middle of the viewport
       { rootMargin: "-30% 0px -60% 0px" },
     );
     sectionIds.forEach((id) => {
@@ -54,14 +53,11 @@ export function Navbar() {
 
   return (
     <header ref={headerRef} className="fixed inset-x-0 top-0 z-50">
-      {/* Reading progress */}
       <motion.div
         aria-hidden="true"
         className="h-0.5 origin-left bg-gradient-to-r from-accent via-accent-2 to-accent-3"
         style={{ scaleX: progress }}
       />
-      {/* One-time slide-in on load; the bar then stays pinned and never
-          hides on scroll. */}
       <motion.div
         initial={{ y: -18, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -69,19 +65,23 @@ export function Navbar() {
       >
         <nav
           aria-label="Main navigation"
-          className="mx-auto mt-3 flex w-[min(64rem,calc(100%-2rem))] items-center justify-between gap-2 rounded-full px-3 py-2 glass-strong glass-lens"
+          className="mx-auto mt-3 flex w-[min(64rem,calc(100%-2rem))] items-center justify-between gap-2 rounded-full glass-strong glass-lens bevel px-3 py-2"
         >
           <a
             href="#home"
-            className="flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-bold tracking-tight"
+            className="flex items-center gap-2.5 rounded-full py-1 pl-1 pr-3 text-sm font-bold"
             onClick={() => setOpen(false)}
           >
-            <span aria-hidden="true" className="text-base">👦🏻</span>
-            <span>Deeghayu</span>
+            <span
+              aria-hidden="true"
+              className="orb flex h-8 w-8 items-center justify-center rounded-xl font-display text-xs font-bold text-accent"
+            >
+              DA
+            </span>
+            <span className="font-display tracking-tight">Deeghayu</span>
             <span className="sr-only">— back to top</span>
           </a>
 
-          {/* Desktop links */}
           <ul className="hidden items-center gap-1 md:flex">
             {nav.map((item) => {
               const isActive = active === item.href.slice(1);
@@ -89,7 +89,7 @@ export function Navbar() {
                 <li key={item.href} className="relative">
                   <a
                     href={item.href}
-                    aria-current={isActive ? "true" : undefined}
+                    aria-current={isActive ? "location" : undefined}
                     className={cn(
                       "relative z-10 block rounded-full px-4 py-2 text-sm font-medium transition-colors",
                       isActive ? "text-accent" : "text-muted hover:text-foreground",
@@ -124,11 +124,10 @@ export function Navbar() {
           </div>
         </nav>
 
-        {/* Mobile sheet — `invisible` removes it from tab order when closed */}
         <div
           id="mobile-menu"
           className={cn(
-            "mx-auto mt-2 w-[min(64rem,calc(100%-2rem))] origin-top rounded-3xl p-2 glass-strong glass-lens transition-all duration-300 md:hidden",
+            "mx-auto mt-2 w-[min(64rem,calc(100%-2rem))] origin-top rounded-3xl glass-strong glass-lens p-2 transition-[opacity,transform] duration-300 md:hidden",
             open
               ? "visible scale-100 opacity-100"
               : "invisible pointer-events-none scale-95 opacity-0",
@@ -140,7 +139,7 @@ export function Navbar() {
                 <a
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  aria-current={active === item.href.slice(1) ? "true" : undefined}
+                  aria-current={active === item.href.slice(1) ? "location" : undefined}
                   className={cn(
                     "block rounded-2xl px-5 py-3 text-base font-medium transition-colors",
                     active === item.href.slice(1)

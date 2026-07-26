@@ -6,11 +6,14 @@ export function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer className="mx-auto w-full max-w-6xl px-5 pb-8 sm:px-8">
-      <div className="glass flex flex-col items-center gap-5 rounded-3xl px-8 py-8 text-center sm:flex-row sm:justify-between sm:text-left">
+      <div className="glass glass-lens bevel flex flex-col items-center gap-5 rounded-[1.6rem] px-8 py-8 text-center sm:flex-row sm:justify-between sm:text-left">
         <div>
-          <p className="font-bold tracking-tight">© {site.name}</p>
-          <p className="mt-1 text-sm text-muted">
-            2021–{year} · Built with Next.js, hosted on Netlify
+          <p className="font-display font-bold tracking-tight">
+            © {site.name}
+          </p>
+          <p className="mt-1 font-mono text-xs text-muted">
+            2021–{year} · Software + electronic engineer · Built with Next.js,
+            hosted on Netlify
           </p>
         </div>
         <ul className="flex items-center gap-2" aria-label="Social profiles">

@@ -13,7 +13,7 @@ const FORM_ENDPOINT = "https://formspree.io/f/xnqljrpj";
 type Status = "idle" | "sending" | "success" | "error";
 
 const inputClasses =
-  "w-full rounded-2xl border border-(--glass-border) bg-(--surface) px-5 py-3.5 text-base placeholder:text-muted/70 backdrop-blur-xl transition-shadow focus:shadow-[0_0_0_3px_var(--accent-soft)]";
+  "w-full rounded-2xl border border-(--glass-border) bg-(--surface) px-5 py-3.5 text-base placeholder:text-muted/70 transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)";
 
 function InfoCard({
   icon,
@@ -25,15 +25,13 @@ function InfoCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="glass glass-lens glass-sheen flex items-start gap-4 rounded-3xl p-5 transition-transform duration-300 hover:-translate-y-1">
+    <div className="glass glass-lens glass-sheen bevel flex items-start gap-4 rounded-2xl p-5 transition-transform duration-300 hover:-translate-y-1">
       <span className="glass flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-accent">
         {icon}
       </span>
       <div className="min-w-0">
-        <h3 className="text-sm font-semibold uppercase tracking-wider text-muted">
-          {title}
-        </h3>
-        <div className="mt-1 text-base font-medium break-words">{children}</div>
+        <h3 className="label text-muted">{title}</h3>
+        <div className="mt-1.5 text-base font-medium break-words">{children}</div>
       </div>
     </div>
   );
@@ -61,9 +59,9 @@ export function Contact() {
   }
 
   return (
-    <Section id="contact" eyebrow="Feel free to" title="Get in touch">
-      <div className="grid gap-5 lg:grid-cols-5">
-        <div className="grid content-start gap-5 lg:col-span-2">
+    <Section id="contact" eyebrow="Say hello" title="Get in touch" index="05 / Contact">
+      <div className="grid gap-4 lg:grid-cols-5">
+        <div className="grid content-start gap-4 lg:col-span-2">
           <Reveal>
             <InfoCard icon={<MapPin size={19} aria-hidden="true" />} title="Location">
               <a href={site.locationUrl} target="_blank" rel="noopener noreferrer" className="hover:text-accent">
@@ -115,7 +113,7 @@ export function Contact() {
         <Reveal className="lg:col-span-3" delay={0.1}>
           <form
             onSubmit={onSubmit}
-            className="glass glass-lens rounded-3xl p-6 sm:p-8"
+            className="glass glass-lens bevel rounded-[1.6rem] p-6 sm:p-8"
             aria-label="Contact form"
           >
             <div className="grid gap-4 sm:grid-cols-2">
@@ -187,8 +185,8 @@ export function Contact() {
                 type="submit"
                 disabled={status === "sending"}
                 className={cn(
-                  "glass-button glass-sheen relative inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-accent/30 disabled:cursor-wait disabled:opacity-70",
-                  status === "success" ? "bg-emerald-500" : "bg-accent",
+                  "glass-button glass-sheen relative inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold shadow-lg shadow-accent/30 disabled:cursor-wait disabled:opacity-70",
+                  status === "success" ? "bg-(--success) text-(--on-success)" : "bg-accent text-background",
                 )}
               >
                 {status === "sending" ? (
@@ -205,8 +203,18 @@ export function Contact() {
               <p role="status" aria-live="polite" className="text-sm text-muted">
                 {status === "success" &&
                   "Thanks! I'll get back to you soon."}
-                {status === "error" &&
-                  "Something went wrong — please email me directly instead."}
+                {status === "error" && (
+                  <>
+                    Something went wrong — please{" "}
+                    <a
+                      href={`mailto:${site.email}`}
+                      className="underline hover:text-accent"
+                    >
+                      email me directly
+                    </a>{" "}
+                    instead.
+                  </>
+                )}
               </p>
             </div>
           </form>
