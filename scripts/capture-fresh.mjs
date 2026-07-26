@@ -14,7 +14,8 @@ async function run() {
   const browser = await chromium.launch();
   const context = await browser.newContext({
     viewport: { width: 1280, height: 800 },
-    deviceScaleFactor: 2,
+    // 1x keeps files ~4x smaller; next/image serves responsive sizes anyway
+    deviceScaleFactor: 1,
   });
 
   for (const target of targets) {

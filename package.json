@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "update-screenshots": "node scripts/capture-screenshots.mjs"
+    "typecheck": "tsc --noEmit",
+    "update-screenshots": "node scripts/capture-fresh.mjs"
   },
   "engines": {
     "node": ">=20.9.0"

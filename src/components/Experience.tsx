@@ -29,7 +29,7 @@ function Timeline({
                 aria-hidden="true"
                 className={
                   live
-                    ? "pulse-dot absolute -left-[35px] top-7 h-3 w-3 rounded-full bg-spark"
+                    ? "pulse-dot absolute -left-[34px] top-7 h-3 w-3 rounded-full bg-spark"
                     : "absolute -left-[34px] top-7 h-3 w-3 rounded-full border-2 border-accent bg-background"
                 }
               />

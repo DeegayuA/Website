@@ -78,6 +78,7 @@ export const projects: Project[] = [
     categories: ["web", "iot"],
     tech: ["React", "Next.js", "REST APIs", "IoT Data Viz"],
     links: [{ label: "Power Portal", href: "https://power.altavision.lk" }],
+    featured: true,
   },
   {
     title: "Alta Vision Workforce Attendance System",
@@ -88,6 +89,7 @@ export const projects: Project[] = [
     categories: ["web", "software"],
     tech: ["Next.js", "React", "Database", "Authentication", "Analytics"],
     links: [{ label: "Attendance Portal", href: "http://attendance.altavision.lk/" }],
+    featured: true,
   },
   {
     title: "LifeSight",

@@ -13,7 +13,7 @@ const FORM_ENDPOINT = "https://formspree.io/f/xnqljrpj";
 type Status = "idle" | "sending" | "success" | "error";
 
 const inputClasses =
-  "w-full rounded-2xl border border-(--glass-border) bg-(--surface) px-5 py-3.5 text-base placeholder:text-muted/70 backdrop-blur-xl transition-shadow focus:shadow-[0_0_0_3px_var(--accent-soft)]";
+  "w-full rounded-2xl border border-(--glass-border) bg-(--surface) px-5 py-3.5 text-base placeholder:text-muted/70 transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent)";
 
 function InfoCard({
   icon,
@@ -185,8 +185,8 @@ export function Contact() {
                 type="submit"
                 disabled={status === "sending"}
                 className={cn(
-                  "glass-button glass-sheen relative inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold text-background shadow-lg shadow-accent/30 disabled:cursor-wait disabled:opacity-70",
-                  status === "success" ? "bg-emerald-500" : "bg-accent",
+                  "glass-button glass-sheen relative inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold shadow-lg shadow-accent/30 disabled:cursor-wait disabled:opacity-70",
+                  status === "success" ? "bg-(--success) text-(--on-success)" : "bg-accent text-background",
                 )}
               >
                 {status === "sending" ? (
@@ -203,8 +203,18 @@ export function Contact() {
               <p role="status" aria-live="polite" className="text-sm text-muted">
                 {status === "success" &&
                   "Thanks! I'll get back to you soon."}
-                {status === "error" &&
-                  "Something went wrong — please email me directly instead."}
+                {status === "error" && (
+                  <>
+                    Something went wrong — please{" "}
+                    <a
+                      href={`mailto:${site.email}`}
+                      className="underline hover:text-accent"
+                    >
+                      email me directly
+                    </a>{" "}
+                    instead.
+                  </>
+                )}
               </p>
             </div>
           </form>

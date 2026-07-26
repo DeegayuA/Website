@@ -14,16 +14,8 @@
   inherits: true;
   initial-value: 205;
 }
-@keyframes hue-breathe {
-  from {
-    --hue: 196;
-  }
-  to {
-    --hue: 252;
-  }
-}
 :root {
-  animation: hue-breathe 40s ease-in-out infinite alternate;
+  --hue: 196;
 }
 :root[data-quality="low"] {
   animation: none;
@@ -40,13 +32,13 @@
 
   /* Living signal accent — same hue, fanned out for rich gradients.
      Darkened L in light mode so accent-on-glass text still clears AA. */
-  --accent: oklch(0.55 0.13 var(--hue));
+  --accent: oklch(0.47 0.13 var(--hue));
   --accent-2: oklch(0.53 0.14 calc(var(--hue) + 30));
   --accent-3: oklch(0.5 0.15 calc(var(--hue) + 56));
   --accent-soft: oklch(0.55 0.13 var(--hue) / 0.12);
 
   /* Fixed warm indicator spark — an instrument LED; never drifts. */
-  --spark: oklch(0.62 0.15 66);
+  --spark: oklch(0.48 0.15 66);
   --spark-soft: oklch(0.62 0.15 66 / 0.14);
 
   --surface: rgba(255, 255, 255, 0.46);
@@ -64,6 +56,9 @@
   --aurora-c: rgba(70, 196, 210, 0.2);
   --aurora-d: rgba(120, 120, 246, 0.16);
   --spotlight: rgba(20, 150, 170, 0.09);
+
+  --success: oklch(0.46 0.12 155);
+  --on-success: oklch(0.99 0 0);
 }
 
 .dark {
@@ -96,6 +91,9 @@
   --aurora-c: rgba(60, 172, 220, 0.18);
   --aurora-d: rgba(128, 104, 250, 0.16);
   --spotlight: rgba(110, 210, 220, 0.08);
+
+  --success: oklch(0.68 0.13 155);
+  --on-success: oklch(0.15 0.02 155);
 }
 
 @theme inline {
@@ -117,8 +115,13 @@
    Base
    ────────────────────────────────────────────────────────────── */
 html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 6rem;
+  scroll-padding-top: 5.5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
@@ -138,7 +141,6 @@ body {
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
-  border-radius: 6px;
 }
 
 /* Display / mono helpers */
@@ -176,6 +178,7 @@ body {
 @layer components {
   .glass {
     position: relative;
+    isolation: isolate;
     background:
       linear-gradient(
         125deg,
@@ -197,6 +200,7 @@ body {
 
   .glass-strong {
     position: relative;
+    isolation: isolate;
     background:
       linear-gradient(
         125deg,
@@ -324,21 +328,12 @@ body {
   .text-shine {
     background: linear-gradient(
       92deg,
-      var(--foreground) 0%,
-      var(--accent) 34%,
-      var(--accent-2) 58%,
-      var(--accent-3) 84%
+      var(--foreground),
+      var(--accent)
     );
-    background-size: 220% 100%;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    animation: shine 9s ease-in-out infinite alternate;
-  }
-  @keyframes shine {
-    to {
-      background-position: 100% 0;
-    }
   }
 
   .noise {
@@ -370,7 +365,6 @@ body {
     border-radius: 9999px;
     filter: blur(120px);
     opacity: 0.5;
-    will-change: transform;
   }
   .mesh-blob--a {
     width: 85vmax;
@@ -393,16 +387,16 @@ body {
     height: 80vmax;
     left: -2vmax;
     bottom: -32vmax;
-    background: radial-gradient(circle, var(--aurora-d), transparent 62%);
-    animation: mesh-c 36s ease-in-out infinite alternate;
+    filter: blur(40px);
+    background: radial-gradient(circle, var(--aurora-d), transparent 60%);
   }
   .mesh-blob--d {
     width: 58vmax;
     height: 58vmax;
     right: 6vmax;
     bottom: -18vmax;
-    background: radial-gradient(circle, var(--aurora-b), transparent 62%);
-    animation: mesh-d 30s ease-in-out infinite alternate;
+    filter: blur(40px);
+    background: radial-gradient(circle, var(--aurora-b), transparent 60%);
   }
   @keyframes mesh-a {
     to {
@@ -412,16 +406,6 @@ body {
   @keyframes mesh-b {
     to {
       transform: translate3d(-6vw, 7vh, 0) scale(1.08);
-    }
-  }
-  @keyframes mesh-c {
-    to {
-      transform: translate3d(6vw, -5vh, 0) scale(1.12);
-    }
-  }
-  @keyframes mesh-d {
-    to {
-      transform: translate3d(-5vw, -6vh, 0) scale(1.06);
     }
   }
 
@@ -446,20 +430,6 @@ body {
     animation: wave 2.4s ease-in-out infinite;
   }
 
-  @keyframes cue {
-    0%,
-    100% {
-      transform: translateY(0);
-      opacity: 0.7;
-    }
-    50% {
-      transform: translateY(8px);
-      opacity: 1;
-    }
-  }
-  .scroll-cue {
-    animation: cue 2.2s ease-in-out infinite;
-  }
 
   /* Edge-faded marquee; pauses on hover */
   .marquee {
@@ -474,8 +444,7 @@ body {
     );
   }
   .marquee__track {
-    animation: marquee 38s linear infinite;
-    will-change: transform;
+    animation: marquee calc(var(--marquee-items, 24) * 1.55s) linear infinite;
   }
   .marquee:hover .marquee__track {
     animation-play-state: paused;
@@ -529,24 +498,6 @@ body {
     will-change: transform, opacity;
   }
 
-  @keyframes float-y {
-    0%,
-    100% {
-      transform: translateY(-10px);
-    }
-    50% {
-      transform: translateY(12px);
-    }
-  }
-  .float-slow {
-    animation: float-y 9s ease-in-out infinite;
-  }
-  .float-slower {
-    animation: float-y 13s ease-in-out -4s infinite;
-  }
-  .float-fast {
-    animation: float-y 6.5s ease-in-out -2s infinite;
-  }
 
   /* Live status dot — pulsing ring */
   .pulse-dot {
@@ -683,8 +634,12 @@ html.lenis {
   .pulse-dot::after {
     animation: none !important;
   }
-  .marquee {
+  .marquee__track {
+    animation: none;
     flex-wrap: wrap;
+  }
+  .marquee__copy--dup {
+    display: none;
   }
   .glass-sheen::after {
     display: none;

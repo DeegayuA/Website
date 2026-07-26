@@ -89,7 +89,7 @@ export function Navbar() {
                 <li key={item.href} className="relative">
                   <a
                     href={item.href}
-                    aria-current={isActive ? "true" : undefined}
+                    aria-current={isActive ? "location" : undefined}
                     className={cn(
                       "relative z-10 block rounded-full px-4 py-2 text-sm font-medium transition-colors",
                       isActive ? "text-accent" : "text-muted hover:text-foreground",
@@ -127,7 +127,7 @@ export function Navbar() {
         <div
           id="mobile-menu"
           className={cn(
-            "mx-auto mt-2 w-[min(64rem,calc(100%-2rem))] origin-top rounded-3xl glass-strong glass-lens p-2 transition-all duration-300 md:hidden",
+            "mx-auto mt-2 w-[min(64rem,calc(100%-2rem))] origin-top rounded-3xl glass-strong glass-lens p-2 transition-[opacity,transform] duration-300 md:hidden",
             open
               ? "visible scale-100 opacity-100"
               : "invisible pointer-events-none scale-95 opacity-0",
@@ -139,7 +139,7 @@ export function Navbar() {
                 <a
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  aria-current={active === item.href.slice(1) ? "true" : undefined}
+                  aria-current={active === item.href.slice(1) ? "location" : undefined}
                   className={cn(
                     "block rounded-2xl px-5 py-3 text-base font-medium transition-colors",
                     active === item.href.slice(1)

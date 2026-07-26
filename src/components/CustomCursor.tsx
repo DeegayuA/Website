@@ -51,7 +51,15 @@ export function CustomCursor() {
       const t = e.target as HTMLElement;
       // native caret beats custom dot inside form fields
       setVisible(!t.closest?.("input, textarea, select"));
+    };
+    const onOver = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      const t = e.target as HTMLElement;
       setHovering(!!t.closest?.("a, button, [role='button'], summary, label"));
+    };
+    const onOut = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      setHovering(false);
     };
     const onDown = () => setPressed(true);
     const onUp = () => setPressed(false);
@@ -59,6 +67,8 @@ export function CustomCursor() {
     const onEnter = () => setVisible(true);
 
     window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerover", onOver);
+    window.addEventListener("pointerout", onOut);
     window.addEventListener("pointerdown", onDown);
     window.addEventListener("pointerup", onUp);
     document.documentElement.addEventListener("pointerleave", onLeave);
@@ -66,6 +76,8 @@ export function CustomCursor() {
     return () => {
       document.documentElement.classList.remove("cursor-none");
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerover", onOver);
+      window.removeEventListener("pointerout", onOut);
       window.removeEventListener("pointerdown", onDown);
       window.removeEventListener("pointerup", onUp);
       document.documentElement.removeEventListener("pointerleave", onLeave);

@@ -21,7 +21,7 @@ export const site = {
   ],
   tagline:
     "Software + electronic engineer crafting AI-driven platforms, embedded IoT systems, and premium web products.",
-  bio: "Software and electronic engineer from Sri Lanka. I build production web platforms, AI/ML models, and embedded IoT systems end to end — from silicon to interface — as an R&D Engineer at Alta Vision PLC. Alongside the work I lecture in web, mobile, and AI, while reading for a Master of Data Science & AI at the University of Moratuwa and a Master of IT at the University of Kelaniya.",
+  bio: "Software and electronic engineer from Sri Lanka. I build production web platforms, AI/ML models, and embedded IoT systems end to end — from silicon to interface — as an R&D Engineer at Alta Vision PLC. Alongside the work I lecture in web, mobile, and AI, while completing a Master of Data Science & AI at the University of Moratuwa (CSE) and a Master of IT at the University of Kelaniya (FOS), both pending graduation.",
   location: "Kadawatha, Sri Lanka",
   locationUrl: "https://goo.gl/maps/gNUBb7oCYTCLjALT8",
   email: "deeghayuadhikari01@gmail.com",

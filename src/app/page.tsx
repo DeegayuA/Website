@@ -17,7 +17,7 @@ function JsonLd() {
     url: site.url,
     email: `mailto:${site.email}`,
     telephone: site.phone,
-    jobTitle: site.roles[0],
+    jobTitle: site.roles,
     description: site.tagline,
     address: {
       "@type": "PostalAddress",
@@ -45,7 +45,9 @@ function JsonLd() {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify([person, website]) }}
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify([person, website]).replace(/</g, "\\u003c"),
+      }}
     />
   );
 }

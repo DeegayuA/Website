@@ -48,6 +48,7 @@ export function Certifications() {
       </Reveal>
 
       <motion.ul
+        id="certifications-list"
         variants={gridVariants}
         initial="hidden"
         whileInView="visible"
@@ -76,7 +77,7 @@ export function Certifications() {
                 {meta && (
                   <span
                     aria-hidden="true"
-                    className="absolute inset-x-0 top-0 h-0.5"
+                    className="absolute inset-x-0 top-0 h-0.5 ring-1 ring-(--glass-border)"
                     style={{ backgroundColor: meta.hex }}
                   />
                 )}
@@ -100,13 +101,13 @@ export function Certifications() {
                     ) : (
                       <span />
                     )}
-                    <span className="glass rounded-full border border-(--glass-border) px-2 py-0.5 font-mono text-[10px] text-muted">
+                    <span className="glass rounded-full px-2 py-0.5 font-mono text-[10px] text-muted">
                       {cert.issued.replace("Issued ", "")}
                     </span>
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-bold leading-snug transition-colors group-hover:text-accent">
+                    <h3 className="text-base font-bold leading-snug">
                       {cert.title}
                     </h3>
                     <p className="mt-1 text-xs font-medium text-muted">
@@ -132,7 +133,7 @@ export function Certifications() {
                       {cert.skills.map((sk) => (
                         <span
                           key={sk}
-                          className="rounded-md border border-(--glass-border) px-2 py-0.5 text-[10px] font-medium text-muted"
+                          className="rounded-full border border-(--glass-border) px-2 py-0.5 text-[10px] font-medium text-muted"
                         >
                           {sk}
                         </span>
@@ -150,14 +151,16 @@ export function Certifications() {
         <div className="mt-8 flex justify-center sm:hidden">
           <button
             onClick={() => setExpanded(!expanded)}
-            className="glass glass-lens glass-button inline-flex items-center gap-2 rounded-full border border-(--glass-border) px-6 py-3 text-xs font-bold text-accent"
+            aria-expanded={expanded}
+            aria-controls="certifications-list"
+            className="glass glass-lens glass-button inline-flex items-center gap-2 rounded-full px-6 py-3 text-xs font-bold text-accent"
           >
             <span>
               {expanded
                 ? "Show less"
                 : `Show all ${certifications.length} certifications`}
             </span>
-            {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+            {expanded ? <ChevronUp size={16} aria-hidden="true" /> : <ChevronDown size={16} aria-hidden="true" />}
           </button>
         </div>
       )}

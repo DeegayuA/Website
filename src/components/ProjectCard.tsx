@@ -12,10 +12,11 @@ import { ArrowUpRight, Star } from "lucide-react";
 import type { Project } from "@/data/projects";
 import { SocialIcon } from "./SocialIcon";
 import { BrandIcon, hasBrandIcon } from "./BrandIcon";
+import { cn } from "@/lib/utils";
 
 const MAX_TILT = 5;
 
-export function ProjectCard({ project }: { project: Project }) {
+export function ProjectCard({ project, compact }: { project: Project; compact?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const rx = useMotionValue(0);
@@ -100,12 +101,12 @@ export function ProjectCard({ project }: { project: Project }) {
             </h3>
           </div>
 
-          <p className="line-clamp-3 text-pretty text-sm leading-relaxed text-muted">
+          <p className={cn("text-pretty text-sm leading-relaxed text-muted", compact ? "line-clamp-2" : "line-clamp-3")}>
             {project.description}
           </p>
 
           <ul
-            className="mt-auto flex flex-wrap gap-1.5 pt-2"
+            className={cn("mt-auto flex flex-wrap gap-1.5 pt-2", compact && "hidden")}
             aria-label="Technologies"
           >
             {project.tech.map((tech) => (
