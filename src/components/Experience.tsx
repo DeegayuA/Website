@@ -1,92 +1,130 @@
-import { Briefcase, GraduationCap } from "lucide-react";
-import { work, education, type TimelineEntry } from "@/data/experience";
-import { Section } from "./Section";
-import { Reveal } from "./Reveal";
+"use client";
 
-function Timeline({
-  heading,
-  icon,
-  entries,
-}: {
-  heading: string;
-  icon: React.ReactNode;
-  entries: TimelineEntry[];
-}) {
-  return (
-    <div>
-      <h3 className="mb-6 flex items-center gap-3 font-display text-xl font-bold">
-        <span className="glass flex h-11 w-11 items-center justify-center rounded-2xl text-accent">
-          {icon}
-        </span>
-        {heading}
-      </h3>
-      <ol className="relative ml-4 space-y-4 border-l border-(--glass-border) pl-7">
-        {entries.map((entry, i) => {
-          const live = /present/i.test(entry.period);
-          return (
-            <li key={entry.title} className="relative">
-              <span
-                aria-hidden="true"
-                className={
-                  live
-                    ? "pulse-dot absolute -left-[34px] top-7 h-3 w-3 rounded-full bg-spark"
-                    : "absolute -left-[34px] top-7 h-3 w-3 rounded-full border-2 border-accent bg-background"
-                }
-              />
-              <Reveal delay={i * 0.06}>
-                <div className="glass glass-lens glass-sheen bevel glint-host group rounded-2xl p-6 transition-transform duration-300 hover:-translate-y-1">
-                  <span aria-hidden="true" className="glint" />
-                  <div className="relative z-[4] flex items-center justify-between gap-3">
-                    <span className="font-mono text-xs text-accent">
-                      {entry.period}
-                    </span>
-                    {live && (
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-spark-soft px-2.5 py-0.5 text-[11px] font-semibold text-spark">
-                        Current
-                      </span>
-                    )}
-                  </div>
-                  <h4 className="relative z-[4] mt-2 text-base font-bold sm:text-lg">
-                    {entry.title}
-                  </h4>
-                  <p className="relative z-[4] mt-1 text-sm font-medium text-muted">
-                    {entry.org}
-                  </p>
-                  {entry.detail && (
-                    <p className="relative z-[4] mt-3 text-sm leading-relaxed text-muted">
-                      {entry.detail}
-                    </p>
-                  )}
-                </div>
-              </Reveal>
-            </li>
-          );
-        })}
-      </ol>
-    </div>
-  );
-}
+import { work, education } from "@/data/experience";
+import { FadeIn } from "./FadeIn";
 
 export function Experience() {
   return (
-    <Section
+    <section
       id="experience"
-      eyebrow="Trajectory"
-      title="Experience & Education"
-      index="03 / Path"
+      className="relative z-10 -mt-10 rounded-t-[40px] bg-background cv-section overflow-x-clip sm:-mt-12 sm:rounded-t-[50px] md:-mt-14 md:rounded-t-[60px]"
     >
-      <div className="grid gap-12 lg:grid-cols-2 lg:gap-10">
-        <Timeline
-          heading="Work"
-          icon={<Briefcase size={20} aria-hidden="true" />}
-          entries={work}
-        />
-        <Timeline
-          heading="Education"
-          icon={<GraduationCap size={20} aria-hidden="true" />}
-          entries={education}
-        />
+      <div className="px-5 py-20 sm:px-8 sm:py-24 md:px-10 md:py-32">
+        {/* Heading */}
+        <h2
+          className="hero-heading mb-16 text-center font-black uppercase tracking-tight leading-none sm:mb-20 md:mb-28"
+          style={{ fontSize: "clamp(3rem, 12vw, 160px)" }}
+        >
+          Experience
+        </h2>
+
+        {/* Groups */}
+        <div className="max-w-4xl mx-auto">
+          {/* Work Section */}
+          <div>
+            <div className="mb-8 sm:mb-10 md:mb-12">
+              <span className="label text-muted uppercase tracking-widest">
+                Work
+              </span>
+            </div>
+            {work.map((entry, i) => (
+              <FadeIn
+                key={`work-${i}`}
+                delay={i * 0.1}
+                className="border-b border-[var(--line)]"
+              >
+                <div className="py-8 sm:py-10 md:py-12 flex gap-6 sm:gap-8 md:gap-10 items-start">
+                  <div className="shrink-0 opacity-35">
+                    <span
+                      className="font-black uppercase tracking-tight leading-none block text-foreground"
+                      style={{ fontSize: "clamp(3rem, 10vw, 140px)" }}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3
+                      className="font-medium uppercase tracking-wide leading-tight mb-2"
+                      style={{ fontSize: "clamp(1rem, 2.2vw, 2.1rem)" }}
+                    >
+                      {entry.title}
+                    </h3>
+                    <p
+                      className="text-muted font-light opacity-60 mb-1"
+                      style={{ fontSize: "clamp(0.85rem, 1.6vw, 1.25rem)" }}
+                    >
+                      {entry.org}
+                    </p>
+                    <p className="text-muted font-light text-sm sm:text-base mb-3">
+                      {entry.period}
+                    </p>
+                    {entry.detail && (
+                      <p
+                        className="font-light leading-relaxed max-w-2xl opacity-60"
+                        style={{ fontSize: "clamp(0.85rem, 1.6vw, 1.25rem)" }}
+                      >
+                        {entry.detail}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+
+          {/* Education Section */}
+          <div>
+            <div className="mb-8 sm:mb-10 md:mb-12">
+              <span className="label text-muted uppercase tracking-widest">
+                Education
+              </span>
+            </div>
+            {education.map((entry, i) => (
+              <FadeIn
+                key={`education-${i}`}
+                delay={i * 0.1}
+                className="border-b border-[var(--line)]"
+              >
+                <div className="py-8 sm:py-10 md:py-12 flex gap-6 sm:gap-8 md:gap-10 items-start">
+                  <div className="shrink-0 opacity-35">
+                    <span
+                      className="font-black uppercase tracking-tight leading-none block text-foreground"
+                      style={{ fontSize: "clamp(3rem, 10vw, 140px)" }}
+                    >
+                      {String(work.length + i + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3
+                      className="font-medium uppercase tracking-wide leading-tight mb-2"
+                      style={{ fontSize: "clamp(1rem, 2.2vw, 2.1rem)" }}
+                    >
+                      {entry.title}
+                    </h3>
+                    <p
+                      className="text-muted font-light opacity-60 mb-1"
+                      style={{ fontSize: "clamp(0.85rem, 1.6vw, 1.25rem)" }}
+                    >
+                      {entry.org}
+                    </p>
+                    <p className="text-muted font-light text-sm sm:text-base mb-3">
+                      {entry.period}
+                    </p>
+                    {entry.detail && (
+                      <p
+                        className="font-light leading-relaxed max-w-2xl opacity-60"
+                        style={{ fontSize: "clamp(0.85rem, 1.6vw, 1.25rem)" }}
+                      >
+                        {entry.detail}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
       </div>
-    </Section>
+    </section>
   );
 }

@@ -1,113 +1,113 @@
-import { Code2, BrainCircuit, Cpu, GraduationCap } from "lucide-react";
-import { site, skills } from "@/data/site";
-import { Section } from "./Section";
-import { Reveal } from "./Reveal";
-import { BrandIcon, hasBrandIcon } from "./BrandIcon";
+"use client";
 
-const focus = [
-  {
-    icon: <Code2 size={18} aria-hidden="true" />,
-    title: "Software Engineering",
-    body: "Production web platforms and internal tools, end to end.",
-  },
-  {
-    icon: <BrainCircuit size={18} aria-hidden="true" />,
-    title: "AI & Data Science",
-    body: "ML models, forecasting, and computer-vision research.",
-  },
-  {
-    icon: <Cpu size={18} aria-hidden="true" />,
-    title: "Electronics & IoT",
-    body: "Embedded firmware, sensors, and connected devices.",
-  },
-  {
-    icon: <GraduationCap size={18} aria-hidden="true" />,
-    title: "Teaching",
-    body: "Lecturing web, mobile, and AI at university level.",
-  },
-];
+import Image from "next/image";
+import { site, stats } from "@/data/site";
+import { FadeIn } from "@/components/FadeIn";
+import { AnimatedText } from "@/components/AnimatedText";
+import { ContactButton } from "@/components/ContactButton";
 
-const facts = [
-  { k: "Now", v: "R&D Engineer · Alta Vision PLC" },
-  { k: "Graduating", v: "Master of Data Science & AI · CSE · UoM" },
-  { k: "Graduating", v: "Master of IT · FOS · UoK" },
-  { k: "Teaching", v: "Visiting Lecturer · GWUIM" },
+const cornerTiles = [
+  {
+    id: "top-left",
+    src: "/images/web_scada.png",
+    position: "top-[4%] left-[2%]",
+    rotation: "-rotate-6",
+    delay: 0.1,
+    x: -80,
+  },
+  {
+    id: "bottom-left",
+    src: "/images/greenwing.jpg",
+    position: "bottom-[8%] left-[2%] sm:left-[10%]",
+    rotation: "rotate-3",
+    delay: 0.25,
+    x: -80,
+  },
+  {
+    id: "top-right",
+    src: "/images/web_lifesight.png",
+    position: "top-[4%] right-[2%] sm:right-[10%]",
+    rotation: "rotate-6",
+    delay: 0.15,
+    x: 80,
+  },
+  {
+    id: "bottom-right",
+    src: "/images/idh.jpg",
+    position: "bottom-[8%] right-[2%]",
+    rotation: "-rotate-3",
+    delay: 0.3,
+    x: 80,
+  },
 ];
 
 export function About() {
   return (
-    <Section id="about" eyebrow="Profile" title="About" index="01 / Profile">
-      <div className="grid gap-4 lg:grid-cols-2">
-        {/* Left: identity + facts + stack logos */}
-        <Reveal>
-          <div className="glass glass-lens bevel flex h-full flex-col gap-6 rounded-[1.6rem] p-7 sm:p-8">
-            <div className="flex items-center gap-4">
-              <span className="orb flex h-16 w-16 items-center justify-center rounded-2xl font-display text-2xl font-bold text-accent">
-                DA
-              </span>
-              <div>
-                <p className="font-display text-lg font-bold">{site.name}</p>
-                <p className="font-mono text-xs text-muted">{site.location}</p>
-              </div>
+    <section
+      id="about"
+      className="cv-section relative min-h-screen w-full bg-background px-5 py-20 sm:px-8 md:px-10"
+    >
+      {/* Corner decorative tiles — hidden below sm */}
+      <div className="pointer-events-none absolute inset-0 hidden sm:block">
+        {cornerTiles.map((tile) => (
+          <FadeIn
+            key={tile.id}
+            delay={tile.delay}
+            x={tile.x}
+            className={`absolute ${tile.position}`}
+          >
+            <div className={`relative h-40 w-40 overflow-hidden rounded-2xl md:h-52 md:w-52 ${tile.rotation}`}>
+              <Image
+                src={tile.src}
+                alt="Project showcase"
+                fill
+                className="object-cover"
+              />
             </div>
+          </FadeIn>
+        ))}
+      </div>
 
-            <dl className="flex flex-col gap-3">
-              {facts.map((f, i) => (
-                <div
-                  key={i}
-                  className="flex items-baseline justify-between gap-3 border-t border-(--glass-border) pt-3"
-                >
-                  <dt className="label text-muted">{f.k}</dt>
-                  <dd className="text-right text-sm font-medium">{f.v}</dd>
-                </div>
-              ))}
-            </dl>
+      {/* Centered content */}
+      <div className="relative z-10 mx-auto flex max-w-2xl flex-col items-center gap-10 sm:gap-14 md:gap-16">
+        {/* Heading */}
+        <FadeIn>
+          <h2 className="hero-heading font-black uppercase leading-none tracking-tight text-center text-[clamp(3rem,12vw,160px)]">
+            About Me
+          </h2>
+        </FadeIn>
 
-            <div className="mt-auto">
-              <h3 className="label mb-4 text-muted">Tools I reach for</h3>
-              <ul className="flex flex-wrap gap-2" aria-label="Skills">
-                {skills.map((skill) => (
-                  <li
-                    key={skill}
-                    className="inline-flex items-center gap-2 rounded-full border border-(--glass-border) bg-accent-soft px-3.5 py-1.5 text-sm font-medium"
-                  >
-                    {hasBrandIcon(skill) && (
-                      <BrandIcon name={skill} size={15} brand />
-                    )}
-                    {skill}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </Reveal>
-
-        {/* Right: bio + focus areas */}
-        <Reveal delay={0.08}>
-          <div className="glass glass-lens bevel flex h-full flex-col gap-8 rounded-[1.6rem] p-7 sm:p-8">
-            <p className="text-pretty text-lg leading-relaxed sm:text-xl">
+        {/* Bio paragraph with animated text */}
+        <FadeIn delay={0.1}>
+          <AnimatedText>
+            <p className="text-center font-medium leading-relaxed text-[clamp(1rem,2vw,1.35rem)]">
               {site.bio}
             </p>
+          </AnimatedText>
+        </FadeIn>
 
-            <div className="grid flex-1 content-center gap-3 sm:grid-cols-2">
-              {focus.map((f) => (
-                <div
-                  key={f.title}
-                  className="glass relative overflow-hidden rounded-2xl p-4"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-(--glass-border) bg-(--surface) text-accent">
-                      {f.icon}
-                    </span>
-                    <h3 className="text-sm font-bold">{f.title}</h3>
-                  </div>
-                  <p className="mt-2 text-sm text-muted">{f.body}</p>
-                </div>
-              ))}
-            </div>
+        {/* Stats row with hairline separators */}
+        <FadeIn delay={0.2}>
+          <div className="flex items-center justify-center gap-6 sm:gap-8 md:gap-10 divide-x divide-line">
+            {stats.map((stat) => (
+              <div key={stat.label} className="flex flex-col items-center px-4 first:pl-0 last:pr-0">
+                <p className="font-black text-[clamp(1.5rem,3vw,2.5rem)] leading-none">
+                  {stat.value}
+                  {stat.suffix}
+                </p>
+                <p className="mt-2 text-center text-xs uppercase tracking-widest text-muted sm:text-sm">
+                  {stat.label}
+                </p>
+              </div>
+            ))}
           </div>
-        </Reveal>
+        </FadeIn>
+
+        {/* Contact button */}
+        <FadeIn delay={0.3}>
+          <ContactButton />
+        </FadeIn>
       </div>
-    </Section>
+    </section>
   );
 }
