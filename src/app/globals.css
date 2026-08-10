@@ -3,112 +3,47 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ──────────────────────────────────────────────────────────────
-   INSTRUMENT GLASS — a living "signal" accent (teal → indigo) drives
-   every gradient, edge and glow site-wide, punctuated by a fixed warm
-   amber indicator spark. OKLCH keeps the sweep perceptually even and
-   confined to a tight, tasteful cool band, so the identity *breathes*
-   rather than cycling through the rainbow.
+   3D-CREATOR — monochrome canvas, giant gradient headings, inverted
+   ink slabs. Light mode = paper canvas + near-black slab; dark mode
+   flips the pair. One accent moment only: the CTA pill gradient.
    ────────────────────────────────────────────────────────────── */
-@property --hue {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 205;
-}
-:root {
-  --hue: 196;
-}
-:root[data-quality="low"] {
-  animation: none;
-}
 
 /* ──────────────────────────────────────────────────────────────
    Design tokens
    ────────────────────────────────────────────────────────────── */
 :root {
-  --background: #e9edf3;
-  --background-2: #dfe4ee;
-  --foreground: #0d1420;
-  --muted: #51606f;
-
-  /* Living signal accent — same hue, fanned out for rich gradients.
-     Darkened L in light mode so accent-on-glass text still clears AA. */
-  --accent: oklch(0.47 0.13 var(--hue));
-  --accent-2: oklch(0.53 0.14 calc(var(--hue) + 30));
-  --accent-3: oklch(0.5 0.15 calc(var(--hue) + 56));
-  --accent-soft: oklch(0.55 0.13 var(--hue) / 0.12);
-
-  /* Fixed warm indicator spark — an instrument LED; never drifts. */
-  --spark: oklch(0.48 0.15 66);
-  --spark-soft: oklch(0.62 0.15 66 / 0.14);
-
-  --surface: rgba(255, 255, 255, 0.46);
-  --surface-strong: rgba(255, 255, 255, 0.66);
-  --glass-border: rgba(255, 255, 255, 0.7);
-  --glass-highlight: rgba(255, 255, 255, 0.95);
-  --glass-shine: rgba(255, 255, 255, 0.6);
-  --glass-shade: rgba(14, 22, 40, 0.06);
-  --glass-shadow:
-    0 1px 1px rgba(14, 22, 40, 0.04),
-    0 14px 40px -10px rgba(14, 22, 40, 0.16);
-
-  --aurora-a: rgba(46, 178, 196, 0.24);
-  --aurora-b: rgba(96, 124, 246, 0.2);
-  --aurora-c: rgba(70, 196, 210, 0.2);
-  --aurora-d: rgba(120, 120, 246, 0.16);
-  --spotlight: rgba(20, 150, 170, 0.09);
-
-  --success: oklch(0.46 0.12 155);
-  --on-success: oklch(0.99 0 0);
+  --background: #F2F3F5;      /* canvas */
+  --foreground: #1A1D22;      /* body text */
+  --muted: #5A626C;
+  --grad-a: #9AA2AC;          /* heading gradient start */
+  --grad-b: #16191E;          /* heading gradient end */
+  --slab: #0C0C0C;            /* inverted slab bg */
+  --slab-fg: #D7E2EA;         /* inverted slab text */
+  --line: rgba(12, 12, 12, 0.15);         /* hairline on canvas */
+  --slab-line: rgba(215, 226, 234, 0.18); /* hairline on slab */
 }
 
 .dark {
-  --background: #070b12;
-  --background-2: #0a0f18;
-  --foreground: #eaeff6;
-  --muted: #93a2b5;
-
-  /* Lighter L for legibility on the ink canvas. */
-  --accent: oklch(0.81 0.12 var(--hue));
-  --accent-2: oklch(0.76 0.14 calc(var(--hue) + 30));
-  --accent-3: oklch(0.72 0.16 calc(var(--hue) + 56));
-  --accent-soft: oklch(0.81 0.12 var(--hue) / 0.16);
-
-  --spark: oklch(0.82 0.13 72);
-  --spark-soft: oklch(0.82 0.13 72 / 0.18);
-
-  --surface: rgba(24, 30, 44, 0.46);
-  --surface-strong: rgba(32, 40, 56, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.15);
-  --glass-highlight: rgba(255, 255, 255, 0.24);
-  --glass-shine: rgba(255, 255, 255, 0.14);
-  --glass-shade: rgba(0, 0, 0, 0.24);
-  --glass-shadow:
-    0 1px 1px rgba(0, 0, 0, 0.22),
-    0 18px 48px -12px rgba(0, 0, 0, 0.6);
-
-  --aurora-a: rgba(38, 190, 200, 0.24);
-  --aurora-b: rgba(108, 108, 250, 0.2);
-  --aurora-c: rgba(60, 172, 220, 0.18);
-  --aurora-d: rgba(128, 104, 250, 0.16);
-  --spotlight: rgba(110, 210, 220, 0.08);
-
-  --success: oklch(0.68 0.13 155);
-  --on-success: oklch(0.15 0.02 155);
+  --background: #0C0C0C;
+  --foreground: #D7E2EA;
+  --muted: #8B98A3;
+  --grad-a: #646973;
+  --grad-b: #BBCCD7;
+  --slab: #FFFFFF;
+  --slab-fg: #0C0C0C;
+  --line: rgba(215, 226, 234, 0.18);
+  --slab-line: rgba(12, 12, 12, 0.15);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
-  --color-accent: var(--accent);
-  --color-accent-2: var(--accent-2);
-  --color-accent-3: var(--accent-3);
-  --color-accent-soft: var(--accent-soft);
-  --color-spark: var(--spark);
-  --color-spark-soft: var(--spark-soft);
-  --font-sans: var(--font-sans);
-  --font-display: var(--font-display);
-  --font-mono: var(--font-mono);
+  --color-slab: var(--slab);
+  --color-slab-fg: var(--slab-fg);
+  --color-line: var(--line);
+  --color-slab-line: var(--slab-line);
+  --font-sans: var(--font-kanit);
 }
 
 /* ──────────────────────────────────────────────────────────────
@@ -127,35 +62,20 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  font-family: var(--font-kanit), sans-serif;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
 }
 
 ::selection {
-  background: var(--accent);
+  background: var(--foreground);
   color: var(--background);
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--foreground);
   outline-offset: 3px;
-}
-
-/* Display / mono helpers */
-.font-display {
-  font-family: var(--font-display), var(--font-sans), sans-serif;
-  letter-spacing: -0.02em;
-}
-.font-mono {
-  font-family: var(--font-mono), ui-monospace, monospace;
-}
-.label {
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
 }
 
 @media (pointer: fine) {
@@ -168,398 +88,37 @@ body {
     border: 3px solid var(--background);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: color-mix(in srgb, var(--accent) 55%, transparent);
+    background: color-mix(in srgb, var(--muted) 55%, transparent);
   }
 }
 
 /* ──────────────────────────────────────────────────────────────
-   Liquid glass surfaces (inside @layer components so utilities win)
+   Components (inside @layer components so utilities win)
    ────────────────────────────────────────────────────────────── */
 @layer components {
-  .glass {
-    position: relative;
-    isolation: isolate;
-    background:
-      linear-gradient(
-        125deg,
-        var(--glass-shine) -15%,
-        transparent 36%,
-        transparent 66%,
-        color-mix(in srgb, var(--glass-shine) 45%, transparent) 108%
-      ),
-      linear-gradient(150deg, var(--surface-strong), var(--surface));
-    -webkit-backdrop-filter: blur(22px) saturate(185%);
-    backdrop-filter: blur(22px) saturate(185%);
-    border: 1px solid var(--glass-border);
-    box-shadow:
-      inset 0 1px 0 var(--glass-highlight),
-      inset 0 -1px 1px var(--glass-shade),
-      inset 1px 0 0 rgba(255, 255, 255, 0.06),
-      var(--glass-shadow);
-  }
-
-  .glass-strong {
-    position: relative;
-    isolation: isolate;
-    background:
-      linear-gradient(
-        125deg,
-        var(--glass-shine) -15%,
-        transparent 36%,
-        transparent 66%,
-        color-mix(in srgb, var(--glass-shine) 45%, transparent) 108%
-      ),
-      linear-gradient(150deg, var(--surface-strong), var(--surface));
-    -webkit-backdrop-filter: blur(30px) saturate(200%);
-    backdrop-filter: blur(30px) saturate(200%);
-    border: 1px solid var(--glass-border);
-    box-shadow:
-      inset 0 1px 0 var(--glass-highlight),
-      inset 0 -1px 1px var(--glass-shade),
-      var(--glass-shadow);
-  }
-
-  /* True refraction (Chromium only — html.lens set by GlassFilter). */
-  .lens .glass-lens {
-    -webkit-backdrop-filter: url(#glass-lens) blur(5px) saturate(190%)
-      brightness(1.04);
-    backdrop-filter: url(#glass-lens) blur(5px) saturate(190%) brightness(1.04);
-  }
-
-  /* SIGNATURE — iridescent bevel edge. A conic gradient rim that catches the
-     living accent at the corners like light bending through a chamfer. Painted
-     as a masked border ring, so it never tints the tile's fill. */
-  .bevel {
-    position: relative;
-    isolation: isolate;
-  }
-  .bevel::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: conic-gradient(
-      from 130deg,
-      color-mix(in srgb, var(--accent) 70%, transparent),
-      color-mix(in srgb, var(--spark) 42%, transparent) 22%,
-      transparent 42%,
-      transparent 60%,
-      color-mix(in srgb, var(--accent-3) 66%, transparent) 82%,
-      color-mix(in srgb, var(--accent) 70%, transparent)
-    );
-    -webkit-mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0.55;
-    transition: opacity 0.45s ease;
-    pointer-events: none;
-    z-index: 1;
-  }
-  .bevel:hover::before {
-    opacity: 0.95;
-  }
-
-  /* Liquid sheen sweep on hover/focus */
-  .glass-sheen {
-    overflow: hidden;
-  }
-  .glass-sheen::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    background: linear-gradient(
-      105deg,
-      transparent 42%,
-      rgba(255, 255, 255, 0.3) 50%,
-      transparent 58%
-    );
-    transform: translateX(-130%);
-    transition: transform 0.9s cubic-bezier(0.2, 0.6, 0.2, 1);
-    z-index: 2;
-  }
-  .glass-sheen:hover::after,
-  .glass-sheen:focus-within::after {
-    transform: translateX(130%);
-  }
-
-  /* Interactive press feel */
-  .glass-button {
-    transition:
-      transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-      box-shadow 0.35s ease,
-      background-color 0.35s ease,
-      color 0.35s ease;
-  }
-  .glass-button:hover {
-    transform: translateY(-2px);
-  }
-  .glass-button:active {
-    transform: translateY(0) scale(0.97);
-  }
-
-  /* Cursor-tracked specular glint on any glass tile. Driven by local
-     --spot-x/--spot-y (set on pointer move); soft-light = gentle sheen. */
-  .glint {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-    border-radius: inherit;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    background: radial-gradient(
-      240px circle at var(--spot-x, 50%) var(--spot-y, 50%),
-      color-mix(in srgb, var(--accent) 34%, transparent),
-      transparent 62%
-    );
-    mix-blend-mode: soft-light;
-  }
-  .group:hover .glint,
-  .glint-host:hover .glint {
-    opacity: 1;
-  }
-
-  /* Gradient display text (remains real, selectable text) */
-  .text-shine {
-    background: linear-gradient(
-      92deg,
-      var(--foreground),
-      var(--accent)
-    );
+  /* Giant section headings — vertical steel-to-ink gradient text */
+  .hero-heading {
+    background: linear-gradient(180deg, var(--grad-a) 0%, var(--grad-b) 100%);
     -webkit-background-clip: text;
     background-clip: text;
-    color: transparent;
+    -webkit-text-fill-color: transparent;
   }
 
+  /* The single accent moment — ContactButton background */
+  .cta-pill {
+    background: linear-gradient(123deg, #18011F 7%, #B600A8 37%, #7621B0 72%, #BE4C00 100%);
+    box-shadow: 0px 4px 4px rgba(181, 1, 167, 0.25), 4px 4px 12px #7721B1 inset;
+    outline: 2px solid #fff;
+    outline-offset: -3px;
+  }
+
+  /* Grain overlay (Preloader) */
   .noise {
     position: absolute;
     inset: 0;
     pointer-events: none;
     opacity: 0.05;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-
-  /* Ambient mesh backdrop — transform-only drift, GPU-composited. */
-  .mesh-base {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(
-        120% 90% at 50% -20%,
-        color-mix(in srgb, var(--accent) 20%, transparent),
-        transparent 60%
-      ),
-      radial-gradient(
-        120% 90% at 50% 120%,
-        color-mix(in srgb, var(--accent-3) 18%, transparent),
-        transparent 60%
-      );
-  }
-  .mesh-blob {
-    position: absolute;
-    border-radius: 9999px;
-    filter: blur(120px);
-    opacity: 0.5;
-  }
-  .mesh-blob--a {
-    width: 85vmax;
-    height: 85vmax;
-    left: -12vmax;
-    top: -26vmax;
-    background: radial-gradient(circle, var(--aurora-a), transparent 62%);
-    animation: mesh-a 34s ease-in-out infinite alternate;
-  }
-  .mesh-blob--b {
-    width: 74vmax;
-    height: 74vmax;
-    right: -18vmax;
-    top: 2vmax;
-    background: radial-gradient(circle, var(--aurora-c), transparent 62%);
-    animation: mesh-b 40s ease-in-out infinite alternate;
-  }
-  .mesh-blob--c {
-    width: 80vmax;
-    height: 80vmax;
-    left: -2vmax;
-    bottom: -32vmax;
-    filter: blur(40px);
-    background: radial-gradient(circle, var(--aurora-d), transparent 60%);
-  }
-  .mesh-blob--d {
-    width: 58vmax;
-    height: 58vmax;
-    right: 6vmax;
-    bottom: -18vmax;
-    filter: blur(40px);
-    background: radial-gradient(circle, var(--aurora-b), transparent 60%);
-  }
-  @keyframes mesh-a {
-    to {
-      transform: translate3d(7vw, 6vh, 0) scale(1.1);
-    }
-  }
-  @keyframes mesh-b {
-    to {
-      transform: translate3d(-6vw, 7vh, 0) scale(1.08);
-    }
-  }
-
-  @keyframes wave {
-    0%,
-    100% {
-      transform: rotate(0deg);
-    }
-    25% {
-      transform: rotate(18deg);
-    }
-    50% {
-      transform: rotate(-8deg);
-    }
-    75% {
-      transform: rotate(12deg);
-    }
-  }
-  .wave {
-    display: inline-block;
-    transform-origin: 70% 70%;
-    animation: wave 2.4s ease-in-out infinite;
-  }
-
-
-  /* Edge-faded marquee; pauses on hover */
-  .marquee {
-    display: flex;
-    overflow: hidden;
-    mask-image: linear-gradient(
-      90deg,
-      transparent,
-      black 10%,
-      black 90%,
-      transparent
-    );
-  }
-  .marquee__track {
-    animation: marquee calc(var(--marquee-items, 24) * 1.55s) linear infinite;
-  }
-  .marquee:hover .marquee__track {
-    animation-play-state: paused;
-  }
-  @keyframes marquee {
-    to {
-      transform: translateX(-50%);
-    }
-  }
-
-  .orb {
-    background:
-      radial-gradient(
-        circle at 32% 28%,
-        rgba(255, 255, 255, 0.85),
-        rgba(255, 255, 255, 0.16) 30%,
-        transparent 48%
-      ),
-      radial-gradient(
-        circle at 72% 78%,
-        color-mix(in srgb, var(--accent-2) 40%, transparent),
-        transparent 62%
-      ),
-      linear-gradient(150deg, var(--surface-strong), var(--surface));
-    -webkit-backdrop-filter: blur(6px) saturate(160%);
-    backdrop-filter: blur(6px) saturate(160%);
-    border: 1px solid var(--glass-border);
-    box-shadow:
-      inset 0 1px 0 var(--glass-highlight),
-      inset 0 -10px 18px var(--glass-shade),
-      var(--glass-shadow);
-  }
-
-  /* Cursor-follow ambient glow (pre-painted, transform-only) */
-  .spotlight {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 1280px;
-    width: 1280px;
-    border-radius: 9999px;
-    pointer-events: none;
-    opacity: 0;
-    background: radial-gradient(
-      circle,
-      var(--spotlight) 0%,
-      color-mix(in srgb, var(--spotlight) 50%, transparent) 28%,
-      transparent 62%
-    );
-    transition: opacity 0.4s ease;
-    will-change: transform, opacity;
-  }
-
-
-  /* Live status dot — pulsing ring */
-  .pulse-dot {
-    position: relative;
-  }
-  .pulse-dot::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: inherit;
-    animation: pulse-ring 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-  @keyframes pulse-ring {
-    0% {
-      transform: scale(1);
-      opacity: 0.7;
-    }
-    70%,
-    100% {
-      transform: scale(2.6);
-      opacity: 0;
-    }
-  }
-
-  /* Compact ambient equalizer — the "signal is live" motif (abstract, not a
-     circuit). Bars breathe out of phase; frozen under reduced motion. */
-  .eq {
-    display: flex;
-    align-items: flex-end;
-    gap: 3px;
-    height: 22px;
-  }
-  .eq span {
-    width: 3px;
-    border-radius: 3px;
-    background: linear-gradient(var(--accent), var(--accent-3));
-    animation: eq 1.4s ease-in-out infinite;
-  }
-  .eq span:nth-child(1) {
-    animation-delay: -0.9s;
-  }
-  .eq span:nth-child(2) {
-    animation-delay: -0.5s;
-  }
-  .eq span:nth-child(3) {
-    animation-delay: -1.2s;
-  }
-  .eq span:nth-child(4) {
-    animation-delay: -0.2s;
-  }
-  .eq span:nth-child(5) {
-    animation-delay: -0.7s;
-  }
-  @keyframes eq {
-    0%,
-    100% {
-      height: 22%;
-    }
-    50% {
-      height: 100%;
-    }
   }
 }
 
@@ -594,22 +153,15 @@ html.lenis {
 }
 
 /* ──────────────────────────────────────────────────────────────
-   Per-device quality scaling
+   Per-device quality scaling — <html data-quality> is set by
+   QualityProvider; JS layers (cursor, marquee) read the same tier.
+   Low tier drops purely-decorative paint work.
    ────────────────────────────────────────────────────────────── */
-[data-quality="low"] .spotlight {
+[data-quality="low"] .noise {
   display: none;
 }
-[data-quality="low"] .mesh-blob {
-  filter: blur(52px);
-}
-[data-quality="low"] .mesh-blob--c,
-[data-quality="low"] .mesh-blob--d {
-  animation: none;
-}
-[data-quality="low"] .glass,
-[data-quality="low"] .glass-strong {
-  -webkit-backdrop-filter: blur(13px) saturate(155%);
-  backdrop-filter: blur(13px) saturate(155%);
+[data-quality="low"] .cta-pill {
+  box-shadow: none;
 }
 
 /* ──────────────────────────────────────────────────────────────
@@ -618,31 +170,6 @@ html.lenis {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-  :root {
-    animation: none;
-  }
-  .mesh-blob,
-  .scroll-cue,
-  .text-shine,
-  .marquee__track,
-  .float-slow,
-  .float-slower,
-  .float-fast,
-  .wave,
-  .eq span,
-  .pulse-dot::after {
-    animation: none !important;
-  }
-  .marquee__track {
-    animation: none;
-    flex-wrap: wrap;
-  }
-  .marquee__copy--dup {
-    display: none;
-  }
-  .glass-sheen::after {
-    display: none;
   }
   *,
   *::before,

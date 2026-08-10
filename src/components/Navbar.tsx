@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useSpring } from "motion/react";
-import { Menu, X } from "lucide-react";
+import { motion } from "motion/react";
 import { nav } from "@/data/site";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
@@ -33,30 +32,24 @@ function useActiveSection() {
 export function Navbar() {
   const headerRef = useRef<HTMLElement>(null);
   const active = useActiveSection();
-  const [open, setOpen] = useState(false);
-  const { scrollYProgress } = useScroll();
-  const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30 });
+  const [hasScroll, setHasScroll] = useState(false);
 
   useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
-    const onDown = (e: PointerEvent) => {
-      if (!headerRef.current?.contains(e.target as Node)) setOpen(false);
+    const onScroll = () => {
+      setHasScroll(window.scrollY > 0);
     };
-    window.addEventListener("keydown", onKey);
-    document.addEventListener("pointerdown", onDown);
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      document.removeEventListener("pointerdown", onDown);
-    };
-  }, [open]);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <header ref={headerRef} className="fixed inset-x-0 top-0 z-50">
       <motion.div
         aria-hidden="true"
-        className="h-0.5 origin-left bg-gradient-to-r from-accent via-accent-2 to-accent-3"
-        style={{ scaleX: progress }}
+        className={cn(
+          "h-px origin-left bg-line transition-opacity duration-200",
+          hasScroll ? "opacity-100" : "opacity-0",
+        )}
       />
       <motion.div
         initial={{ y: -18, opacity: 0 }}
@@ -65,94 +58,38 @@ export function Navbar() {
       >
         <nav
           aria-label="Main navigation"
-          className="mx-auto mt-3 flex w-[min(64rem,calc(100%-2rem))] items-center justify-between gap-2 rounded-full glass-strong glass-lens bevel px-3 py-2"
+          className="mx-auto mt-3 flex w-[min(64rem,calc(100%-2rem))] items-center justify-between gap-4 px-3 py-2"
         >
           <a
             href="#home"
-            className="flex items-center gap-2.5 rounded-full py-1 pl-1 pr-3 text-sm font-bold"
-            onClick={() => setOpen(false)}
+            className="font-black uppercase tracking-tight text-foreground"
           >
-            <span
-              aria-hidden="true"
-              className="orb flex h-8 w-8 items-center justify-center rounded-xl font-display text-xs font-bold text-accent"
-            >
-              DA
-            </span>
-            <span className="font-display tracking-tight">Deeghayu</span>
-            <span className="sr-only">— back to top</span>
+            DA
+            <span className="sr-only">— back to home</span>
           </a>
 
-          <ul className="hidden items-center gap-1 md:flex">
+          <ul className="flex items-center gap-4 sm:gap-6 md:gap-8">
             {nav.map((item) => {
               const isActive = active === item.href.slice(1);
               return (
-                <li key={item.href} className="relative">
+                <li key={item.href}>
                   <a
                     href={item.href}
                     aria-current={isActive ? "location" : undefined}
                     className={cn(
-                      "relative z-10 block rounded-full px-4 py-2 text-sm font-medium transition-colors",
-                      isActive ? "text-accent" : "text-muted hover:text-foreground",
+                      "uppercase font-medium tracking-wider text-xs sm:text-sm md:text-base transition-opacity duration-200",
+                      isActive ? "opacity-100" : "opacity-70 hover:opacity-100",
                     )}
                   >
                     {item.label}
                   </a>
-                  {isActive && (
-                    <motion.span
-                      layoutId="nav-pill"
-                      className="absolute inset-0 rounded-full bg-accent-soft"
-                      transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                    />
-                  )}
                 </li>
               );
             })}
           </ul>
 
-          <div className="flex items-center gap-1">
-            <ThemeToggle />
-            <button
-              type="button"
-              className="glass-button flex h-10 w-10 items-center justify-center rounded-full md:hidden"
-              aria-expanded={open}
-              aria-controls="mobile-menu"
-              aria-label={open ? "Close menu" : "Open menu"}
-              onClick={() => setOpen((value) => !value)}
-            >
-              {open ? <X size={18} aria-hidden="true" /> : <Menu size={18} aria-hidden="true" />}
-            </button>
-          </div>
+          <ThemeToggle />
         </nav>
-
-        <div
-          id="mobile-menu"
-          className={cn(
-            "mx-auto mt-2 w-[min(64rem,calc(100%-2rem))] origin-top rounded-3xl glass-strong glass-lens p-2 transition-[opacity,transform] duration-300 md:hidden",
-            open
-              ? "visible scale-100 opacity-100"
-              : "invisible pointer-events-none scale-95 opacity-0",
-          )}
-        >
-          <ul className="flex flex-col">
-            {nav.map((item) => (
-              <li key={item.href}>
-                <a
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  aria-current={active === item.href.slice(1) ? "location" : undefined}
-                  className={cn(
-                    "block rounded-2xl px-5 py-3 text-base font-medium transition-colors",
-                    active === item.href.slice(1)
-                      ? "bg-accent-soft text-accent"
-                      : "text-muted hover:bg-accent-soft/50 hover:text-foreground",
-                  )}
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
       </motion.div>
     </header>
   );
