@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "update-screenshots": "node scripts/capture-fresh.mjs"
+    "update-screenshots": "node scripts/capture-fresh.mjs",
+    "render-cv": "pdftoppm -png -f 1 -l 1 -r 150 public/cv/Deeghayu_Adhikari_CV.pdf public/cv/cv-preview && cwebp -q 82 public/cv/cv-preview-1.png -o public/cv/cv-preview.webp && rm public/cv/cv-preview-1.png"
   },
   "engines": {
     "node": ">=20.9.0"

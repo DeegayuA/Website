@@ -65,7 +65,7 @@ export function Navbar() {
           )}
         >
           <a
-            href="#home"
+            href="/#home"
             className="group flex items-center gap-2.5 font-black uppercase tracking-tight text-foreground"
             style={{ fontFamily: "var(--font-sinhala), var(--font-kanit), sans-serif" }}
           >
@@ -83,7 +83,7 @@ export function Navbar() {
 
           <ul className="flex items-center gap-2 sm:gap-6 md:gap-8">
             {nav.map((item) => {
-              const isActive = active === item.href.slice(1);
+              const isActive = active === item.href.split("#")[1];
               return (
                 <li key={item.href}>
                   <a

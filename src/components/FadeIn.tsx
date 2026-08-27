@@ -1,7 +1,21 @@
 "use client";
 
 import { motion } from "motion/react";
-import type { ComponentType, ReactNode } from "react";
+import type { ReactNode } from "react";
+
+/* Explicit tag map keeps the motion component union small enough for tsc
+   (indexing motion[] across every intrinsic blows the union-complexity limit). */
+const TAGS = {
+  div: motion.div,
+  section: motion.section,
+  span: motion.span,
+  p: motion.p,
+  h1: motion.h1,
+  h2: motion.h2,
+  h3: motion.h3,
+  ul: motion.ul,
+  li: motion.li,
+} as const;
 
 interface FadeInProps {
   children: ReactNode;
@@ -10,7 +24,7 @@ interface FadeInProps {
   x?: number;
   y?: number;
   className?: string;
-  as?: ComponentType<any> | keyof JSX.IntrinsicElements;
+  as?: keyof typeof TAGS;
 }
 
 /**
@@ -24,9 +38,9 @@ export function FadeIn({
   x = 0,
   y = 30,
   className,
-  as,
+  as = "div",
 }: FadeInProps) {
-  const Component = as ? motion[as as keyof typeof motion] || motion.div : motion.div;
+  const Component = TAGS[as];
 
   return (
     <Component
@@ -56,9 +70,9 @@ export function FadeInStatic({
   x = 0,
   y = 30,
   className,
-  as,
+  as = "div",
 }: FadeInProps) {
-  const Component = as ? motion[as as keyof typeof motion] || motion.div : motion.div;
+  const Component = TAGS[as];
 
   return (
     <Component

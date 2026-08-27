@@ -58,7 +58,8 @@ export const metadata: Metadata = {
     title: TITLE,
     description,
     locale: "en_US",
-    images: [{ url: "/images/profile.webp", width: 512, height: 512, alt: site.name }],
+    // og:image comes from the file convention (src/app/opengraph-image.tsx),
+    // which outranks anything listed here — keep this empty to avoid a stale double.
   },
   twitter: {
     card: "summary_large_image",

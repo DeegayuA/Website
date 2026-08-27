@@ -78,9 +78,10 @@ export const skills = [
   "OPC UA",
 ] as const;
 
+/* "/#id" (not "#id") so links work from subpages like /work/[slug] too */
 export const nav = [
-  { label: "About", href: "#about" },
-  { label: "Projects", href: "#projects" },
-  { label: "Experience", href: "#experience" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "/#about" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Experience", href: "/#experience" },
+  { label: "Contact", href: "/#contact" },
 ] as const;

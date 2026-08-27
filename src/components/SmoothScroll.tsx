@@ -14,12 +14,19 @@ export function SmoothScroll() {
     const lenis = new Lenis({ lerp: 0.115, smoothWheel: true, autoRaf: true });
 
     const onClick = (e: MouseEvent) => {
-      const anchor = (e.target as HTMLElement).closest?.('a[href^="#"]');
+      // Nav links are "/#section" so they also work from sub-pages; match
+      // both forms and only intercept when the anchor targets THIS page
+      const anchor = (e.target as HTMLElement).closest?.('a[href*="#"]');
       if (!anchor) return;
-      const hash = anchor.getAttribute("href")!;
+      const href = anchor.getAttribute("href")!;
+      const [path, id] = href.split("#");
+      if (!id) return;
+      if (path && path !== "/" && path !== window.location.pathname) return;
+      if (path === "/" && window.location.pathname !== "/") return;
       // Skip the handler for skip-to-content link — let native jump + focus work
-      if (hash === "#main") return;
-      const target = hash.length > 1 && document.querySelector(hash);
+      if (id === "main") return;
+      const hash = `#${id}`;
+      const target = document.getElementById(id);
       if (!target) return;
       e.preventDefault();
       lenis.scrollTo(target as HTMLElement, {

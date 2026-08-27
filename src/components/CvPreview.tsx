@@ -1,31 +1,65 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import { Download, ArrowUpRight, X } from "lucide-react";
 import { site } from "@/data/site";
 
 /**
- * CV teaser card — the top slice of the actual PDF in a paper card. Clicking
- * the card opens the full PDF in an in-page popup; the embed points straight
- * at the file in /public, so replacing the PDF updates preview and popup.
- * Rendered inside the Contact section's right column.
+ * CV teaser card — the top slice of page 1, pre-rendered to a static image
+ * (`npm run render-cv` regenerates it whenever the PDF changes). An <object>
+ * PDF embed showed browser chrome and rendered nothing on iOS Safari; a plain
+ * image is identical everywhere and cheaper. Clicking opens the full PDF in a
+ * focus-trapped popup. Rendered inside the Contact section's right column.
  */
 export function CvCard() {
   const [open, setOpen] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
 
   const close = useCallback(() => setOpen(false), []);
 
   useEffect(() => {
     if (!open) return;
+    returnFocusRef.current = document.activeElement as HTMLElement | null;
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
+      if (e.key === "Escape") {
+        close();
+        return;
+      }
+      // Focus trap — Tab cycles within the dialog
+      if (e.key === "Tab" && dialogRef.current) {
+        const focusables = dialogRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button, iframe, [tabindex]:not([tabindex="-1"])',
+        );
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
+
     document.addEventListener("keydown", onKey);
     document.documentElement.style.overflow = "hidden";
+    // Move focus into the dialog once it exists
+    requestAnimationFrame(() => {
+      dialogRef.current
+        ?.querySelector<HTMLElement>("[data-autofocus]")
+        ?.focus();
+    });
     return () => {
       document.removeEventListener("keydown", onKey);
       document.documentElement.style.overflow = "";
+      returnFocusRef.current?.focus();
     };
   }, [open, close]);
 
@@ -52,24 +86,20 @@ export function CvCard() {
           type="button"
           onClick={() => setOpen(true)}
           aria-haspopup="dialog"
+          aria-expanded={open}
           aria-label="Open the full CV in a popup"
           className="block w-full cursor-pointer"
         >
-          {/* Top slice of the A4 page. The embed is scaled up a touch so the
-              PDF viewer's dark edge chrome is cropped outside the frame. */}
+          {/* Top slice of the A4 page, cropped from the pre-rendered page 1 */}
           <span className="pointer-events-none block aspect-[210/52] w-full overflow-hidden bg-white">
-            <object
-              data={`${site.cv}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
-              type="application/pdf"
-              aria-hidden="true"
-              className="block aspect-[210/297] w-full origin-top scale-[1.06]"
-            >
-              <span className="flex aspect-[210/52] w-full items-center justify-center bg-white">
-                <span className="font-mono text-xs uppercase tracking-widest text-neutral-500">
-                  {site.name} — Curriculum Vitae
-                </span>
-              </span>
-            </object>
+            <Image
+              src="/cv/cv-preview.webp"
+              alt=""
+              width={1241}
+              height={1754}
+              sizes="(max-width: 640px) 100vw, 560px"
+              className="block w-full"
+            />
           </span>
         </button>
 
@@ -90,8 +120,11 @@ export function CvCard() {
         </div>
       </div>
 
-      {/* Full-CV popup */}
-      <AnimatePresence>
+      {/* Full-CV popup — portaled to <body> so no animated/transformed
+          ancestor (FadeIn) can trap the fixed overlay; z above every layer */}
+      {typeof document !== "undefined" &&
+        createPortal(
+          <AnimatePresence>
         {open && (
           <motion.div
             role="dialog"
@@ -101,34 +134,40 @@ export function CvCard() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 p-4 sm:p-8"
+            className="fixed inset-0 z-[1200] bg-black/80"
             onClick={close}
           >
             <motion.div
-              initial={{ y: 24, scale: 0.97 }}
+              ref={dialogRef}
+              initial={{ y: 24, scale: 0.99 }}
               animate={{ y: 0, scale: 1 }}
-              exit={{ y: 24, scale: 0.97 }}
+              exit={{ y: 24, scale: 0.99 }}
               transition={{ duration: 0.35, ease: [0.21, 0.47, 0.32, 0.98] }}
-              className="relative h-[88vh] w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-2xl"
+              className="relative h-full w-full overflow-hidden bg-[#323639]"
               onClick={(e) => e.stopPropagation()}
             >
+              {/* toolbar=0 strips the viewer chrome; the container matches the
+                  viewer's gutter color so the page reads edge-to-edge */}
               <iframe
-                src={`${site.cv}#view=FitH`}
+                src={`${site.cv}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
                 title="Curriculum vitae PDF"
                 className="h-full w-full"
               />
               <button
                 type="button"
                 onClick={close}
+                data-autofocus
                 aria-label="Close CV popup"
-                className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-slab text-slab-fg shadow-lg transition-transform duration-200 hover:scale-110 active:scale-95"
+                className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-slab text-slab-fg shadow-lg transition-transform duration-200 hover:scale-110 active:scale-95"
               >
                 <X size={16} aria-hidden="true" />
               </button>
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+          </AnimatePresence>,
+          document.body,
+        )}
     </div>
   );
 }
