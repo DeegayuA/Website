@@ -32,7 +32,7 @@ export function Section({
             <p className="label mb-3 flex items-center gap-2 text-accent">
               <span
                 aria-hidden="true"
-                className="inline-block h-1.5 w-1.5 rounded-full bg-spark"
+                className="inline-block h-1.5 w-1.5 rounded-full bg-foreground"
               />
               {eyebrow}
             </p>

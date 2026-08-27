@@ -14,9 +14,10 @@ import {
   type RepoActivity,
 } from "@/lib/github";
 
-/* GitHub data refreshes weekly via ISR — the page re-renders itself in the
-   background on Vercel, keeping commit maps current without a cron job. */
-export const revalidate = 604800;
+/* GitHub data refreshes every 6h via ISR — the page re-renders itself in the
+   background on Vercel, keeping commit maps current for every repo (owned,
+   contributed, open source) with no per-repo webhook setup. */
+export const revalidate = 21600;
 
 /** Structured data for rich search results. */
 function JsonLd() {
@@ -25,6 +26,7 @@ function JsonLd() {
     "@type": "Person",
     name: site.name,
     url: site.url,
+    image: `${site.url}/images/profile.webp`,
     email: `mailto:${site.email}`,
     telephone: site.phone,
     jobTitle: site.roles,

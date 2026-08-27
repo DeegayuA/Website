@@ -50,21 +50,21 @@ export const work: TimelineEntry[] = [
 export const education: TimelineEntry[] = [
   {
     title: "Master of Data Science & AI",
-    org: "Department of Computer Science & Engineering, University of Moratuwa (UOM)",
+    org: "Department of Computer Science Engineering, Faculty of Engineering, University of Moratuwa (UOM)",
     period: "Apr 2025 — Present",
     detail: "Postgraduate specialization in machine learning, deep learning, artificial intelligence, and computer vision.",
     ongoing: true,
   },
   {
     title: "Master of Information Technology (MIT)",
-    org: "Faculty of Science, University of Kelaniya (UOK)",
+    org: "Department of Industrial Management, Faculty of Science, University of Kelaniya (UOK)",
     period: "Aug 2024 — Present",
     detail: "Postgraduate studies focused on modern software systems, web engineering, and IT architecture.",
     ongoing: true,
   },
   {
     title: "BSc in Physical Science",
-    org: "Faculty of Science, University of Kelaniya (UOK)",
+    org: "Department of Physics & Electronics, Faculty of Science, University of Kelaniya (UOK)",
     period: "Jul 2021 — Apr 2024",
     detail: "Computer Studies, Electronics, and Physics.",
   },

@@ -37,8 +37,11 @@ const GIFS = [
 const ROW_ONE = GIFS.slice(0, 11);
 const ROW_TWO = GIFS.slice(11);
 
-function tripled(row: readonly string[]) {
-  return [...row, ...row, ...row];
+/* Two copies: one covers any viewport plus the ±280px scroll drift; the
+   second is margin for ultrawide screens. A third copy only inflated the
+   DOM and GIF downloads without ever entering the viewport. */
+function doubled(row: readonly string[]) {
+  return [...row, ...row];
 }
 
 function MarqueeRow({
@@ -50,8 +53,8 @@ function MarqueeRow({
 }) {
   return (
     <div className="flex justify-center">
-      <div ref={rowRef} className="flex w-max shrink-0 gap-3 will-change-transform">
-        {tripled(sources).map((src, i) => (
+      <div ref={rowRef} className="flex w-max shrink-0 gap-3">
+        {doubled(sources).map((src, i) => (
           <img
             key={`${src}-${i}`}
             src={src}

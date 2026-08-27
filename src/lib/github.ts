@@ -1,7 +1,7 @@
 /**
  * GitHub repo activity for project cards.
  *
- * Fetches are cached with weekly ISR revalidation (`revalidate: 604800`), so
+ * Fetches are cached with 6-hourly ISR revalidation, so
  * on Vercel the data refreshes itself once a week in the background — no
  * separate cron needed. Every helper fails soft (returns null) so a GitHub
  * outage or rate limit can never break the page build.
@@ -9,7 +9,9 @@
  * Optional: set GITHUB_TOKEN in the environment to raise the API rate limit.
  */
 
-const WEEK_SECONDS = 604800;
+/* 6h — fresh enough to track active development on every repo (owned,
+   contributed, open source) without any per-repo webhook setup. */
+const REFRESH_SECONDS = 21600;
 
 export interface RepoActivity {
   /** "owner/name" */
@@ -50,11 +52,11 @@ export async function getRepoActivity(
     const [metaRes, statsRes] = await Promise.all([
       fetch(`https://api.github.com/repos/${repo}`, {
         headers: apiHeaders(),
-        next: { revalidate: WEEK_SECONDS },
+        next: { revalidate: REFRESH_SECONDS, tags: ["github"] },
       }),
       fetch(`https://api.github.com/repos/${repo}/stats/commit_activity`, {
         headers: apiHeaders(),
-        next: { revalidate: WEEK_SECONDS },
+        next: { revalidate: REFRESH_SECONDS, tags: ["github"] },
       }),
     ]);
 

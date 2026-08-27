@@ -29,19 +29,24 @@ function RoleRotator() {
   }
 
   return (
-    <div className="relative h-5 w-full sm:h-6" aria-live="polite">
-      <AnimatePresence initial={false}>
-        <motion.p
-          key={i}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-          className={`absolute inset-0 flex items-center justify-center ${ROLE_CLASS}`}
-        >
-          {site.roles[i]}
-        </motion.p>
-      </AnimatePresence>
+    <div className="relative h-5 w-full sm:h-6">
+      {/* Static list for screen readers — the rotating copy would otherwise
+          re-announce itself every 2.5s via a live region */}
+      <p className="sr-only">{site.roles.join(", ")}</p>
+      <span aria-hidden="true">
+        <AnimatePresence initial={false}>
+          <motion.p
+            key={i}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className={`absolute inset-0 flex items-center justify-center ${ROLE_CLASS}`}
+          >
+            {site.roles[i]}
+          </motion.p>
+        </AnimatePresence>
+      </span>
     </div>
   );
 }
@@ -51,7 +56,7 @@ function RoleRotator() {
       keeping the hero SSR-visible. ─────────────────────────────── */
 const NAME = {
   en: ["DEEGHAYU", "ADHIKARI"],
-  si: ["දීඝායු", "අධිකාරි"],
+  si: ["දිඝායු", "අධිකාරි"],
 } as const;
 
 function NameRotator() {
@@ -73,9 +78,9 @@ function NameRotator() {
     <h1
       className={
         isSi
-          ? // Sinhala glyphs carry tall ascenders/descenders — looser leading,
-            // slightly smaller size, so the two lines never collide
-            "hero-heading w-full text-center text-[10.5vw] font-black leading-[1.12] tracking-tight sm:text-[11.5vw] md:text-[12.5vw]"
+          ? // Sinhala glyphs carry tall ascenders/descenders — much looser
+            // leading and a smaller size so the two lines never collide
+            "hero-heading w-full text-center text-[9vw] font-black leading-[1.45] tracking-normal sm:text-[10vw] md:text-[11vw]"
           : "hero-heading w-full text-center text-[13vw] font-black uppercase leading-none tracking-tight sm:text-[14vw] md:text-[15vw]"
       }
       style={
@@ -115,7 +120,7 @@ export function Hero() {
     <section
       id="home"
       aria-label="Introduction"
-      className="relative flex h-screen flex-col overflow-x-clip"
+      className="relative flex h-dvh flex-col overflow-x-clip"
     >
       {/* Heading block — h1 is SSR-visible, never opacity-animated */}
       <div className="flex flex-1 flex-col items-center justify-center pt-20 sm:pt-24">

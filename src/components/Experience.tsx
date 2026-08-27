@@ -27,16 +27,10 @@ function EntryRow({
         </div>
         <div className="min-w-0 flex-1">
           <h3
-            className="mb-1.5 flex flex-wrap items-center gap-2 font-medium uppercase leading-tight tracking-wide"
+            className="mb-1.5 font-medium uppercase leading-tight tracking-wide"
             style={{ fontSize: "clamp(1rem, 1.5vw, 1.4rem)" }}
           >
             {entry.title}
-            {entry.ongoing && (
-              <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-[var(--line)] px-2.5 py-0.5 text-[11px] font-semibold normal-case tracking-normal text-muted">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
-                In progress
-              </span>
-            )}
           </h3>
           <p
             className="mb-0.5 font-light text-muted opacity-60"
@@ -44,7 +38,15 @@ function EntryRow({
           >
             {entry.org}
           </p>
-          <p className="mb-2 text-sm font-light text-muted">{entry.period}</p>
+          <p className="mb-2 flex flex-wrap items-center gap-2 text-sm font-light text-muted">
+            {entry.period}
+            {entry.ongoing && (
+              <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-[var(--line)] px-2.5 py-0.5 text-[11px] font-semibold text-muted">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+                In progress
+              </span>
+            )}
+          </p>
           {entry.detail && (
             <p
               className="max-w-2xl font-light leading-relaxed opacity-60"

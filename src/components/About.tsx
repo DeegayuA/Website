@@ -77,6 +77,19 @@ export function About() {
           </h2>
         </FadeIn>
 
+        {/* Portrait */}
+        <FadeIn delay={0.05} className="-mt-2 sm:-mt-4">
+          <div className="relative mx-auto h-28 w-28 -rotate-2 overflow-hidden rounded-3xl ring-1 ring-[var(--line)] shadow-[0_18px_40px_-18px_rgba(12,12,12,0.45)] transition-transform duration-500 ease-out hover:rotate-0 hover:scale-105 sm:h-32 sm:w-32">
+            <Image
+              src="/images/profile.webp"
+              alt={`Portrait of ${site.name}`}
+              fill
+              sizes="128px"
+              className="object-cover"
+            />
+          </div>
+        </FadeIn>
+
         {/* Bio paragraph with animated text */}
         <FadeIn delay={0.1}>
           <AnimatedText className="text-center font-medium leading-relaxed text-[clamp(1rem,2vw,1.35rem)]">

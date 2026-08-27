@@ -26,6 +26,12 @@ export function SmoothScroll() {
         offset: -88,
         duration: 1.1,
         easing: (t) => 1 - Math.pow(1 - t, 4),
+        // cv-section heights are only estimated until first render, so the
+        // document can shift while easing past them — settle on the real
+        // position once the animation lands
+        onComplete: () => {
+          lenis.scrollTo(target as HTMLElement, { offset: -88, immediate: true });
+        },
       });
       // Set focus on the target and update URL
       (target as HTMLElement).tabIndex = -1;

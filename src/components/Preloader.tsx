@@ -115,9 +115,16 @@ export function Preloader() {
             initial={{ scale: 0.5, opacity: 0, rotate: -8 }}
             animate={{ scale: 1, opacity: 1, rotate: 0 }}
             transition={{ type: "spring", stiffness: 230, damping: 20 }}
-            className="orb flex h-18 w-18 items-center justify-center rounded-[1.5rem] font-display text-2xl font-bold text-accent"
+            className="orb flex h-18 w-18 items-center justify-center overflow-hidden rounded-[1.5rem] font-display text-2xl font-bold"
           >
-            DA
+            {/* eslint-disable-next-line @next/next/no-img-element -- preloader paints before hydration; skip Image optimization */}
+            <img
+              src="/images/profile.webp"
+              alt=""
+              width={72}
+              height={72}
+              className="h-full w-full object-cover"
+            />
           </motion.div>
 
           <p
@@ -148,7 +155,7 @@ export function Preloader() {
             className="mt-8 h-0.5 w-44 overflow-hidden rounded-full bg-foreground/10"
           >
             <motion.div
-              className="h-full rounded-full bg-gradient-to-r from-accent via-accent-2 to-accent-3"
+              className="h-full rounded-full bg-[linear-gradient(90deg,#B600A8,#7621B0,#BE4C00)]"
               initial={{ x: "-100%" }}
               animate={{ x: "0%" }}
               transition={{ duration: 1.05, ease: [0.6, 0.05, 0.3, 1] }}

@@ -163,7 +163,7 @@ export const projects: Project[] = [
       "Android app that solves assignments from a photo using AI.",
     image: "/images/snaplearn.jpeg",
     categories: ["software", "ai"],
-    tech: ["Android", "Java", "AI"],
+    tech: ["Android", "Kotlin", "AI"],
     links: [{ label: "GitHub", href: "https://github.com/DeegayuA/SnapLearn" }],
   },
   {

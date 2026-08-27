@@ -47,9 +47,11 @@
   --color-slab-line: var(--slab-line);
   /* Monochrome design: "accent" resolves to ink so pills/pins invert cleanly */
   --color-accent: var(--foreground);
+  --color-accent-soft: color-mix(in srgb, var(--foreground) 10%, transparent);
   --color-spark: var(--slab-fg);
   --color-spark-soft: color-mix(in srgb, var(--slab) 62%, transparent);
   --font-sans: var(--font-kanit);
+  --font-display: var(--font-kanit);
 }
 
 /* ──────────────────────────────────────────────────────────────
@@ -141,6 +143,60 @@ body {
     animation: none;
   }
 
+  /* Frosted glass surfaces — cards, filter bar, 404 card */
+  .glass {
+    background: var(--surface);
+    box-shadow: inset 0 0 0 1px var(--glass-border);
+    -webkit-backdrop-filter: blur(14px) saturate(1.35);
+    backdrop-filter: blur(14px) saturate(1.35);
+  }
+  .glass-lens {
+    -webkit-backdrop-filter: blur(18px) saturate(1.5);
+    backdrop-filter: blur(18px) saturate(1.5);
+  }
+  /* Hairline ring + top bevel highlight (declared after .glass so it wins) */
+  .bevel {
+    box-shadow:
+      inset 0 0 0 1px var(--glass-border),
+      inset 0 1.5px 0 0 color-mix(in srgb, #fff 40%, transparent);
+  }
+  .glass-sheen {
+    position: relative;
+  }
+  .glass-sheen::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1px;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--foreground) 30%, transparent),
+      transparent
+    );
+  }
+  .glass-button {
+    background: var(--surface);
+    box-shadow: inset 0 0 0 1px var(--glass-border);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+  /* Steel-to-ink gradient text (404 numeral) */
+  .text-shine {
+    background: linear-gradient(180deg, var(--grad-a) 0%, var(--grad-b) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  [data-quality="low"] .glass,
+  [data-quality="low"] .glass-lens,
+  [data-quality="low"] .glass-button {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
   /* Navbar once the page is scrolled — frosted glass pill */
   .nav-glass {
     background: color-mix(in srgb, var(--background) 72%, transparent);
@@ -173,6 +229,100 @@ body {
   }
   [data-quality="low"] .glint {
     display: none;
+  }
+
+  /* Hero mesh backdrop — pre-painted radial fields drifted by transform
+     only (GPU-composited, no filter blur, no per-frame repaint) */
+  .mesh-base {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      70% 55% at 50% 0%,
+      color-mix(in srgb, var(--foreground) 5%, transparent),
+      transparent 70%
+    );
+  }
+  .mesh-blob {
+    position: absolute;
+    width: 48vw;
+    min-width: 420px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    opacity: 0.6;
+    will-change: transform;
+  }
+  .mesh-blob--a {
+    top: -12%;
+    left: -8%;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, #7621b0 9%, transparent),
+      transparent 62%
+    );
+    animation:
+      mesh-a 38s ease-in-out infinite alternate,
+      mesh-hue 52s ease-in-out infinite alternate;
+  }
+  .mesh-blob--b {
+    top: 6%;
+    right: -12%;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--grad-a) 26%, transparent),
+      transparent 60%
+    );
+    animation:
+      mesh-b 46s ease-in-out infinite alternate,
+      mesh-hue 64s ease-in-out infinite alternate-reverse;
+  }
+  .mesh-blob--c {
+    bottom: -18%;
+    left: 12%;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, #b600a8 6%, transparent),
+      transparent 62%
+    );
+    animation:
+      mesh-c 54s ease-in-out infinite alternate,
+      mesh-hue 58s ease-in-out infinite alternate;
+  }
+  .mesh-blob--d {
+    bottom: -8%;
+    right: 8%;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--foreground) 7%, transparent),
+      transparent 65%
+    );
+    animation: mesh-d 62s ease-in-out infinite alternate;
+  }
+  /* Cursor spotlight — JS nudges transform, CSS owns the paint */
+  .spotlight {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1280px;
+    height: 1280px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--foreground) 5%, transparent),
+      transparent 55%
+    );
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    will-change: transform;
+  }
+  [data-quality="low"] .mesh-blob,
+  [data-quality="low"] .spotlight {
+    display: none;
+  }
+
+  /* Preloader monogram chip */
+  .orb {
+    background: var(--slab);
+    color: var(--slab-fg);
   }
 
   /* Grain overlay (Preloader) */
@@ -233,6 +383,33 @@ html.lenis {
 @keyframes marquee-scroll {
   to {
     transform: translateX(-50%);
+  }
+}
+
+@keyframes mesh-a {
+  to {
+    transform: translate3d(16vw, 10vh, 0) scale(1.15);
+  }
+}
+@keyframes mesh-b {
+  to {
+    transform: translate3d(-14vw, 14vh, 0) scale(0.9);
+  }
+}
+@keyframes mesh-c {
+  to {
+    transform: translate3d(12vw, -10vh, 0) scale(1.1);
+  }
+}
+@keyframes mesh-d {
+  to {
+    transform: translate3d(-10vw, -12vh, 0) scale(1.2);
+  }
+}
+/* Slow palette drift — violet fields lean magenta/indigo over ~1 min */
+@keyframes mesh-hue {
+  to {
+    filter: hue-rotate(55deg);
   }
 }
 

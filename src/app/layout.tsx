@@ -7,6 +7,7 @@ import { Preloader } from "@/components/Preloader";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { CustomCursor } from "@/components/CustomCursor";
 import { ScrollProgress } from "@/components/ScrollProgress";
+import { AuroraBackground } from "@/components/AuroraBackground";
 import { site } from "@/data/site";
 import "./globals.css";
 
@@ -57,6 +58,7 @@ export const metadata: Metadata = {
     title: TITLE,
     description,
     locale: "en_US",
+    images: [{ url: "/images/profile.webp", width: 512, height: 512, alt: site.name }],
   },
   twitter: {
     card: "summary_large_image",
@@ -98,6 +100,7 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col">
         <Providers>
+          <AuroraBackground />
           <ScrollProgress />
           <CustomCursor />
           <Preloader />

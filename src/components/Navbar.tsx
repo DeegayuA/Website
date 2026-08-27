@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { motion } from "motion/react";
 import { nav } from "@/data/site";
 import { ThemeToggle } from "./ThemeToggle";
@@ -65,13 +66,22 @@ export function Navbar() {
         >
           <a
             href="#home"
-            className="font-black uppercase tracking-tight text-foreground"
+            className="group flex items-center gap-2.5 font-black uppercase tracking-tight text-foreground"
+            style={{ fontFamily: "var(--font-sinhala), var(--font-kanit), sans-serif" }}
           >
-            DA
+            <Image
+              src="/images/profile.webp"
+              alt=""
+              width={34}
+              height={34}
+              priority
+              className="rounded-full ring-1 ring-[var(--line)] transition-transform duration-300 ease-out group-hover:scale-110"
+            />
+            <span className="hidden sm:inline">දිඝායු</span>
             <span className="sr-only">— back to home</span>
           </a>
 
-          <ul className="flex items-center gap-4 sm:gap-6 md:gap-8">
+          <ul className="flex items-center gap-2 sm:gap-6 md:gap-8">
             {nav.map((item) => {
               const isActive = active === item.href.slice(1);
               return (
@@ -80,7 +90,7 @@ export function Navbar() {
                     href={item.href}
                     aria-current={isActive ? "location" : undefined}
                     className={cn(
-                      "relative uppercase font-medium tracking-wider text-xs sm:text-sm md:text-base transition-opacity duration-200",
+                      "relative whitespace-nowrap uppercase font-medium text-[11px] tracking-normal sm:text-sm sm:tracking-wider md:text-base transition-opacity duration-200",
                       "after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:bg-current after:transition-transform after:duration-300 after:ease-out",
                       isActive
                         ? "opacity-100 after:scale-x-100"

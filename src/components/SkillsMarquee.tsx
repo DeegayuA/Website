@@ -22,7 +22,7 @@ export function SkillsMarquee() {
             {hasBrandIcon(skill) ? (
               <BrandIcon name={skill} size={17} brand />
             ) : (
-              <span className="h-1.5 w-1.5 rounded-full bg-spark" />
+              <span className="h-1.5 w-1.5 rounded-full bg-foreground/70" />
             )}
             {skill}
           </span>
@@ -37,7 +37,7 @@ export function SkillsMarquee() {
               {hasBrandIcon(skill) ? (
                 <BrandIcon name={skill} size={17} brand />
               ) : (
-                <span className="h-1.5 w-1.5 rounded-full bg-spark" />
+                <span className="h-1.5 w-1.5 rounded-full bg-foreground/70" />
               )}
               {skill}
             </span>

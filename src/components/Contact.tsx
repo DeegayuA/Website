@@ -4,6 +4,20 @@ import { useState } from "react";
 import { LoaderCircle, Check } from "lucide-react";
 import { site } from "@/data/site";
 import { FadeIn } from "./FadeIn";
+import { CvCard } from "./CvPreview";
+
+const contactRows = [
+  {
+    label: "Email",
+    value: site.email,
+    href: `mailto:${site.email}?subject=Hello%20from%20your%20website`,
+    external: false,
+  },
+  { label: "Phone", value: site.phone, href: site.phoneHref, external: false },
+  { label: "WhatsApp", value: "Chat on WhatsApp", href: site.whatsapp, external: true },
+  { label: "Telegram", value: "Message on Telegram", href: site.telegram, external: true },
+  { label: "Location", value: site.location, href: site.locationUrl, external: true },
+] as const;
 
 const FORM_ENDPOINT = "https://formspree.io/f/xnqljrpj";
 
@@ -14,46 +28,6 @@ const inputClasses =
 
 const labelClasses =
   "mb-1 block text-xs font-medium uppercase tracking-widest text-muted";
-
-const contactRows = [
-  {
-    label: "Email",
-    value: site.email,
-    href: `mailto:${site.email}?subject=Hello%20from%20your%20website`,
-    external: false,
-  },
-  {
-    label: "Phone",
-    value: site.phone,
-    href: site.phoneHref,
-    external: false,
-  },
-  {
-    label: "WhatsApp",
-    value: "Chat on WhatsApp",
-    href: site.whatsapp,
-    external: true,
-  },
-  {
-    label: "Telegram",
-    value: "Message on Telegram",
-    href: site.telegram,
-    external: true,
-  },
-  {
-    label: "Location",
-    value: site.location,
-    href: site.locationUrl,
-    external: true,
-  },
-  {
-    label: "CV",
-    value: "Download CV",
-    href: site.cv,
-    external: false,
-    download: true,
-  },
-] as const;
 
 export function Contact() {
   const [status, setStatus] = useState<Status>("idle");
@@ -84,40 +58,17 @@ export function Contact() {
         borderRadius: "clamp(40px, 5vw, 60px) clamp(40px, 5vw, 60px) 0 0",
       }}
     >
-      <div className="px-5 py-20 sm:px-8 sm:py-24 md:px-10 md:py-32">
+      <div className="px-5 py-16 sm:px-8 sm:py-20 md:px-10 md:py-24">
         {/* Heading */}
-        <FadeIn as="h2" className="hero-heading mb-16 text-center font-black uppercase tracking-tight leading-none sm:mb-20 md:mb-28">
+        <FadeIn as="h2" className="hero-heading mb-10 text-center font-black uppercase tracking-tight leading-none sm:mb-12 md:mb-14">
           <span style={{ fontSize: "clamp(3rem, 12vw, 160px)" }} className="block">
             Let&apos;s Talk
           </span>
         </FadeIn>
 
-        {/* Two columns */}
-        <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-2 lg:gap-20">
-          {/* Left: contact rows */}
-          <div>
-            {contactRows.map((row, i) => (
-              <FadeIn key={row.label} delay={i * 0.05} className="border-b border-[var(--line)]">
-                <a
-                  href={row.href}
-                  {...(row.external
-                    ? { target: "_blank", rel: "noopener noreferrer" }
-                    : {})}
-                  {...("download" in row && row.download ? { download: "" } : {})}
-                  className="group flex items-baseline justify-between gap-6 py-5 sm:py-6"
-                >
-                  <span className="text-xs font-medium uppercase tracking-widest text-muted">
-                    {row.label}
-                  </span>
-                  <span className="min-w-0 break-words text-right text-sm font-medium transition-opacity duration-200 group-hover:opacity-70 sm:text-base">
-                    {row.value}
-                  </span>
-                </a>
-              </FadeIn>
-            ))}
-          </div>
-
-          {/* Right: Formspree form */}
+        {/* Form on the left; CV + direct channels stacked on the right —
+            one viewport instead of three stacked sections */}
+        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-16">
           <FadeIn delay={0.1}>
             <form onSubmit={onSubmit} aria-label="Contact form">
               <div className="grid gap-6 sm:grid-cols-2">
@@ -220,8 +171,34 @@ export function Contact() {
               </div>
             </form>
           </FadeIn>
-        </div>
 
+          {/* Right column: CV card + direct channels */}
+          <FadeIn delay={0.15} className="flex flex-col gap-10">
+            <CvCard />
+            <div>
+              <span className="label mb-1 block uppercase tracking-widest text-muted">
+                Contact info
+              </span>
+              {contactRows.map((row) => (
+                <a
+                  key={row.label}
+                  href={row.href}
+                  {...(row.external
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                  className="group flex items-baseline justify-between gap-6 border-b border-[var(--line)] py-3.5"
+                >
+                  <span className="text-xs font-medium uppercase tracking-widest text-muted">
+                    {row.label}
+                  </span>
+                  <span className="min-w-0 break-words text-right text-sm font-medium transition-opacity duration-200 group-hover:opacity-70 sm:text-base">
+                    {row.value}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </FadeIn>
+        </div>
       </div>
     </section>
   );
