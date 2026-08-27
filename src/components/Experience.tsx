@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { work, education, type TimelineEntry } from "@/data/experience";
 import { FadeIn } from "./FadeIn";
+import { ParallaxDrift } from "./ParallaxDrift";
 
 /* "Sep 2025 — Present" → "1 yr 0 mos" (LinkedIn-style duration) */
 const MONTHS: Record<string, number> = {
@@ -145,13 +146,15 @@ export function Experience() {
       className="relative cv-section overflow-x-clip"
     >
       <div className="px-5 py-20 sm:px-8 sm:py-24 md:px-10 md:py-28">
-        {/* Heading */}
-        <h2
-          className="hero-heading mb-10 text-center font-black uppercase tracking-tight leading-none sm:mb-12 md:mb-16"
-          style={{ fontSize: "clamp(3rem, 12vw, 160px)" }}
-        >
-          Experience
-        </h2>
+        {/* Heading — drifts a touch faster than the body on scroll */}
+        <ParallaxDrift distance={34}>
+          <h2
+            className="hero-heading mb-10 text-center font-black uppercase tracking-tight leading-none sm:mb-12 md:mb-16"
+            style={{ fontSize: "clamp(3rem, 12vw, 160px)" }}
+          >
+            Experience
+          </h2>
+        </ParallaxDrift>
 
         <div className="mx-auto max-w-6xl">
           <Group label="Work" entries={work} />

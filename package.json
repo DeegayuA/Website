@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit",
     "update-screenshots": "node scripts/capture-fresh.mjs",
     "test:e2e": "playwright test",
-    "render-cv": "pdftoppm -png -f 1 -l 1 -r 150 public/cv/Deeghayu_Adhikari_CV.pdf public/cv/cv-preview && cwebp -q 82 public/cv/cv-preview-1.png -o public/cv/cv-preview.webp && rm public/cv/cv-preview-1.png"
+    "render-cv": "pdftoppm -png -f 1 -l 1 -r 150 public/cv/Deeghayu_Adhikari_CV.pdf public/cv/cv-preview && cwebp -q 82 -crop 0 0 1241 360 public/cv/cv-preview-1.png -o public/cv/cv-preview.webp && rm public/cv/cv-preview-1.png"
   },
   "engines": {
     "node": ">=20.9.0"

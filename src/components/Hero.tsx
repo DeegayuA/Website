@@ -70,9 +70,10 @@ const NAME_TILT = 7; // deg — subtle 3D lean toward the pointer
 
 function NameRotator() {
   const [lang, setLang] = useState<keyof typeof NAME>("en");
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  // Ref, not state: pausing must not reset the interval or re-render
-  const pausedRef = useRef(false);
+  // The dual-layer name stack — HeroFluid rasterises its rows for the mask
+  const headingRef = useRef<HTMLDivElement>(null);
+  // The pointer-pause hit area — the tilting wrapper around heading + ink
+  const areaRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
 
   // 3D tilt — springs chase the pointer, settle to flat when it leaves
@@ -81,13 +82,74 @@ function NameRotator() {
   const srx = useSpring(rx, { stiffness: 120, damping: 18 });
   const sry = useSpring(ry, { stiffness: 120, damping: 18 });
 
+  /* Language-swap timer with true pause/resume. Hovering the heading (or
+     the same 80px margin the fluid ink stirs in) freezes the countdown —
+     the swap never fires mid-play. On leave the countdown resumes where it
+     stopped, and if less than 1s remains it gets 2s of grace so the name
+     never swaps the instant the pointer walks away. */
   useEffect(() => {
     if (reduced) return;
-    const id = setInterval(() => {
-      if (pausedRef.current) return;
+    const PERIOD = 5000;
+    const MIN_REMAINING = 1000;
+    const GRACE = 2000;
+    const MARGIN = 80;
+    let timer: number | undefined;
+    let startedAt = performance.now();
+    let remaining = PERIOD;
+    let paused = false;
+
+    const fire = () => {
       setLang((v) => (v === "en" ? "si" : "en"));
-    }, 5000);
-    return () => clearInterval(id);
+      remaining = PERIOD;
+      startedAt = performance.now();
+      timer = window.setTimeout(fire, PERIOD);
+    };
+    const pause = () => {
+      if (paused) return;
+      paused = true;
+      window.clearTimeout(timer);
+      remaining = Math.max(0, remaining - (performance.now() - startedAt));
+    };
+    const resume = () => {
+      if (!paused) return;
+      paused = false;
+      if (remaining < MIN_REMAINING) remaining += GRACE;
+      startedAt = performance.now();
+      timer = window.setTimeout(fire, remaining);
+    };
+
+    const onMove = (e: PointerEvent) => {
+      const el = areaRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const inside =
+        e.clientX > r.left - MARGIN &&
+        e.clientX < r.right + MARGIN &&
+        e.clientY > r.top - MARGIN &&
+        e.clientY < r.bottom + MARGIN;
+      if (inside) pause();
+      else resume();
+    };
+    const away = () => resume();
+    /* No swaps in background tabs — timers keep firing there while paints
+       don't, which is how crossfade states used to pile up. */
+    const onVisibility = () => {
+      if (document.hidden) pause();
+      else resume();
+    };
+
+    timer = window.setTimeout(fire, PERIOD);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    document.documentElement.addEventListener("pointerleave", away);
+    window.addEventListener("blur", away);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("pointermove", onMove);
+      document.documentElement.removeEventListener("pointerleave", away);
+      window.removeEventListener("blur", away);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
   }, [reduced]);
 
   const onPointerMove = (e: React.PointerEvent) => {
@@ -99,10 +161,9 @@ function NameRotator() {
     rx.set(-py * NAME_TILT * 2);
   };
 
-  const isSi = lang === "si";
-
   return (
     <motion.div
+      ref={areaRef}
       className="relative w-full"
       style={{
         rotateX: srx,
@@ -111,53 +172,53 @@ function NameRotator() {
         transformStyle: "preserve-3d",
       }}
       onPointerMove={onPointerMove}
-      onPointerEnter={() => {
-        pausedRef.current = true;
-      }}
       onPointerLeave={() => {
-        pausedRef.current = false;
         rx.set(0);
         ry.set(0);
       }}
     >
-      <h1
-        ref={headingRef}
-        className={
-          isSi
-            ? // Sinhala glyphs carry tall ascenders/descenders — much looser
-              // leading and a smaller size so the two lines never collide
-              "hero-heading hero-3d w-full text-center text-[9vw] font-black leading-[1.45] tracking-normal sm:text-[10vw] md:text-[11vw]"
-            : "hero-heading hero-3d w-full text-center text-[13vw] font-black uppercase leading-none tracking-tight sm:text-[14vw] md:text-[15vw]"
-        }
-        style={
-          isSi
-            ? { fontFamily: "var(--font-sinhala), var(--font-kanit), sans-serif" }
-            : undefined
-        }
-      >
-        {NAME[lang].map((line, row) => (
-          <span key={row} aria-hidden="true" className="relative block">
-            <AnimatePresence initial={false} mode="popLayout">
-              <motion.span
-                key={`${lang}-${row}`}
-                data-fluid-text
-                initial={{ opacity: 0, y: "0.28em", scale: 0.985 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: "-0.28em", scale: 0.985 }}
-                transition={{
-                  duration: 0.7,
-                  ease: [0.21, 0.47, 0.32, 0.98],
-                  delay: row * 0.08,
-                }}
-                className="block whitespace-nowrap"
-              >
-                {line}
-              </motion.span>
-            </AnimatePresence>
-          </span>
-        ))}
-        <span className="sr-only">Deeghayu Adhikari</span>
-      </h1>
+      <h1 className="sr-only">Deeghayu Adhikari</h1>
+
+      {/* Both language layers stay mounted forever; the swap is a pure CSS
+          opacity/transform crossfade driven by one class toggle. CSS
+          transitions always converge to their target state — a janked
+          frame or hidden tab can delay the fade but can never strand two
+          fully-visible layers on top of each other (which mount/unmount
+          crossfades could). The grid stack keeps the container at the
+          taller layer's height, so nothing below ever reflows on swap. */}
+      <div ref={headingRef} aria-hidden="true" className="grid w-full">
+        {(Object.keys(NAME) as Array<keyof typeof NAME>).map((l) => {
+          const active = l === lang;
+          const sizing =
+            l === "si"
+              ? // Sinhala glyphs carry tall ascenders/descenders — much looser
+                // leading and a smaller size so the two lines never collide
+                "text-[9vw] leading-[1.45] tracking-normal sm:text-[10vw] md:text-[11vw]"
+              : "text-[13vw] uppercase leading-none tracking-tight sm:text-[14vw] md:text-[15vw]";
+          return (
+            <div
+              key={l}
+              data-fluid-layer={l}
+              className={`hero-heading hero-3d col-start-1 row-start-1 w-full self-center text-center font-black transition-[opacity,transform] duration-[850ms] ease-[cubic-bezier(0.32,0.72,0,1)] ${sizing} ${
+                active
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-[0.12em]"
+              }`}
+              style={
+                l === "si"
+                  ? { fontFamily: "var(--font-sinhala), var(--font-kanit), sans-serif" }
+                  : undefined
+              }
+            >
+              {NAME[l].map((line) => (
+                <span key={line} data-fluid-text className="block whitespace-nowrap">
+                  {line}
+                </span>
+              ))}
+            </div>
+          );
+        })}
+      </div>
 
       {/* Fluid ink revealed through the glyphs — noth.in-style, no video */}
       <HeroFluid headingRef={headingRef} lang={lang} />
@@ -177,14 +238,14 @@ export function Hero() {
       <div className="flex flex-1 flex-col items-center justify-center pt-20 sm:pt-24">
         <NameRotator />
 
-        <FadeIn delay={0.15} className="mt-4 w-full sm:mt-6">
+        <FadeIn afterPreload delay={0.05} className="mt-4 w-full sm:mt-6">
           <RoleRotator />
         </FadeIn>
       </div>
 
       {/* Bottom bar */}
       <div className="flex items-end justify-between gap-6 px-6 pb-8 md:px-10 md:pb-10">
-        <FadeIn delay={0.35}>
+        <FadeIn afterPreload delay={0.15}>
           <p className="max-w-[230px] text-[clamp(0.8rem,1.1vw,1.05rem)] font-light leading-relaxed text-muted sm:max-w-[320px] md:max-w-[380px]">
             Software + electronic engineer crafting{" "}
             <span className="font-medium text-foreground">AI-driven platforms</span>,{" "}
@@ -193,7 +254,7 @@ export function Hero() {
           </p>
         </FadeIn>
 
-        <FadeIn delay={0.5}>
+        <FadeIn afterPreload delay={0.25}>
           <Magnetic>
             <ContactButton />
           </Magnetic>

@@ -10,14 +10,14 @@ export function SkillsMarquee() {
   return (
     <div
       aria-hidden="true"
-      className="marquee relative select-none border-y border-(--glass-border) py-6"
+      className="marquee relative select-none py-6"
     >
       <div className="marquee__track flex shrink-0 items-center gap-3 pr-3" style={{ "--marquee-items": skills.length } as React.CSSProperties}>
         {/* Original copy */}
         {skills.map((skill) => (
           <span
             key={`${skill}-original`}
-            className="inline-flex shrink-0 items-center gap-2.5 rounded-full border border-(--glass-border) bg-(--surface) px-4 py-2 text-sm font-medium text-foreground/80"
+            className="inline-flex shrink-0 items-center gap-2.5 rounded-full border border-(--glass-border) bg-(--surface) px-4 py-2 text-sm font-medium text-foreground/80 transition-[transform,border-color] duration-300 hover:-translate-y-0.5 hover:border-foreground/40"
           >
             {hasBrandIcon(skill) ? (
               <BrandIcon name={skill} size={17} brand />
@@ -32,7 +32,7 @@ export function SkillsMarquee() {
           {skills.map((skill) => (
             <span
               key={`${skill}-dup`}
-              className="inline-flex shrink-0 items-center gap-2.5 rounded-full border border-(--glass-border) bg-(--surface) px-4 py-2 text-sm font-medium text-foreground/80"
+              className="inline-flex shrink-0 items-center gap-2.5 rounded-full border border-(--glass-border) bg-(--surface) px-4 py-2 text-sm font-medium text-foreground/80 transition-[transform,border-color] duration-300 hover:-translate-y-0.5 hover:border-foreground/40"
             >
               {hasBrandIcon(skill) ? (
                 <BrandIcon name={skill} size={17} brand />

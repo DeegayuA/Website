@@ -58,7 +58,7 @@ export const education: TimelineEntry[] = [
   {
     title: "Master of Data Science & AI",
     org: "Department of Computer Science Engineering, Faculty of Engineering, University of Moratuwa (UOM)",
-    logo: "/images/logos/uom.png",
+    logo: "/images/logos/uom-crest.png",
     period: "Apr 2025 — Present",
     detail: "Postgraduate specialization in machine learning, deep learning, artificial intelligence, and computer vision.",
     ongoing: true,

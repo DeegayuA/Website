@@ -243,7 +243,7 @@ export const projects: Project[] = [
     title: "Sagawunu Muthukata",
     tagline: "Short film — a chance encounter at a train station",
     description:
-      "A gripping short film I produced — a chance encounter at a train station changes everything.",
+      "Wrote, produced, and edited a short film shot at a railway station in Sri Lanka — a different kind of end-to-end production.",
     image: "/images/shortfilm.jpg",
     categories: ["other"],
     tech: ["Film", "Direction", "Editing"],

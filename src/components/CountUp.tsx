@@ -19,7 +19,9 @@ export function CountUp({
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
   const reduced = useReducedMotion();
-  const [display, setDisplay] = useState(0);
+  // Starts at the REAL value: server HTML, crawlers, and reader modes show
+  // "20+", never "0+". The animation resets to 0 only once it actually runs.
+  const [display, setDisplay] = useState(value);
 
   useEffect(() => {
     if (!inView || reduced) return;

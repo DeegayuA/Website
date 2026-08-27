@@ -5,6 +5,15 @@ import type { RepoActivity } from "@/lib/github";
  * (7 rows × active weeks, last 52 weeks max) showing when the project was
  * actually built. Falls back to the weekly bar strip while GitHub is still
  * computing daily stats. Data arrives from the server; pure markup here.
+ *
+ * variant="compact" (default) — small inline figure with its own caption,
+ * used inside project cards.
+ * variant="panel" — fills the width of a stats panel (case-study pages);
+ * the surrounding panel owns the numbers, so no caption.
+ *
+ * Short repos (fewer than MIN_HEATMAP_WEEKS of history) render a
+ * full-width daily bar strip in both variants — a 3-week repo as a
+ * 3-column heatmap was an unreadable postage stamp.
  */
 
 const CELL = [
@@ -15,17 +24,56 @@ const CELL = [
   "bg-emerald-500",
 ];
 
+const BAR = [
+  "bg-foreground/10",
+  "bg-emerald-500/35",
+  "bg-emerald-500/55",
+  "bg-emerald-500/80",
+  "bg-emerald-500",
+];
+
 const DAY_MS = 86_400_000;
+
+/* A heatmap needs enough columns to read as a calendar; below this the
+   panel variant falls back to full-width weekly bars. */
+const MIN_HEATMAP_WEEKS = 14;
 
 const fmtMonth = (iso: string) =>
   new Date(iso).toLocaleDateString("en-US", { month: "short", year: "numeric" });
 
-export function CommitMap({ activity }: { activity: RepoActivity }) {
+export function CommitMap({
+  activity,
+  variant = "compact",
+}: {
+  activity: RepoActivity;
+  variant?: "compact" | "panel";
+}) {
   const { weeks, dailyWeeks, totalCommits, startDate, lastPush } = activity;
+  const panel = variant === "panel";
   const hasDaily = dailyWeeks.length > 0;
   if (!hasDaily && weeks.length === 0) return null;
 
-  const flat = hasDaily ? dailyWeeks.flat() : weeks;
+  const showHeatmap = hasDaily && dailyWeeks.length >= MIN_HEATMAP_WEEKS;
+
+  /* Bar fallback: daily bars when we have day data (a short span still
+     yields a readable full-width strip), weekly totals otherwise. Edge
+     all-zero days are trimmed so the strip starts and ends on activity. */
+  let barsAreDaily = false;
+  let barOffsetDays = 0;
+  let bars: number[];
+  if (!showHeatmap && hasDaily) {
+    barsAreDaily = true;
+    bars = dailyWeeks.flat();
+    while (bars.length > 1 && bars[0] === 0) {
+      bars.shift();
+      barOffsetDays++;
+    }
+    while (bars.length > 1 && bars[bars.length - 1] === 0) bars.pop();
+  } else {
+    bars = weeks.length > 0 ? weeks : dailyWeeks.map((w) => w.reduce((a, b) => a + b, 0));
+  }
+
+  const flat = showHeatmap ? dailyWeeks.flat() : bars;
   const max = Math.max(...flat, 1);
   const level = (count: number) => {
     if (count <= 0) return 0;
@@ -62,55 +110,72 @@ export function CommitMap({ activity }: { activity: RepoActivity }) {
       aria-label={`Development activity: ${totalCommits} commits${
         range ? `, ${range}` : ""
       }`}
-      className="mt-1"
+      className={panel ? undefined : "mt-1"}
     >
-      {hasDaily ? (
+      {showHeatmap ? (
         /* Day heatmap — columns are weeks, rows Sun→Sat. Width is capped so a
            young repo with few weeks doesn't inflate into giant cells. */
         <div
           aria-hidden="true"
-          className="grid w-full gap-px"
+          className={panel ? "mx-auto grid w-full gap-[2px]" : "grid w-full gap-px"}
           style={{
             gridTemplateColumns: `repeat(${dailyWeeks.length}, minmax(0, 1fr))`,
-            maxWidth: `${dailyWeeks.length * 0.875}rem`,
+            maxWidth: `${dailyWeeks.length * (panel ? 1.15 : 0.875)}rem`,
           }}
         >
           {dailyWeeks.map((week, w) => (
-            <div key={w} className="flex flex-col gap-px">
+            <div
+              key={w}
+              className={panel ? "flex flex-col gap-[2px]" : "flex flex-col gap-px"}
+            >
               {week.map((count, d) => (
                 <span
                   key={d}
                   title={dayTitle(w, d, count)}
-                  className={`aspect-square w-full rounded-[1px] ${CELL[level(count)]}`}
+                  className={`aspect-square w-full ${panel ? "rounded-[2px]" : "rounded-[1px]"} ${CELL[level(count)]}`}
                 />
               ))}
             </div>
           ))}
         </div>
       ) : (
-        /* Weekly bars while GitHub still computes the daily stats */
-        <div className="flex h-7 items-end gap-px" aria-hidden="true">
-          {weeks.map((count, i) => (
+        /* Bar strip — daily for short repos, weekly otherwise; fills the
+           available width so young projects don't render as a stamp */
+        <div
+          className={
+            panel ? "flex h-16 items-end gap-[2px]" : "flex h-7 items-end gap-px"
+          }
+          aria-hidden="true"
+        >
+          {bars.map((count, i) => (
             <span
               key={i}
-              title={`${count} commit${count === 1 ? "" : "s"}`}
-              className={
-                count > 0
-                  ? "w-full min-w-px rounded-[1px] bg-emerald-500/70"
-                  : "w-full min-w-px rounded-[1px] bg-foreground/10"
+              title={
+                barsAreDaily && start
+                  ? `${count} commit${count === 1 ? "" : "s"} on ${new Date(
+                      start.getTime() + (barOffsetDays + i) * DAY_MS,
+                    ).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}`
+                  : `${count} commit${count === 1 ? "" : "s"}`
               }
+              className={`w-full min-w-px rounded-[2px] ${BAR[level(count)]}`}
               style={{
                 height:
-                  count > 0 ? `${Math.max(18, (count / max) * 100)}%` : "12%",
+                  count > 0 ? `${Math.max(18, (count / max) * 100)}%` : "10%",
               }}
             />
           ))}
         </div>
       )}
-      <figcaption className="mt-1.5 font-mono text-[10px] uppercase tracking-wider text-muted">
-        {totalCommits.toLocaleString()} commits
-        {range ? ` · ${range}` : ""}
-      </figcaption>
+      {!panel && (
+        <figcaption className="mt-1.5 font-mono text-[10px] uppercase tracking-wider text-muted">
+          {totalCommits.toLocaleString()} commits
+          {range ? ` · ${range}` : ""}
+        </figcaption>
+      )}
     </figure>
   );
 }

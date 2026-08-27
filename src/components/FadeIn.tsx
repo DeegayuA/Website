@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import type { ReactNode } from "react";
+import { usePreloadGate } from "@/lib/preload";
 
 /* Explicit tag map keeps the motion component union small enough for tsc
    (indexing motion[] across every intrinsic blows the union-complexity limit). */
@@ -25,6 +26,9 @@ interface FadeInProps {
   y?: number;
   className?: string;
   as?: keyof typeof TAGS;
+  /** Hold hidden until the first-load intro has left, then play (with `delay`).
+      On revisits (no intro) it plays right after mount. */
+  afterPreload?: boolean;
 }
 
 /**
@@ -39,8 +43,27 @@ export function FadeIn({
   y = 30,
   className,
   as = "div",
+  afterPreload = false,
 }: FadeInProps) {
   const Component = TAGS[as];
+  const ready = usePreloadGate();
+
+  if (afterPreload) {
+    return (
+      <Component
+        initial={{ opacity: 0, x, y }}
+        animate={ready ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x, y }}
+        transition={{
+          delay,
+          duration,
+          ease: [0.25, 0.1, 0.25, 1],
+        }}
+        className={className}
+      >
+        {children}
+      </Component>
+    );
+  }
 
   return (
     <Component

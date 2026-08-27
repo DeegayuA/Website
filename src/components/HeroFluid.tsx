@@ -15,6 +15,7 @@
 
 import { useEffect, useRef, type RefObject } from "react";
 import { useReducedMotion } from "motion/react";
+import { preloadDone } from "@/lib/preload";
 import { useQuality } from "@/lib/quality";
 
 const SIM_RES = 96;
@@ -29,12 +30,20 @@ const AMBIENT_EVERY_MS = 4200;
 const MAX_DPR = 2;
 const POINTER_MARGIN = 80; // px beyond the heading that still stirs the ink
 
-/* CTA-pill hues — the site's single accent moment, echoed in the ink */
+/* CTA-pill hues extended into a fuller spectrum — anchored on the site's
+   accent moment (magenta/violet/ember) then sweeping through blues, teals
+   and gold so long play never feels monochrome. */
 const PALETTE: Array<[number, number, number]> = [
   [0.71, 0.0, 0.66], // #B600A8 magenta
   [0.46, 0.13, 0.69], // #7621B0 violet
   [0.75, 0.3, 0.0], // #BE4C00 ember
   [0.85, 0.04, 0.32], // deep rose
+  [0.13, 0.32, 0.9], // electric blue
+  [0.0, 0.62, 0.68], // teal
+  [0.1, 0.75, 0.42], // emerald
+  [0.92, 0.62, 0.05], // gold
+  [0.55, 0.1, 0.95], // ultraviolet
+  [0.95, 0.2, 0.1], // vermilion
 ];
 
 /* ── Shaders ─────────────────────────────────────────────────── */
@@ -352,7 +361,7 @@ export function HeroFluid({
   headingRef,
   lang,
 }: {
-  headingRef: RefObject<HTMLHeadingElement | null>;
+  headingRef: RefObject<HTMLElement | null>;
   lang: string;
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -375,8 +384,11 @@ export function HeroFluid({
     // Offscreen: skip — the IO handler rebuilds once the hero re-enters
     if (!visibleRef.current) return;
     rebuildMaskRef.current?.();
-    const t = setTimeout(() => rebuildMaskRef.current?.(), 850);
-    return () => clearTimeout(t);
+    // Track the crossfade so the ink never visibly detaches from the glyphs
+    const timers = [200, 400, 650, 900].map((ms) =>
+      setTimeout(() => rebuildMaskRef.current?.(), ms),
+    );
+    return () => timers.forEach(clearTimeout);
   }, [lang]);
 
   useEffect(() => {
@@ -482,7 +494,14 @@ export function HeroFluid({
           const text = row.textContent?.trim();
           if (!text) return;
           const cs = getComputedStyle(row);
-          if (parseFloat(cs.opacity) < 0.5) return; // mid-transition ghost
+          /* Rows live in permanently-mounted language layers that crossfade
+             via opacity on the layer element — skip whichever layer is
+             (mostly) faded out so the ink only ever fills visible glyphs. */
+          const layer = row.closest<HTMLElement>("[data-fluid-layer]");
+          const visibility =
+            Number.parseFloat(getComputedStyle(layer ?? row).opacity) *
+            Number.parseFloat(cs.opacity);
+          if (visibility < 0.5) return;
           mc.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
           if ("letterSpacing" in mc && cs.letterSpacing !== "normal") {
             (mc as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing =
@@ -625,21 +644,27 @@ export function HeroFluid({
       };
       const ambientId = window.setInterval(ambient, AMBIENT_EVERY_MS);
 
-      /* Intro burst so the effect is discoverable before any hover */
-      const introId = window.setTimeout(() => {
-        if (disposed || !maskReady) return;
-        for (let i = 0; i < 4; i++) {
-          const c = PALETTE[i % PALETTE.length];
-          splat(
-            0.2 + Math.random() * 0.6,
-            0.3 + Math.random() * 0.4,
-            (Math.random() - 0.5) * 1200,
-            (Math.random() - 0.5) * 1200,
-            c,
-            1.4,
-          );
-        }
-      }, 1300);
+      /* Intro burst so the effect is discoverable before any hover —
+         fired just after the first-load intro hands off to the page,
+         as the closing beat of that sequence (immediate-ish on revisits) */
+      let introId = 0;
+      preloadDone().then(() => {
+        if (disposed) return;
+        introId = window.setTimeout(() => {
+          if (disposed || !maskReady) return;
+          for (let i = 0; i < 4; i++) {
+            const c = PALETTE[i % PALETTE.length];
+            splat(
+              0.2 + Math.random() * 0.6,
+              0.3 + Math.random() * 0.4,
+              (Math.random() - 0.5) * 1200,
+              (Math.random() - 0.5) * 1200,
+              c,
+              1.4,
+            );
+          }
+        }, 300);
+      });
 
       /* Sim step */
       const step = (dt: number) => {

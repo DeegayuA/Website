@@ -26,7 +26,7 @@ function Char({
   start: number;
   end: number;
 }) {
-  const opacity = useTransform(progress, [start, end], [0.2, 1], {
+  const opacity = useTransform(progress, [start, end], [0.3, 1], {
     clamp: true,
   });
   return (

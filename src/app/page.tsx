@@ -20,6 +20,10 @@ import {
    contributed, open source) with no per-repo webhook setup. */
 export const revalidate = 21600;
 
+export const metadata = {
+  alternates: { canonical: "/" },
+};
+
 /** Structured data for rich search results. */
 function JsonLd() {
   const person = {
@@ -38,7 +42,11 @@ function JsonLd() {
       addressCountry: "LK",
     },
     alumniOf: { "@type": "CollegeOrUniversity", name: "University of Kelaniya" },
-    worksFor: { "@type": "Organization", name: work[0].org },
+    // Primary employer first; work[0] is the visiting-lecturer post
+    worksFor: [
+      { "@type": "Organization", name: "Alta Vision PLC" },
+      { "@type": "Organization", name: work[0].org },
+    ],
     knowsAbout: [
       "Web Development",
       "Machine Learning",

@@ -24,6 +24,8 @@
   --glass-border: var(--line);            /* chip / marquee hairline */
   --surface: color-mix(in srgb, var(--foreground) 4%, transparent);
   --extrude: rgba(12, 12, 12, 0.28);      /* 3D letter extrusion */
+  /* Center mesh field — steel reads loud on the paper canvas, keep it faint */
+  --mesh-e-tint: color-mix(in srgb, var(--grad-a) 7%, transparent);
 }
 
 .dark {
@@ -37,6 +39,7 @@
   --line: rgba(215, 226, 234, 0.18);
   --slab-line: rgba(12, 12, 12, 0.15);
   --extrude: rgba(0, 0, 0, 0.55);
+  --mesh-e-tint: color-mix(in srgb, var(--grad-a) 16%, transparent);
 }
 
 @theme inline {
@@ -61,6 +64,9 @@
    ────────────────────────────────────────────────────────────── */
 html {
   scroll-padding-top: 5.5rem;
+  /* Reserve the scrollbar lane permanently — the preloader locks scroll, and
+     without this the unlock reflows the whole page ~10px mid-handoff. */
+  scrollbar-gutter: stable;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -81,6 +87,28 @@ body {
 ::selection {
   background: var(--foreground);
   color: var(--background);
+}
+
+/* ── First-load veil ─────────────────────────────────────────────
+   Painted BEFORE hydration: an inline script at the top of <body>
+   sets data-intro when this session hasn't seen the intro, so the
+   SSR-visible hero never flashes before the preloader mounts. The
+   Preloader removes the attribute as its own veil starts fading.
+   The delayed animation is a failsafe: if hydration ever dies, the
+   veil releases itself instead of trapping the page. */
+html[data-intro] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  background: var(--background);
+  animation: veil-release 0.4s ease 5s forwards;
+}
+@keyframes veil-release {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 
 :focus-visible {
@@ -309,6 +337,50 @@ body {
     );
     animation: mesh-d 62s ease-in-out infinite alternate;
   }
+  /* Fifth field — center, faint steel, slower than the corners */
+  .mesh-blob--e {
+    top: 30%;
+    left: 28%;
+    background: radial-gradient(circle, var(--mesh-e-tint), transparent 60%);
+    animation:
+      mesh-e 70s ease-in-out infinite alternate,
+      mesh-hue 76s ease-in-out infinite alternate-reverse;
+  }
+
+  /* Engineer's dot grid — barely-there texture drifting diagonally,
+     masked so it breathes at the center and dissolves at the edges */
+  .mesh-grid {
+    position: absolute;
+    inset: -80px;
+    background-image: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--foreground) 20%, transparent) 1px,
+      transparent 1.5px
+    );
+    background-size: 34px 34px;
+    opacity: 0.14;
+    -webkit-mask-image: radial-gradient(75% 60% at 50% 40%, #000 30%, transparent 100%);
+    mask-image: radial-gradient(75% 60% at 50% 40%, #000 30%, transparent 100%);
+    animation: grid-drift 90s linear infinite;
+    will-change: transform;
+  }
+
+  /* Soft vignette — pulls the eye inward, grounds the glass surfaces */
+  .mesh-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      120% 90% at 50% 45%,
+      transparent 60%,
+      color-mix(in srgb, var(--slab) 7%, transparent) 100%
+    );
+  }
+
+  [data-quality="low"] .mesh-grid,
+  [data-quality="low"] .mesh-vignette {
+    display: none;
+  }
+
   /* Cursor spotlight — JS nudges transform, CSS owns the paint */
   .spotlight {
     position: absolute;
@@ -418,10 +490,20 @@ html.lenis {
     transform: translate3d(-10vw, -12vh, 0) scale(1.2);
   }
 }
+@keyframes mesh-e {
+  to {
+    transform: translate3d(9vw, 8vh, 0) scale(1.12);
+  }
+}
 /* Slow palette drift — violet fields lean magenta/indigo over ~1 min */
 @keyframes mesh-hue {
   to {
     filter: hue-rotate(55deg);
+  }
+}
+@keyframes grid-drift {
+  to {
+    transform: translate3d(34px, 34px, 0);
   }
 }
 

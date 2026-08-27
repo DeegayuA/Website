@@ -17,7 +17,7 @@ import { useEffect, useRef } from "react";
  */
 
 /** Per-field parallax depth — how far each leans toward the cursor. */
-const DEPTHS = [0.035, 0.055, 0.045, 0.07];
+const DEPTHS = [0.035, 0.055, 0.045, 0.07, 0.028];
 const FOLLOW = 0.045; // lerp factor per frame — lower = lazier
 const SPOT_FOLLOW = 0.09;
 
@@ -91,7 +91,8 @@ export function AuroraBackground() {
   return (
     <div aria-hidden="true" className="fixed inset-0 -z-10 overflow-hidden">
       <div className="mesh-base" />
-      {[0, 1, 2, 3].map((i) => (
+      <div className="mesh-grid" />
+      {[0, 1, 2, 3, 4].map((i) => (
         <div
           key={i}
           ref={(el) => {
@@ -99,9 +100,10 @@ export function AuroraBackground() {
           }}
           className="absolute inset-0 will-change-transform"
         >
-          <div className={`mesh-blob mesh-blob--${"abcd"[i]}`} />
+          <div className={`mesh-blob mesh-blob--${"abcde"[i]}`} />
         </div>
       ))}
+      <div className="mesh-vignette" />
       <div ref={spotRef} className="spotlight" />
       <div className="noise" />
     </div>

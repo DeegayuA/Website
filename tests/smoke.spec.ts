@@ -4,7 +4,19 @@ import { test, expect } from "playwright/test";
  * Five smoke journeys: load, filter, CV popup, case study, theme toggle.
  * Kept intentionally selector-light — they assert user-visible behavior,
  * not implementation details, so redesigns don't break them spuriously.
+ *
+ * The first-load intro is skipped (session gate pre-seeded): it locks the
+ * page ~2s per navigation and its own behavior is covered by manual review.
  */
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    try {
+      sessionStorage.setItem("dw-preloaded", "1");
+    } catch {
+      /* storage unavailable — intro will just play */
+    }
+  });
+});
 
 test.describe("home", () => {
   test("loads with hero name and no console errors", async ({ page }) => {
@@ -33,12 +45,27 @@ test.describe("home", () => {
     ).toBeVisible();
   });
 
-  test("CV popup opens focus-trapped and closes on Escape", async ({ page }) => {
+  test("CV popup opens focus-trapped and closes on Escape", async ({ page }, testInfo) => {
     await page.goto("/");
     const trigger = page.getByRole("button", {
       name: /open the full cv/i,
     });
     await trigger.scrollIntoViewIfNeeded();
+
+    // Coarse pointers (mobile) intentionally open the PDF in a new tab —
+    // iOS/Android render iframed PDFs as a static unscrollable image
+    if (testInfo.project.name === "mobile") {
+      // Headless mobile Chromium has no PDF viewer, so the tab stays blank —
+      // the popup EVENT is the app behavior under test, not PDF rendering
+      const [popup] = await Promise.all([
+        page.context().waitForEvent("page"),
+        trigger.click({ position: { x: 60, y: 20 } }),
+      ]);
+      expect(popup).toBeTruthy();
+      await popup.close();
+      return;
+    }
+
     // Click near the top of the preview — the floating "Download CV" pill
     // legitimately overlays the center of the card. Retry until the button
     // reports expanded; entrance animations can swallow the first tap.

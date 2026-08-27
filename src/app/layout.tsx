@@ -25,7 +25,8 @@ const notoSinhala = Noto_Sans_Sinhala({
   display: "swap",
 });
 
-const TITLE = `${site.name} — Software + Electronic Engineer`;
+/* Tab-width friendly: role phrase lives in the description/OG, not the tab */
+const TITLE = site.name;
 const description = `${site.name} — ${site.tagline} Based in ${site.location}.`;
 
 export const metadata: Metadata = {
@@ -50,7 +51,8 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: site.name, url: site.url }],
   creator: site.name,
-  alternates: { canonical: "/" },
+  // canonical lives on page-level metadata (src/app/page.tsx) — a global
+  // one here would leak onto 404s and every future route
   openGraph: {
     type: "website",
     url: site.url,
@@ -61,10 +63,10 @@ export const metadata: Metadata = {
     // og:image comes from the file convention (src/app/opengraph-image.tsx),
     // which outranks anything listed here — keep this empty to avoid a stale double.
   },
+  // No title/description here: they'd be inherited verbatim by every
+  // subpage's Twitter card. Next falls back to each page's resolved values.
   twitter: {
     card: "summary_large_image",
-    title: TITLE,
-    description,
     creator: "@DeegayuA",
   },
   robots: {
@@ -100,6 +102,15 @@ export default function RootLayout({
       className={`${kanit.variable} ${notoSinhala.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        {/* Runs before first paint: raise the CSS veil (globals.css
+            html[data-intro]) on first visits so the SSR-visible hero never
+            flashes before the Preloader mounts. Key mirrors PRELOAD_KEY. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              'try{if(!sessionStorage.getItem("dw-preloaded")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.dataset.intro="1"}catch(e){}',
+          }}
+        />
         <Providers>
           <AuroraBackground />
           <ScrollProgress />

@@ -90,10 +90,18 @@ export function CvCard() {
         {/* Click-to-open popup trigger — covers the preview area */}
         <button
           type="button"
-          onClick={() => setOpen(true)}
+          onClick={() => {
+            // iOS/Android render iframed PDFs as a static, unscrollable
+            // first page — on coarse pointers open the file directly instead
+            if (window.matchMedia("(pointer: coarse)").matches) {
+              window.open(site.cv, "_blank", "noopener");
+              return;
+            }
+            setOpen(true);
+          }}
           aria-haspopup="dialog"
           aria-expanded={open}
-          aria-label="Open the full CV in a popup"
+          aria-label="Open the full CV"
           className="block w-full cursor-pointer"
         >
           {/* Top slice of the A4 page, cropped from the pre-rendered page 1 */}
@@ -102,7 +110,7 @@ export function CvCard() {
               src="/cv/cv-preview.webp"
               alt=""
               width={1241}
-              height={1754}
+              height={360}
               sizes="(max-width: 640px) 100vw, 560px"
               className="block w-full"
             />

@@ -8,14 +8,27 @@ export default function manifest(): MetadataRoute.Manifest {
     description: site.tagline,
     start_url: "/",
     display: "standalone",
-    background_color: "#070b12",
-    theme_color: "#2eb2c4",
+    // Match the site's actual monochrome palette (viewport themeColor pair)
+    background_color: "#0C0C0C",
+    theme_color: "#0C0C0C",
     icons: [
       {
         src: "/icon.svg",
         sizes: "any",
         type: "image/svg+xml",
         purpose: "any",
+      },
+      {
+        src: "/icon.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "any",
+      },
+      {
+        src: "/icon.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "maskable",
       },
     ],
   };

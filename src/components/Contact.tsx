@@ -4,6 +4,7 @@ import { useState } from "react";
 import { LoaderCircle, Check } from "lucide-react";
 import { site } from "@/data/site";
 import { FadeIn } from "./FadeIn";
+import { ParallaxDrift } from "./ParallaxDrift";
 import { CvCard } from "./CvPreview";
 
 const contactRows = [
@@ -15,7 +16,6 @@ const contactRows = [
   },
   { label: "Phone", value: site.phone, href: site.phoneHref, external: false },
   { label: "WhatsApp", value: "Chat on WhatsApp", href: site.whatsapp, external: true },
-  { label: "Telegram", value: "Message on Telegram", href: site.telegram, external: true },
   { label: "Location", value: site.location, href: site.locationUrl, external: true },
 ] as const;
 
@@ -53,24 +53,27 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="relative z-10 -mt-10 bg-background cv-section overflow-x-clip sm:-mt-12 md:-mt-14"
-      style={{
-        borderRadius: "clamp(40px, 5vw, 60px) clamp(40px, 5vw, 60px) 0 0",
-      }}
+      className="relative cv-section overflow-x-clip"
     >
       <div className="px-5 py-16 sm:px-8 sm:py-20 md:px-10 md:py-24">
-        {/* Heading */}
-        <FadeIn as="h2" className="hero-heading mb-10 text-center font-black uppercase tracking-tight leading-none sm:mb-12 md:mb-14">
-          <span style={{ fontSize: "clamp(3rem, 12vw, 160px)" }} className="block">
-            Let&apos;s Talk
-          </span>
-        </FadeIn>
+        {/* Heading — drifts against scroll like the other section titles */}
+        <ParallaxDrift distance={34}>
+          <FadeIn as="h2" className="hero-heading mb-10 text-center font-black uppercase tracking-tight leading-none sm:mb-12 md:mb-14">
+            <span style={{ fontSize: "clamp(3rem, 12vw, 160px)" }} className="block">
+              Let&apos;s Talk
+            </span>
+          </FadeIn>
+        </ParallaxDrift>
 
         {/* Form on the left; CV + direct channels stacked on the right —
             one viewport instead of three stacked sections */}
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-16">
           <FadeIn delay={0.1}>
-            <form onSubmit={onSubmit} aria-label="Contact form">
+            <form
+              onSubmit={onSubmit}
+              aria-label="Contact form"
+              className="glass glass-sheen bevel rounded-2xl p-6 sm:p-8"
+            >
               <div className="grid gap-6 sm:grid-cols-2">
                 <div>
                   <label htmlFor="contact-name" className={labelClasses}>
@@ -175,7 +178,7 @@ export function Contact() {
           {/* Right column: CV card + direct channels */}
           <FadeIn delay={0.15} className="flex flex-col gap-10">
             <CvCard />
-            <div>
+            <div className="glass glass-sheen bevel rounded-2xl p-6 sm:p-8">
               <span className="label mb-1 block uppercase tracking-widest text-muted">
                 Contact info
               </span>
@@ -191,7 +194,7 @@ export function Contact() {
                   <span className="text-xs font-medium uppercase tracking-widest text-muted">
                     {row.label}
                   </span>
-                  <span className="min-w-0 break-words text-right text-sm font-medium transition-opacity duration-200 group-hover:opacity-70 sm:text-base">
+                  <span className="min-w-0 break-words text-right text-sm font-medium transition-[opacity,transform] duration-300 ease-out group-hover:-translate-x-0.5 group-hover:opacity-70 sm:text-base">
                     {row.value}
                   </span>
                 </a>

@@ -4,9 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { nav } from "@/data/site";
+import { nav, site } from "@/data/site";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
+import { usePreloadGate } from "@/lib/preload";
 
 /* hrefs are "/#about" form — take the fragment after "#" for element ids */
 const sectionIds = nav.map((item) => item.href.split("#")[1]);
@@ -36,6 +37,8 @@ export function Navbar() {
   const headerRef = useRef<HTMLElement>(null);
   const active = useActiveSection();
   const [hasScroll, setHasScroll] = useState(false);
+  // Drop in only after the first-load intro has left (instant on revisits)
+  const ready = usePreloadGate(120);
 
   useEffect(() => {
     const onScroll = () => {
@@ -56,13 +59,13 @@ export function Navbar() {
       />
       <motion.div
         initial={{ y: -18, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
+        animate={ready ? { y: 0, opacity: 1 } : { y: -18, opacity: 0 }}
         transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
       >
         <nav
           aria-label="Main navigation"
           className={cn(
-            "mx-auto mt-3 flex w-[min(64rem,calc(100%-2rem))] items-center justify-between gap-4 rounded-full px-3 py-2 transition-[background-color,box-shadow] duration-300 sm:px-5",
+            "mx-auto mt-3 flex w-[min(64rem,calc(100%-2rem))] items-center justify-between gap-2 rounded-full px-2.5 py-2 transition-[background-color,box-shadow] duration-300 sm:gap-4 sm:px-5",
             hasScroll && "nav-glass shadow-lg shadow-black/[0.06]",
           )}
         >
@@ -79,11 +82,15 @@ export function Navbar() {
               priority
               className="rounded-full ring-1 ring-[var(--line)] transition-transform duration-300 ease-out group-hover:scale-110"
             />
-            <span lang="si" className="hidden sm:inline">දිඝායු</span>
+            {/* Derived from site.sinhalaName so the wordmark can never drift
+                from the canonical spelling (දීඝායු, long ී) */}
+            <span lang="si" className="hidden sm:inline">
+              {site.sinhalaName.split(" ")[0]}
+            </span>
             <span className="sr-only">— back to home</span>
           </Link>
 
-          <ul className="flex items-center gap-2 sm:gap-6 md:gap-8">
+          <ul className="flex items-center gap-1.5 sm:gap-6 md:gap-8">
             {nav.map((item) => {
               const isActive = active === item.href.split("#")[1];
               return (
@@ -92,7 +99,8 @@ export function Navbar() {
                     href={item.href}
                     aria-current={isActive ? "location" : undefined}
                     className={cn(
-                      "relative whitespace-nowrap uppercase font-medium text-[11px] tracking-normal sm:text-sm sm:tracking-wider md:text-base transition-opacity duration-200",
+                      // py-2.5 lifts phone hit areas to ~40px (WCAG 2.5.8)
+                      "relative inline-flex items-center whitespace-nowrap py-2.5 uppercase font-medium text-[10px] tracking-normal sm:text-sm sm:tracking-wider md:text-base transition-opacity duration-200",
                       "after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:bg-current after:transition-transform after:duration-300 after:ease-out",
                       isActive
                         ? "opacity-100 after:scale-x-100"

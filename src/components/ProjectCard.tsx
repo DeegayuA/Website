@@ -126,13 +126,19 @@ export function ProjectCard({
           )}
         </div>
 
-        <div className="relative z-[4] flex flex-col gap-3 p-6">
+        {/* No z-index here: inert text lets taps fall through to the
+            whole-card overlay; real links below raise themselves to z-[5] */}
+        <div className="relative flex flex-col gap-3 p-6">
           <div>
             <p className="label text-accent">{project.tagline}</p>
             <h3 className="mt-1.5 font-display text-xl font-bold leading-snug">
               {studySlug ? (
-                /* Card body opens the in-site case study; external links sit below */
-                <Link href={`/work/${studySlug}`} className="hover:text-accent">
+                /* Card body opens the in-site case study; external links sit
+                   below. z-[5] keeps the real link above the tap overlay. */
+                <Link
+                  href={`/work/${studySlug}`}
+                  className="relative z-[5] hover:text-accent"
+                >
                   {project.title}
                 </Link>
               ) : primaryLink ? (
@@ -140,7 +146,7 @@ export function ProjectCard({
                   href={primaryLink.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-accent"
+                  className="relative z-[5] hover:text-accent"
                 >
                   {project.title}
                 </a>
@@ -161,7 +167,7 @@ export function ProjectCard({
             {project.tech.map((tech) => (
               <li
                 key={tech}
-                className="inline-flex items-center gap-1.5 rounded-full border border-(--glass-border) px-2.5 py-1 font-mono text-[11px] font-medium text-muted"
+                className="inline-flex items-center gap-1.5 rounded-full border border-(--glass-border) px-2.5 py-1 font-mono text-[11px] font-medium text-muted transition-colors duration-300 hover:border-foreground/50 hover:text-foreground"
               >
                 {hasBrandIcon(tech) && <BrandIcon name={tech} size={12} />}
                 {tech}
