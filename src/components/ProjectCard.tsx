@@ -10,13 +10,23 @@ import {
 } from "motion/react";
 import { ArrowUpRight, Star } from "lucide-react";
 import type { Project } from "@/data/projects";
+import type { RepoActivity } from "@/lib/github";
 import { SocialIcon } from "./SocialIcon";
 import { BrandIcon, hasBrandIcon } from "./BrandIcon";
+import { CommitMap } from "./CommitMap";
 import { cn } from "@/lib/utils";
 
 const MAX_TILT = 5;
 
-export function ProjectCard({ project, compact }: { project: Project; compact?: boolean }) {
+export function ProjectCard({
+  project,
+  compact,
+  activity,
+}: {
+  project: Project;
+  compact?: boolean;
+  activity?: RepoActivity;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const rx = useMotionValue(0);
@@ -62,7 +72,12 @@ export function ProjectCard({ project, compact }: { project: Project; compact?: 
         <span aria-hidden="true" className="glint" />
 
         {/* Screenshot */}
-        <div className="relative min-h-[7rem] flex-1 overflow-hidden">
+        <div
+          className={cn(
+            "relative flex-1 overflow-hidden",
+            compact ? "min-h-[11rem]" : "min-h-[13rem] sm:min-h-[16rem]",
+          )}
+        >
           <Image
             src={project.image}
             alt={`Screenshot of ${project.title}`}
@@ -70,9 +85,10 @@ export function ProjectCard({ project, compact }: { project: Project; compact?: 
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.05]"
           />
+          {/* Soft foot-fade only — keeps the shot legible, blends into the card */}
           <div
             aria-hidden="true"
-            className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/10 to-transparent"
+            className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-background/60 to-transparent"
           />
           {project.featured && (
             <span className="absolute left-3 top-3 z-[4] inline-flex items-center gap-1.5 rounded-full bg-spark-soft px-2.5 py-1 text-xs font-semibold text-spark backdrop-blur-md">
@@ -119,6 +135,9 @@ export function ProjectCard({ project, compact }: { project: Project; compact?: 
               </li>
             ))}
           </ul>
+
+          {/* Development-phase map — 52 weeks of commit activity */}
+          {!compact && activity && <CommitMap activity={activity} />}
 
           {project.links.length > 0 && (
             <div className="relative z-[5] flex flex-wrap gap-4 pt-1">

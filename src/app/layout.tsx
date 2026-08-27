@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Kanit } from "next/font/google";
+import { Kanit, Noto_Sans_Sinhala } from "next/font/google";
 import { Providers } from "@/components/Providers";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Preloader } from "@/components/Preloader";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { CustomCursor } from "@/components/CustomCursor";
+import { ScrollProgress } from "@/components/ScrollProgress";
 import { site } from "@/data/site";
 import "./globals.css";
 
@@ -13,6 +14,13 @@ const kanit = Kanit({
   variable: "--font-kanit",
   weight: ["300", "400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
+  display: "swap",
+});
+
+const notoSinhala = Noto_Sans_Sinhala({
+  variable: "--font-sinhala",
+  weight: ["700", "900"],
+  subsets: ["sinhala"],
   display: "swap",
 });
 
@@ -86,10 +94,11 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${kanit.variable} h-full antialiased`}
+      className={`${kanit.variable} ${notoSinhala.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <Providers>
+          <ScrollProgress />
           <CustomCursor />
           <Preloader />
           <SmoothScroll />

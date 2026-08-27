@@ -7,6 +7,16 @@ import { Certifications } from "@/components/Certifications";
 import { Contact } from "@/components/Contact";
 import { site, socials } from "@/data/site";
 import { work, education } from "@/data/experience";
+import { projects } from "@/data/projects";
+import {
+  getRepoActivity,
+  githubRepoFromLinks,
+  type RepoActivity,
+} from "@/lib/github";
+
+/* GitHub data refreshes weekly via ISR — the page re-renders itself in the
+   background on Vercel, keeping commit maps current without a cron job. */
+export const revalidate = 604800;
 
 /** Structured data for rich search results. */
 function JsonLd() {
@@ -52,14 +62,25 @@ function JsonLd() {
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  // Commit activity for every project with a GitHub link; failures skip silently
+  const activity: Record<string, RepoActivity> = {};
+  await Promise.all(
+    projects.map(async (project) => {
+      const repo = githubRepoFromLinks(project.links);
+      if (!repo) return;
+      const result = await getRepoActivity(repo);
+      if (result) activity[project.title] = result;
+    }),
+  );
+
   return (
     <>
       <JsonLd />
       <Hero />
       <SkillsMarquee />
       <About />
-      <Projects />
+      <Projects activity={activity} />
       <Experience />
       <Certifications />
       <Contact />

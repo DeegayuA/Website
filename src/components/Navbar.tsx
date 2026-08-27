@@ -58,7 +58,10 @@ export function Navbar() {
       >
         <nav
           aria-label="Main navigation"
-          className="mx-auto mt-3 flex w-[min(64rem,calc(100%-2rem))] items-center justify-between gap-4 px-3 py-2"
+          className={cn(
+            "mx-auto mt-3 flex w-[min(64rem,calc(100%-2rem))] items-center justify-between gap-4 rounded-full px-3 py-2 transition-[background-color,box-shadow] duration-300 sm:px-5",
+            hasScroll && "nav-glass shadow-lg shadow-black/[0.06]",
+          )}
         >
           <a
             href="#home"
@@ -77,8 +80,11 @@ export function Navbar() {
                     href={item.href}
                     aria-current={isActive ? "location" : undefined}
                     className={cn(
-                      "uppercase font-medium tracking-wider text-xs sm:text-sm md:text-base transition-opacity duration-200",
-                      isActive ? "opacity-100" : "opacity-70 hover:opacity-100",
+                      "relative uppercase font-medium tracking-wider text-xs sm:text-sm md:text-base transition-opacity duration-200",
+                      "after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:bg-current after:transition-transform after:duration-300 after:ease-out",
+                      isActive
+                        ? "opacity-100 after:scale-x-100"
+                        : "opacity-70 after:scale-x-0 hover:opacity-100 hover:after:scale-x-100",
                     )}
                   >
                     {item.label}

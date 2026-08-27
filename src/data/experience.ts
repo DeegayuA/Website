@@ -10,6 +10,8 @@ export interface TimelineEntry {
   org: string;
   period: string;
   detail?: string;
+  /** Still running — renders an "In progress" pill. */
+  ongoing?: boolean;
 }
 
 export const work: TimelineEntry[] = [
@@ -49,14 +51,16 @@ export const education: TimelineEntry[] = [
   {
     title: "Master of Data Science & AI",
     org: "Department of Computer Science & Engineering, University of Moratuwa (UOM)",
-    period: "Apr 2025 — Apr 2026",
+    period: "Apr 2025 — Present",
     detail: "Postgraduate specialization in machine learning, deep learning, artificial intelligence, and computer vision.",
+    ongoing: true,
   },
   {
     title: "Master of Information Technology (MIT)",
     org: "Faculty of Science, University of Kelaniya (UOK)",
-    period: "Aug 2024 — Nov 2025",
+    period: "Aug 2024 — Present",
     detail: "Postgraduate studies focused on modern software systems, web engineering, and IT architecture.",
+    ongoing: true,
   },
   {
     title: "BSc in Physical Science",

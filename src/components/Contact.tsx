@@ -2,16 +2,15 @@
 
 import { useState } from "react";
 import { LoaderCircle, Check } from "lucide-react";
-import { site, socials } from "@/data/site";
+import { site } from "@/data/site";
 import { FadeIn } from "./FadeIn";
-import { SocialIcon } from "./SocialIcon";
 
 const FORM_ENDPOINT = "https://formspree.io/f/xnqljrpj";
 
 type Status = "idle" | "sending" | "success" | "error";
 
 const inputClasses =
-  "w-full border-b border-[var(--line)] bg-transparent py-3 text-base font-light placeholder:text-muted/60 transition-colors focus:border-foreground focus:outline-none";
+  "w-full rounded-xl border border-[var(--line)] bg-foreground/[0.04] px-4 py-3 text-base font-light placeholder:text-muted/70 transition-[border-color,box-shadow] duration-200 focus:border-foreground focus:shadow-[0_0_0_3px_color-mix(in_srgb,var(--foreground)_12%,transparent)] focus:outline-none";
 
 const labelClasses =
   "mb-1 block text-xs font-medium uppercase tracking-widest text-muted";
@@ -223,25 +222,6 @@ export function Contact() {
           </FadeIn>
         </div>
 
-        {/* Socials row */}
-        <FadeIn delay={0.2} className="mx-auto mt-16 max-w-6xl sm:mt-20">
-          <ul className="flex flex-wrap items-center justify-center gap-6 border-t border-[var(--line)] pt-10 sm:gap-8">
-            {socials.map((social) => (
-              <li key={social.label}>
-                <a
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={social.label}
-                  className="flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-muted transition-opacity duration-200 hover:opacity-70"
-                >
-                  <SocialIcon name={social.icon} />
-                  <span className="hidden sm:inline">{social.label}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </FadeIn>
       </div>
     </section>
   );

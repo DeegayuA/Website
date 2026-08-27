@@ -39,6 +39,7 @@ const ALIAS: Record<string, keyof typeof BRAND_ICONS | undefined> = {
   "google cloud vision": "googlecloud",
   "google cloud": "googlecloud",
   "gemini ai": "gemini",
+  "google gemini": "gemini",
   gemini: "gemini",
   sqlite: "sqlite",
   sqlite3: "sqlite",
@@ -62,6 +63,12 @@ export function iconKeyFor(name: string): keyof typeof BRAND_ICONS | undefined {
   const k = name.trim().toLowerCase();
   if (k in ALIAS) return ALIAS[k];
   if (k in BRAND_ICONS) return k as keyof typeof BRAND_ICONS;
+  // "Next.js 16", "React 19", "Tailwind v4" → retry without the version suffix
+  const stripped = k.replace(/\s+v?\d+(\.\d+)*$/, "");
+  if (stripped !== k) {
+    if (stripped in ALIAS) return ALIAS[stripped];
+    if (stripped in BRAND_ICONS) return stripped as keyof typeof BRAND_ICONS;
+  }
   return undefined;
 }
 

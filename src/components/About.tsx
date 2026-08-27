@@ -79,10 +79,8 @@ export function About() {
 
         {/* Bio paragraph with animated text */}
         <FadeIn delay={0.1}>
-          <AnimatedText>
-            <p className="text-center font-medium leading-relaxed text-[clamp(1rem,2vw,1.35rem)]">
-              {site.bio}
-            </p>
+          <AnimatedText className="text-center font-medium leading-relaxed text-[clamp(1rem,2vw,1.35rem)]">
+            {site.bio}
           </AnimatedText>
         </FadeIn>
 

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, type Variants } from "motion/react";
 import { projects, categories, type Category } from "@/data/projects";
+import type { RepoActivity } from "@/lib/github";
 import { ProjectCard } from "./ProjectCard";
 import { Section } from "./Section";
 import { Reveal } from "./Reveal";
@@ -47,7 +48,11 @@ function isCompactTile(i: number) {
 /** Cards shown on phones before the "Show all" expander. */
 const MOBILE_LIMIT = 6;
 
-export function Projects() {
+export function Projects({
+  activity,
+}: {
+  activity?: Record<string, RepoActivity>;
+}) {
   const [filter, setFilter] = useState<Filter>("all");
   const [expanded, setExpanded] = useState(false);
 
@@ -120,7 +125,11 @@ export function Projects() {
               !expanded && i >= MOBILE_LIMIT && "hidden sm:block",
             )}
           >
-            <ProjectCard project={project} compact={isCompactTile(i)} />
+            <ProjectCard
+              project={project}
+              compact={isCompactTile(i)}
+              activity={activity?.[project.title]}
+            />
           </motion.li>
         ))}
       </motion.ul>

@@ -88,12 +88,17 @@ export function CustomCursor() {
   if (!enabled) return null;
 
   return (
-    <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-[1000]">
+    <div
+      aria-hidden="true"
+      className="pointer-events-none fixed inset-0 z-[1000] mix-blend-difference"
+    >
+      {/* mix-blend-difference + white paint inverts against any background,
+          so the cursor stays visible on canvas and slab sections alike. */}
       {/* High-tier comet trail — a self-contained soft glow (filter blurs the
           glow itself, never the text behind it, unlike backdrop-blur). */}
       {tier === "high" && (
         <motion.div
-          className="absolute h-7 w-7 rounded-full bg-accent/20 blur-md"
+          className="absolute h-7 w-7 rounded-full bg-white/25 blur-md"
           style={{ x: trailX, y: trailY, translateX: "-50%", translateY: "-50%" }}
           animate={{ opacity: visible ? 1 : 0, scale: hovering ? 1.7 : 1 }}
           transition={{ type: "spring", stiffness: 180, damping: 24 }}
@@ -101,7 +106,7 @@ export function CustomCursor() {
       )}
       {/* precise dot */}
       <motion.div
-        className="absolute h-2 w-2 rounded-full bg-accent"
+        className="absolute h-2 w-2 rounded-full bg-white"
         style={{ x, y, translateX: "-50%", translateY: "-50%" }}
         animate={{ opacity: visible ? 1 : 0, scale: pressed ? 0.6 : 1 }}
         transition={{ duration: 0.15 }}
@@ -109,7 +114,7 @@ export function CustomCursor() {
       {/* trailing ring — crisp outline + faint tint, NO backdrop-filter so it
           never frosts the text it passes over */}
       <motion.div
-        className="absolute h-9 w-9 rounded-full border border-foreground/40 bg-accent-soft/25"
+        className="absolute h-9 w-9 rounded-full border border-white/50 bg-white/10"
         style={{ x: ringX, y: ringY, translateX: "-50%", translateY: "-50%" }}
         animate={{
           opacity: visible ? 1 : 0,

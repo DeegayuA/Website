@@ -21,6 +21,8 @@
   --slab-fg: #D7E2EA;         /* inverted slab text */
   --line: rgba(12, 12, 12, 0.15);         /* hairline on canvas */
   --slab-line: rgba(215, 226, 234, 0.18); /* hairline on slab */
+  --glass-border: var(--line);            /* chip / marquee hairline */
+  --surface: color-mix(in srgb, var(--foreground) 4%, transparent);
 }
 
 .dark {
@@ -43,6 +45,10 @@
   --color-slab-fg: var(--slab-fg);
   --color-line: var(--line);
   --color-slab-line: var(--slab-line);
+  /* Monochrome design: "accent" resolves to ink so pills/pins invert cleanly */
+  --color-accent: var(--foreground);
+  --color-spark: var(--slab-fg);
+  --color-spark-soft: color-mix(in srgb, var(--slab) 62%, transparent);
   --font-sans: var(--font-kanit);
 }
 
@@ -112,6 +118,63 @@ body {
     outline-offset: -3px;
   }
 
+  /* Eyebrow / tagline label */
+  .label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  /* Skills marquee — track holds two copies; -50% translate loops seamlessly */
+  .marquee {
+    overflow: hidden;
+  }
+  .marquee__track {
+    width: max-content;
+    animation: marquee-scroll calc(var(--marquee-items, 16) * 2.5s) linear infinite;
+  }
+  .marquee:hover .marquee__track {
+    animation-play-state: paused;
+  }
+  [data-quality="low"] .marquee__track {
+    animation: none;
+  }
+
+  /* Navbar once the page is scrolled — frosted glass pill */
+  .nav-glass {
+    background: color-mix(in srgb, var(--background) 72%, transparent);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    backdrop-filter: blur(14px) saturate(1.4);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+
+  /* Cursor-tracked specular glint on project cards — ProjectCard writes
+     --spot-x/--spot-y per pointer move; pure paint, no re-render */
+  .glint-host {
+    position: relative;
+  }
+  .glint {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    border-radius: inherit;
+    opacity: 0;
+    background: radial-gradient(
+      240px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      color-mix(in srgb, var(--foreground) 9%, transparent),
+      transparent 65%
+    );
+    transition: opacity 0.35s ease;
+  }
+  .glint-host:hover .glint {
+    opacity: 1;
+  }
+  [data-quality="low"] .glint {
+    display: none;
+  }
+
   /* Grain overlay (Preloader) */
   .noise {
     position: absolute;
@@ -167,6 +230,12 @@ html.lenis {
 /* ──────────────────────────────────────────────────────────────
    Reduced motion — kill decorative animation
    ────────────────────────────────────────────────────────────── */
+@keyframes marquee-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
