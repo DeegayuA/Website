@@ -31,6 +31,20 @@ export const categories: { label: string; value: Category | "all" }[] = [
 
 export const projects: Project[] = [
   {
+    title: "LogPup",
+    tagline: "Engineering operations dashboard — apps, people, sprints & AI meeting intelligence",
+    description:
+      "Internal engineering ops platform for Alta Vision: team capacity radar with burnout thresholds, kanban sprint boards, app portfolio tracking, and AI meeting intelligence with bilingual (English/Sinhala) transcription via Google Gemini. Role-gated Server Actions, AES-256-GCM encrypted keys, Spotlight-style command center.",
+    image: "/images/web_logpup.png",
+    categories: ["web", "ai", "software"],
+    tech: ["Next.js 16", "React 19", "Drizzle ORM", "Neon Postgres", "Auth.js v5", "Google Gemini", "Tailwind v4"],
+    links: [
+      { label: "Live Site", href: "https://log-pup.vercel.app/" },
+      { label: "GitHub", href: "https://github.com/DeegayuA/LogPup" },
+    ],
+    featured: true,
+  },
+  {
     title: "Solar SCADA & Mini-Grid Management Platform (Alta Vision)",
     tagline: "Commercial SCADA & multi-plant monitoring platform for solar power plants",
     description:
