@@ -67,8 +67,6 @@ export function FadeInStatic({
   children,
   delay = 0,
   duration = 0.7,
-  x = 0,
-  y = 30,
   className,
   as = "div",
 }: FadeInProps) {

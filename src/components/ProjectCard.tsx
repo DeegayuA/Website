@@ -8,8 +8,10 @@ import {
   useSpring,
   useReducedMotion,
 } from "motion/react";
-import { ArrowUpRight, Star } from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight, BookOpen, Star } from "lucide-react";
 import type { Project } from "@/data/projects";
+import { caseStudySlugFor } from "@/data/caseStudies";
 import type { RepoActivity } from "@/lib/github";
 import { SocialIcon } from "./SocialIcon";
 import { BrandIcon, hasBrandIcon } from "./BrandIcon";
@@ -59,6 +61,7 @@ export function ProjectCard({
   };
 
   const primaryLink = project.links[0];
+  const studySlug = caseStudySlugFor(project.title);
 
   return (
     <motion.div
@@ -70,6 +73,31 @@ export function ProjectCard({
     >
       <article className="glass glass-lens glass-sheen bevel relative flex h-full flex-col overflow-hidden rounded-[1.4rem]">
         <span aria-hidden="true" className="glint" />
+
+        {/* Whole-card click target. A pseudo-element on the title link can't
+            reach the screenshot (its containing block is the inner
+            `relative z-[4]` div), so a real overlay spans the article instead.
+            aria-hidden + tabIndex -1: the title link below stays the one
+            accessible/tabbable name for the card. */}
+        {(studySlug || primaryLink) && (
+          studySlug ? (
+            <Link
+              href={`/work/${studySlug}`}
+              aria-hidden="true"
+              tabIndex={-1}
+              className="absolute inset-0 z-[1] rounded-[1.4rem]"
+            />
+          ) : (
+            <a
+              href={primaryLink.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-hidden="true"
+              tabIndex={-1}
+              className="absolute inset-0 z-[1] rounded-[1.4rem]"
+            />
+          )
+        )}
 
         {/* Screenshot */}
         <div
@@ -102,12 +130,17 @@ export function ProjectCard({
           <div>
             <p className="label text-accent">{project.tagline}</p>
             <h3 className="mt-1.5 font-display text-xl font-bold leading-snug">
-              {primaryLink ? (
+              {studySlug ? (
+                /* Card body opens the in-site case study; external links sit below */
+                <Link href={`/work/${studySlug}`} className="hover:text-accent">
+                  {project.title}
+                </Link>
+              ) : primaryLink ? (
                 <a
                   href={primaryLink.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="after:absolute after:inset-0 after:rounded-[1.4rem] hover:text-accent"
+                  className="hover:text-accent"
                 >
                   {project.title}
                 </a>
@@ -139,8 +172,18 @@ export function ProjectCard({
           {/* Development-phase map — 52 weeks of commit activity */}
           {!compact && activity && <CommitMap activity={activity} />}
 
-          {project.links.length > 0 && (
+          {(project.links.length > 0 || studySlug) && (
             <div className="relative z-[5] flex flex-wrap gap-4 pt-1">
+              {studySlug && (
+                <Link
+                  href={`/work/${studySlug}`}
+                  className="group/link inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:underline"
+                >
+                  <BookOpen size={15} aria-hidden="true" />
+                  Case study
+                  <span className="sr-only"> — {project.title}</span>
+                </Link>
+              )}
               {project.links.map((link) => (
                 <a
                   key={link.href}

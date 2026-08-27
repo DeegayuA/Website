@@ -10,6 +10,7 @@ import { work, education } from "@/data/experience";
 import { projects } from "@/data/projects";
 import {
   getRepoActivity,
+  getUserContributions,
   githubRepoFromLinks,
   type RepoActivity,
 } from "@/lib/github";
@@ -76,12 +77,17 @@ export default async function Home() {
     }),
   );
 
+  // The About graph uses the user's real GitHub contribution calendar — the
+  // exact data behind the profile graph (all repos, only their activity).
+  // Null without GITHUB_TOKEN; the section hides itself then.
+  const combined = await getUserContributions("DeegayuA");
+
   return (
     <>
       <JsonLd />
       <Hero />
       <SkillsMarquee />
-      <About />
+      <About contributions={combined} />
       <Projects activity={activity} />
       <Experience />
       <Certifications />

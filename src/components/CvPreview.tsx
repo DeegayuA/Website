@@ -18,6 +18,10 @@ export function CvCard() {
   const [open, setOpen] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const returnFocusRef = useRef<HTMLElement | null>(null);
+  /* The active keydown handler, exposed so the same-origin PDF iframe can
+     forward its own keydown events — the parent document listener never
+     hears keys once focus is inside the iframe. */
+  const onKeyRef = useRef<((e: KeyboardEvent) => void) | null>(null);
 
   const close = useCallback(() => setOpen(false), []);
 
@@ -48,6 +52,7 @@ export function CvCard() {
       }
     };
 
+    onKeyRef.current = onKey;
     document.addEventListener("keydown", onKey);
     document.documentElement.style.overflow = "hidden";
     // Move focus into the dialog once it exists
@@ -57,6 +62,7 @@ export function CvCard() {
         ?.focus();
     });
     return () => {
+      onKeyRef.current = null;
       document.removeEventListener("keydown", onKey);
       document.documentElement.style.overflow = "";
       returnFocusRef.current?.focus();
@@ -143,15 +149,31 @@ export function CvCard() {
               animate={{ y: 0, scale: 1 }}
               exit={{ y: 24, scale: 0.99 }}
               transition={{ duration: 0.35, ease: [0.21, 0.47, 0.32, 0.98] }}
-              className="relative h-full w-full overflow-hidden bg-[#323639]"
+              className="relative mx-auto h-full w-full max-w-3xl overflow-hidden bg-[#323639] shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* toolbar=0 strips the viewer chrome; the container matches the
-                  viewer's gutter color so the page reads edge-to-edge */}
+              {/* The embedded viewer ignores #zoom in iframes, so the frame
+                  itself is capped at a document-comfortable width (~A4) and
+                  view=FitH fills it — natural page size, centered on the
+                  backdrop. toolbar=0 strips the viewer chrome. */}
               <iframe
                 src={`${site.cv}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
                 title="Curriculum vitae PDF"
                 className="h-full w-full"
+                onLoad={(e) => {
+                  // Same-origin: forward keydown from inside the PDF frame so
+                  // Escape (and the Tab trap) keep working once focus enters it.
+                  // Browsers with an opaque PDF viewer throw — fail soft, Tab
+                  // still exits the frame natively.
+                  try {
+                    e.currentTarget.contentWindow?.addEventListener(
+                      "keydown",
+                      (ev) => onKeyRef.current?.(ev),
+                    );
+                  } catch {
+                    /* opaque PDF viewer — nothing to attach to */
+                  }
+                }}
               />
               <button
                 type="button"

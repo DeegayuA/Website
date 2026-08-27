@@ -45,6 +45,17 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    title: "Solar Battery Solucion (SBS)",
+    tagline: "Commercial & industrial energy-storage platform for the Spanish market",
+    description:
+      "Bilingual (Spanish/English) platform for SBS, Madrid — commercial & industrial BESS: containerized battery storage, UPS systems, all-in-one units, and cloud energy monitoring. Peak-demand reduction, grid-services revenue, and renewable integration, powered by AmpereArc technology.",
+    image: "/images/web_sbs.png",
+    categories: ["web"],
+    tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "BESS Energy Systems"],
+    links: [{ label: "Live Site", href: "https://solarbatterysolucion.com" }],
+    featured: true,
+  },
+  {
     title: "Solar SCADA & Mini-Grid Management Platform (Alta Vision)",
     tagline: "Commercial SCADA & multi-plant monitoring platform for solar power plants",
     description:

@@ -28,7 +28,10 @@ export function SmoothScroll() {
       const hash = `#${id}`;
       const target = document.getElementById(id);
       if (!target) return;
+      // Capture-phase interception: stop next/link's delegated handler from
+      // ALSO router.push-ing the hash (double scroll fight), then ease.
       e.preventDefault();
+      e.stopPropagation();
       lenis.scrollTo(target as HTMLElement, {
         offset: -88,
         duration: 1.1,
@@ -45,10 +48,10 @@ export function SmoothScroll() {
       (target as HTMLElement).focus({ preventScroll: true });
       history.replaceState(null, "", hash);
     };
-    document.addEventListener("click", onClick);
+    document.addEventListener("click", onClick, true);
 
     return () => {
-      document.removeEventListener("click", onClick);
+      document.removeEventListener("click", onClick, true);
       lenis.destroy();
     };
   }, []);

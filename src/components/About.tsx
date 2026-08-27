@@ -1,7 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { site, stats } from "@/data/site";
+import { site, stats, socials } from "@/data/site";
+import type { RepoActivity } from "@/lib/github";
+import { ContributionGraph } from "@/components/ContributionGraph";
+import { CountUp } from "@/components/CountUp";
 import { FadeIn } from "@/components/FadeIn";
 import { AnimatedText } from "@/components/AnimatedText";
 import { ContactButton } from "@/components/ContactButton";
@@ -41,11 +44,15 @@ const cornerTiles = [
   },
 ];
 
-export function About() {
+export function About({
+  contributions,
+}: {
+  contributions?: RepoActivity | null;
+}) {
   return (
     <section
       id="about"
-      className="cv-section relative min-h-screen w-full bg-background px-5 py-20 sm:px-8 md:px-10"
+      className="cv-section relative min-h-screen w-full px-5 py-20 sm:px-8 md:px-10"
     >
       {/* Corner decorative tiles — hidden below sm */}
       <div className="pointer-events-none absolute inset-0 hidden sm:block">
@@ -61,6 +68,10 @@ export function About() {
                 src={tile.src}
                 alt="Project showcase"
                 fill
+                // Decorative desktop-only tiles: without sizes they'd fetch
+                // ~viewport-width variants (even on phones, where the wrapper
+                // is display:none but lazy images still download)
+                sizes="(min-width: 768px) 13rem, 10rem"
                 className="object-cover"
               />
             </div>
@@ -90,8 +101,7 @@ export function About() {
             {stats.map((stat) => (
               <div key={stat.label} className="flex flex-col items-center px-4 first:pl-0 last:pr-0">
                 <p className="font-black text-[clamp(1.5rem,3vw,2.5rem)] leading-none">
-                  {stat.value}
-                  {stat.suffix}
+                  <CountUp value={stat.value} suffix={stat.suffix} />
                 </p>
                 <p className="mt-2 text-center text-xs uppercase tracking-widest text-muted sm:text-sm">
                   {stat.label}
@@ -100,6 +110,22 @@ export function About() {
             ))}
           </div>
         </FadeIn>
+
+        {/* Year of commits across every tracked repo — live from GitHub */}
+        {contributions && (
+          <FadeIn delay={0.25} className="w-full max-w-2xl">
+            <p className="label mb-3 text-center uppercase tracking-widest text-muted">
+              A year of commits · {contributions.repo}
+            </p>
+            <ContributionGraph
+              activity={contributions}
+              githubUrl={
+                socials.find((s) => s.icon === "github")?.href ??
+                "https://github.com/DeegayuA"
+              }
+            />
+          </FadeIn>
+        )}
 
         {/* Contact button */}
         <FadeIn delay={0.3}>

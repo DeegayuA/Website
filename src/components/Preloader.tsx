@@ -1,181 +1,165 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { animate, motion, AnimatePresence, type Variants } from "motion/react";
-
-const KEY = "dw-preloaded";
+import { animate, motion } from "motion/react";
+import { PRELOAD_EVENT, PRELOAD_KEY } from "@/lib/preload";
 
 // Client-only gate: skip on revisits and under reduced motion. Server
 // snapshot is `false`, so SSR renders nothing and hydration matches.
 const emptySubscribe = () => () => {};
 const getCanPlay = () =>
   !(
-    sessionStorage.getItem(KEY) ||
+    sessionStorage.getItem(PRELOAD_KEY) ||
     window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
 const getServerCanPlay = () => false;
 
-const letter: Variants = {
-  hidden: { y: "115%", rotate: 4 },
-  visible: (i: number) => ({
-    y: 0,
-    rotate: 0,
-    transition: {
-      duration: 0.55,
-      delay: 0.12 + i * 0.035,
-      ease: [0.21, 0.47, 0.32, 0.98],
-    },
-  }),
-};
+/* ── Timeline (ms) ─────────────────────────────────────────────
+   zoom   80 → 1580   the name scales 0 → 1 into the exact spot the
+                      hero heading occupies beneath the veil
+   settle 1580 → 1730 beat of stillness at full size
+   fade   1730 → 2130 veil dissolves; the revealed heading is pixel-
+                      identical, so the loader's exit is invisible —
+                      the intro simply becomes the page
+   then the navbar / roles / CTA / ink burst cascade in via
+   usePreloadGate listening for PRELOAD_EVENT.                    */
+const ZOOM_DELAY = 80;
+const ZOOM_MS = 1500;
+const T_FADE = ZOOM_DELAY + ZOOM_MS + 150;
+const FADE_MS = 400;
+const T_DONE = T_FADE + FADE_MS + 60;
+
+/* Must mirror the hero's NAME.en — the zoom lands on those glyphs. */
+const LINES = ["DEEGHAYU", "ADHIKARI"] as const;
+
+function unionRect(rects: DOMRect[]) {
+  const left = Math.min(...rects.map((r) => r.left));
+  const top = Math.min(...rects.map((r) => r.top));
+  const right = Math.max(...rects.map((r) => r.right));
+  const bottom = Math.max(...rects.map((r) => r.bottom));
+  return { left, top, width: right - left, height: bottom - top };
+}
 
 /**
- * Entry sequence: monogram pop, per-letter name rise, percentage
- * count-up, then the sheet sweeps away with a static rounded bottom.
- * Skips on revisits or under reduced motion.
+ * First-load intro that continues end-to-end into the landing page.
+ * The page opens with nothing but the canvas; the name zooms in from
+ * scale 0 to full hero size, positioned over the live hero heading
+ * measured beneath the opaque veil. The veil then dissolves over
+ * identical pixels and everything else cascades in after.
  */
 export function Preloader() {
-  const countRef = useRef<HTMLSpanElement>(null);
+  const nameRef = useRef<HTMLDivElement>(null);
   const canPlay = useSyncExternalStore(emptySubscribe, getCanPlay, getServerCanPlay);
   const [shouldShow, setShouldShow] = useState(true);
+  const [fading, setFading] = useState(false);
+  // Where the hero heading actually sits — measured after mount
+  const [target, setTarget] = useState<{
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+  } | null>(null);
   const show = canPlay && shouldShow;
 
-  // Mark as preloaded when skipped
+  // Mark as preloaded when skipped so gated entrances open immediately
   useEffect(() => {
     if (!canPlay) {
       document.documentElement.dataset.preloaded = "true";
+      window.dispatchEvent(new Event(PRELOAD_EVENT));
     }
   }, [canPlay]);
 
-  // Handle animation and lifecycle when showing
   useEffect(() => {
     if (!show) return;
 
     document.documentElement.style.overflow = "hidden";
     const mainElement = document.getElementById("main");
-    if (mainElement) {
-      mainElement.setAttribute("inert", "");
+    mainElement?.setAttribute("inert", "");
+
+    // The hero h1 is SSR-visible and still English at this point (its
+    // first language swap is seconds away), so the target is stable.
+    const heroRows = document.querySelectorAll<HTMLElement>(
+      "#home h1 [data-fluid-text]",
+    );
+    if (heroRows.length > 0) {
+      setTarget(unionRect(Array.from(heroRows, (r) => r.getBoundingClientRect())));
     }
 
-    // Animate counter via motion value: zero React re-renders
-    let animationControl: ReturnType<typeof animate> | null = null;
-    if (countRef.current) {
-      animationControl = animate(0, 100, {
-        duration: 1.05,
-        ease: [0.6, 0.05, 0.3, 1],
-        onUpdate: (v) => {
-          if (countRef.current) {
-            countRef.current.textContent = String(Math.round(v));
-          }
-        },
-      });
-    }
-
-    // Exit timing: counter ends at 1050ms, then exit animation plays
-    const exitTimer = setTimeout(() => {
-      sessionStorage.setItem(KEY, "1");
-      setShouldShow(false);
-    }, 1050);
+    const fadeTimer = setTimeout(() => setFading(true), T_FADE);
+    const doneTimer = setTimeout(() => {
+      sessionStorage.setItem(PRELOAD_KEY, "1");
+      document.documentElement.dataset.preloaded = "true";
+      window.dispatchEvent(new Event(PRELOAD_EVENT));
+      setShouldShow(false); // unmounts over identical hero pixels
+    }, T_DONE);
 
     return () => {
-      animationControl?.stop();
-      clearTimeout(exitTimer);
+      clearTimeout(fadeTimer);
+      clearTimeout(doneTimer);
       document.documentElement.style.overflow = "";
-      if (mainElement) {
-        mainElement.removeAttribute("inert");
-      }
+      mainElement?.removeAttribute("inert");
     };
   }, [show]);
 
-  const chars = "Deeghayu Adhikari".split("");
+  // Zoom once the clone is laid out over the measured hero rect
+  useEffect(() => {
+    if (!show || !target || !nameRef.current) return;
+    const controls = animate(
+      nameRef.current,
+      { transform: ["scale(0)", "scale(1)"] },
+      { duration: ZOOM_MS / 1000, delay: ZOOM_DELAY / 1000, ease: [0.19, 1, 0.22, 1] },
+    );
+    return () => controls.stop();
+  }, [show, target]);
+
+  if (!show) return null;
 
   return (
-    <AnimatePresence>
-      {show && (
-        <motion.div
-          role="status"
-          aria-label="Loading"
-          className="fixed inset-0 z-[999] flex flex-col items-center justify-center overflow-hidden bg-background rounded-b-[3rem]"
-          exit={{
-            y: "-100%",
-            opacity: 0,
-          }}
-          transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
-          onAnimationComplete={() => {
-            document.documentElement.dataset.preloaded = "true";
-            const mainElement = document.getElementById("main");
-            if (mainElement) {
-              mainElement.removeAttribute("inert");
-            }
-          }}
-        >
-          <div aria-hidden="true" className="noise" />
+    <div
+      role="status"
+      aria-label="Loading"
+      className="fixed inset-0 z-[999] overflow-hidden"
+    >
+      {/* Veil — nothing on it but the canvas itself */}
+      <motion.div
+        aria-hidden="true"
+        className="absolute inset-0 bg-background"
+        initial={false}
+        animate={{ opacity: fading ? 0 : 1 }}
+        transition={{ duration: FADE_MS / 1000, ease: "easeInOut" }}
+      >
+        <div aria-hidden="true" className="noise" />
+      </motion.div>
 
-          <motion.div
-            aria-hidden="true"
-            initial={{ scale: 0.5, opacity: 0, rotate: -8 }}
-            animate={{ scale: 1, opacity: 1, rotate: 0 }}
-            transition={{ type: "spring", stiffness: 230, damping: 20 }}
-            className="orb flex h-18 w-18 items-center justify-center overflow-hidden rounded-[1.5rem] font-display text-2xl font-bold"
+      {/* The name — hero glyphs, zooming 0 → full size in place.
+          Fades with the veil; the identical hero heading is beneath. */}
+      <motion.div
+        aria-hidden="true"
+        initial={false}
+        animate={{ opacity: fading ? 0 : 1 }}
+        transition={{ duration: FADE_MS / 1000, ease: "easeInOut" }}
+      >
+        {target && (
+          <div
+            className="absolute"
+            style={{ left: target.left, top: target.top, width: target.width }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element -- preloader paints before hydration; skip Image optimization */}
-            <img
-              src="/images/profile.webp"
-              alt=""
-              width={72}
-              height={72}
-              className="h-full w-full object-cover"
-            />
-          </motion.div>
-
-          <p
-            aria-hidden="true"
-            className="mt-7 flex max-w-[92vw] justify-center overflow-hidden text-balance px-4 font-display text-2xl font-bold tracking-tight sm:text-4xl"
-          >
-            {chars.map((ch, i) =>
-              ch === " " ? (
-                <span key={i} className="w-[0.35em]" />
-              ) : (
-                <span key={i} className="inline-block overflow-hidden pb-1">
-                  <motion.span
-                    className="inline-block"
-                    variants={letter}
-                    initial="hidden"
-                    animate="visible"
-                    custom={i}
-                  >
-                    {ch}
-                  </motion.span>
+            <div
+              ref={nameRef}
+              className="hero-heading w-full text-center text-[13vw] font-black uppercase leading-none tracking-tight will-change-transform sm:text-[14vw] md:text-[15vw]"
+              style={{ transform: "scale(0)" }}
+            >
+              {LINES.map((line) => (
+                <span key={line} className="block whitespace-nowrap">
+                  {line}
                 </span>
-              ),
-            )}
-          </p>
+              ))}
+            </div>
+          </div>
+        )}
+      </motion.div>
 
-          <motion.div
-            aria-hidden="true"
-            className="mt-8 h-0.5 w-44 overflow-hidden rounded-full bg-foreground/10"
-          >
-            <motion.div
-              className="h-full rounded-full bg-[linear-gradient(90deg,#B600A8,#7621B0,#BE4C00)]"
-              initial={{ x: "-100%" }}
-              animate={{ x: "0%" }}
-              transition={{ duration: 1.05, ease: [0.6, 0.05, 0.3, 1] }}
-            />
-          </motion.div>
-
-          <motion.span
-            aria-hidden="true"
-            className="absolute bottom-6 right-8 font-mono text-7xl font-bold tabular-nums tracking-tighter text-foreground/15 sm:text-8xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-          >
-            <span ref={countRef}>0</span>
-            <span className="align-top text-3xl sm:text-4xl">%</span>
-          </motion.span>
-
-          <span className="sr-only">Loading portfolio</span>
-        </motion.div>
-      )}
-    </AnimatePresence>
+      <span className="sr-only">Loading portfolio</span>
+    </div>
   );
 }

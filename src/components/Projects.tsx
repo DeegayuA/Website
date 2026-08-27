@@ -46,7 +46,7 @@ function isCompactTile(i: number) {
 }
 
 /** Cards shown on phones before the "Show all" expander. */
-const MOBILE_LIMIT = 6;
+const MOBILE_LIMIT = 3;
 
 export function Projects({
   activity,

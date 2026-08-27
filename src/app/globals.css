@@ -23,6 +23,7 @@
   --slab-line: rgba(215, 226, 234, 0.18); /* hairline on slab */
   --glass-border: var(--line);            /* chip / marquee hairline */
   --surface: color-mix(in srgb, var(--foreground) 4%, transparent);
+  --extrude: rgba(12, 12, 12, 0.28);      /* 3D letter extrusion */
 }
 
 .dark {
@@ -35,6 +36,7 @@
   --slab-fg: #0C0C0C;
   --line: rgba(215, 226, 234, 0.18);
   --slab-line: rgba(12, 12, 12, 0.15);
+  --extrude: rgba(0, 0, 0, 0.55);
 }
 
 @theme inline {
@@ -110,6 +112,16 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  /* 3D letter extrusion for the hero name — drop-shadow follows the glyph
+     alpha, so it works with the gradient-clipped fill */
+  .hero-3d {
+    filter: drop-shadow(0 1px 0 var(--extrude)) drop-shadow(0 2px 0 var(--extrude))
+      drop-shadow(0 10px 14px rgba(0, 0, 0, 0.22));
+  }
+  [data-quality="low"] .hero-3d {
+    filter: none;
   }
 
   /* The single accent moment — ContactButton background */

@@ -25,9 +25,12 @@ export async function POST(request: Request) {
     "sha256=" +
     crypto.createHmac("sha256", secret).update(body).digest("hex");
 
+  // Compare BYTE lengths — a same-JS-length header with multibyte chars
+  // would make timingSafeEqual throw (500) instead of returning 401.
+  const sigBuf = Buffer.from(signature);
+  const expBuf = Buffer.from(expected);
   const valid =
-    signature.length === expected.length &&
-    crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
+    sigBuf.length === expBuf.length && crypto.timingSafeEqual(sigBuf, expBuf);
   if (!valid) {
     return NextResponse.json({ error: "invalid signature" }, { status: 401 });
   }

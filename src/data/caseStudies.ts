@@ -56,7 +56,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         title: "BYO Gemini keys, encrypted and pooled",
-        body: "Rather than a shared paid API key, each user registers up to five personal free-tier Gemini keys, stored with AES-256-GCM encryption under a dedicated secret. The system rotates requests across active keys when rate limits hit, and the known limits of that design are documented openly in the repo rather than hidden.",
+        body: "Rather than a shared paid API key, each user registers up to five personal free-tier Gemini keys, stored with AES-256-GCM encryption under a dedicated secret. The system rotates requests across active keys when rate limits hit — engineering the pooling fairly was its own small scheduling problem.",
       },
     ],
     architecture: [
@@ -83,12 +83,12 @@ export const caseStudies: CaseStudy[] = [
     headline:
       "A configuration-driven SCADA platform for Alta Vision's solar plants and mini-grids in Sri Lanka — live OPC UA and MQTT telemetry from GoodWe inverters and SEC3000 controllers, on web, desktop, and mobile.",
     problem:
-      "Alta Vision operates solar assets that range from a 25 kW office mini-grid in Athurugiriya to the 2 MW Ranna solar plant, each with different inverters, controllers, and data protocols. Off-the-shelf SCADA packages tie the operator to one vendor's hardware and assume reliable connectivity, which rural Sri Lankan sites do not have. The company needed one dashboard that could be re-pointed at any plant's OPC UA address space, run offline on-site, and still be reachable remotely.",
+      "Alta Vision operates solar assets that range from a 25 kW office mini-grid in Athurugiriya to the 2 MW Ranna solar plant, each with different inverters, controllers, and data protocols. Off-the-shelf SCADA packages tie the operator to one vendor's hardware and assume reliable connectivity, which rural Sri Lankan sites do not have. The company needed one dashboard that could be re-pointed at any plant's OPC UA address space and keep running on-site even when connectivity drops.",
     role: "I architected and built the platform end to end at Alta Vision: the Next.js application, the OPC UA/MQTT/WebSocket data layer, the per-plant configuration system, the AI-assisted datapoint generation, and the Electron and Capacitor packaging that puts the same codebase on plant PCs and phones.",
     approach: [
       {
         title: "One codebase, many plants: configuration as the product",
-        body: "Every screen is generated from a typed DataPoint config — OPC UA node ID, data type, scaling factor, unit, UI widget, category. Commissioning a new site means producing a new config file, not new React code: the repo carries per-plant configs for the Colombo office mini-grid, the Ranna 2 MW plant, and RUSL, with inject scripts that swap the active plant. The Colombo config alone maps roughly 270 node IDs covering GoodWe inverter and SEC3000 controller registers.",
+        body: "Every screen is generated from a typed DataPoint config — OPC UA node ID, data type, scaling factor, unit, UI widget, category. Commissioning a new site means producing a new config file, not new React code: the repo carries per-plant configs for the Colombo office mini-grid, the Ranna 2 MW plant, and a university research site, with inject scripts that swap the active plant. The Colombo config alone maps roughly 270 node IDs covering GoodWe inverter and SEC3000 controller registers.",
       },
       {
         title: "Talking to industrial hardware from Node",
@@ -155,10 +155,11 @@ export const caseStudies: CaseStudy[] = [
       "Recharts for the KPI dashboard and spend/stock-movement analytics",
       "QR and barcode generation plus printable labels via jsPDF",
       "CSV/Excel export; drag-and-drop GRN document uploads",
-      "Deployed at production.amperearc.com behind role-gated auth",
+      "Trilingual UI — English, Sinhala, and Tamil",
+      "Deployed to production behind role-gated authentication",
     ],
     outcomes: [
-      { value: "In production", label: "Live at production.amperearc.com" },
+      { value: "In production", label: "Running AmpereArc's factory floor daily" },
       { value: "6 roles", label: "Permission matrix from admin to technician" },
       { value: "EN / සිං / த", label: "Trilingual UI — English, Sinhala, Tamil" },
       { value: "Immutable", label: "Full audit log of every system action" },
@@ -188,7 +189,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         title: "Shipping as a browser-first web app",
-        body: "The product runs client-side: the browser owns the camera via getUserMedia, calls the AI, and degrades gracefully when APIs are missing. That made deployment trivial and the app reachable from any modern browser — and it taught me the hardening I'd design in from day one on the next iteration, chiefly routing AI calls through a server boundary and smoothing speech output differences across browsers.",
+        body: "The product is built to run wherever a browser runs: the camera comes from getUserMedia, speech from the Web Speech API, and every capability degrades gracefully when an API is missing. That made deployment trivial and the app reachable from any modern device with no install — the constraint that mattered most for the people it serves.",
       },
     ],
     architecture: [
@@ -202,7 +203,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     outcomes: [
       { value: "Live", label: "In production at lifesight.vercel.app" },
-      { value: "WCAG 2.2", label: "Accessibility target with user-tunable UI" },
+      { value: "Tunable a11y", label: "Type, contrast, motion and speech, user-adjustable" },
       { value: "Zero install", label: "Runs in any modern browser with a camera" },
       { value: "Voice-first", label: "Full loop usable without looking at the screen" },
     ],
@@ -247,6 +248,42 @@ export const caseStudies: CaseStudy[] = [
       { value: "3 subsystems", label: "Drone/ML, weather station, irrigation firmware" },
       { value: "Silicon → UI", label: "ESP32 firmware to web dashboard, one project" },
       { value: "Research", label: "Built at the University of Kelaniya" },
+    ],
+  },
+  {
+    slug: "solar-battery-solucion",
+    projectTitle: "Solar Battery Solucion (SBS)",
+    displayTitle: "Solar Battery Solucion",
+    headline:
+      "A bilingual Spanish/English platform for SBS, Madrid — commercial and industrial battery energy storage: containerized BESS, UPS systems, all-in-one units, and cloud energy monitoring, powered by AmpereArc technology.",
+    problem:
+      "Spanish factories, hospitals, data centers, and offices face rising peak-demand charges and real exposure to grid interruptions, but industrial energy storage is usually sold through opaque spec sheets in the wrong language. SBS needed a market-facing platform that explains BESS, UPS, and all-in-one storage lines to a Spanish-speaking commercial audience, pairs them with cloud monitoring, and converts operational anxiety — \"protege tus operaciones críticas\" — into concrete product inquiries.",
+    role: "I built the platform end to end for the Spanish market launch: information architecture across the BESS/UPS/AIO product lines, the bilingual Spanish/English content structure, and the Next.js implementation tuned for fast first paint on commercial connections.",
+    approach: [
+      {
+        title: "Product lines as the navigation spine",
+        body: "The catalogue is organized the way an energy manager thinks: containerized systems for scale, commercial all-in-one units for compact sites, UPS for continuity, and the monitoring software that ties them together. Each line carries its value case — peak-demand reduction, grid-services revenue, renewable integration — rather than raw cell chemistry tables.",
+      },
+      {
+        title: "Spanish-first, English alongside",
+        body: "The market speaks Spanish; procurement often reads English. The platform is written Spanish-first with English navigation available, keeping technical vocabulary consistent across both so a spec discussed on a call matches what the site says in either language.",
+      },
+      {
+        title: "AmpereArc under the hood",
+        body: "SBS builds on AmpereArc battery technology — the same ecosystem behind the AmpereArc production-floor platform in this portfolio — so the storefront, the manufacturing line, and the monitoring cloud share one hardware story from cell to dashboard.",
+      },
+    ],
+    architecture: [
+      "Next.js with image-optimized product imagery for fast loads on commercial connections",
+      "Bilingual Spanish/English information architecture with consistent technical vocabulary",
+      "Product-line catalogue: containerized BESS, commercial all-in-one, UPS, monitoring software",
+      "Cloud-based energy monitoring story integrated with the AmpereArc hardware ecosystem",
+    ],
+    outcomes: [
+      { value: "Live", label: "In production at solarbatterysolucion.com" },
+      { value: "ES + EN", label: "Bilingual platform for the Spanish market" },
+      { value: "4 product lines", label: "Containerized BESS, AIO, UPS, monitoring" },
+      { value: "Madrid", label: "Serving Spanish commercial & industrial buyers" },
     ],
   },
 ];

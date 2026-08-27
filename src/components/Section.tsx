@@ -1,4 +1,5 @@
 import { Reveal } from "./Reveal";
+import { ParallaxDrift } from "./ParallaxDrift";
 import { cn } from "@/lib/utils";
 
 /** Shared section shell: mono eyebrow + display title, consistent rhythm. */
@@ -27,7 +28,8 @@ export function Section({
       aria-labelledby={`${id}-title`}
     >
       <Reveal>
-        <div className="mb-10 flex items-end justify-between gap-4 sm:mb-14">
+        {/* Headings drift a touch faster than their bodies on scroll */}
+        <ParallaxDrift className="mb-10 flex items-end justify-between gap-4 sm:mb-14">
           <div>
             <p className="label mb-3 flex items-center gap-2 text-accent">
               <span
@@ -51,7 +53,7 @@ export function Section({
               {index}
             </span>
           )}
-        </div>
+        </ParallaxDrift>
       </Reveal>
       {children}
     </section>

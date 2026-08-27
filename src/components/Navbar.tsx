@@ -2,12 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "motion/react";
 import { nav } from "@/data/site";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
 
-const sectionIds = nav.map((item) => item.href.slice(1));
+/* hrefs are "/#about" form — take the fragment after "#" for element ids */
+const sectionIds = nav.map((item) => item.href.split("#")[1]);
 
 function useActiveSection() {
   const [active, setActive] = useState(sectionIds[0]);
@@ -64,7 +66,7 @@ export function Navbar() {
             hasScroll && "nav-glass shadow-lg shadow-black/[0.06]",
           )}
         >
-          <a
+          <Link
             href="/#home"
             className="group flex items-center gap-2.5 font-black uppercase tracking-tight text-foreground"
             style={{ fontFamily: "var(--font-sinhala), var(--font-kanit), sans-serif" }}
@@ -77,16 +79,16 @@ export function Navbar() {
               priority
               className="rounded-full ring-1 ring-[var(--line)] transition-transform duration-300 ease-out group-hover:scale-110"
             />
-            <span className="hidden sm:inline">දිඝායු</span>
+            <span lang="si" className="hidden sm:inline">දිඝායු</span>
             <span className="sr-only">— back to home</span>
-          </a>
+          </Link>
 
           <ul className="flex items-center gap-2 sm:gap-6 md:gap-8">
             {nav.map((item) => {
               const isActive = active === item.href.split("#")[1];
               return (
                 <li key={item.href}>
-                  <a
+                  <Link
                     href={item.href}
                     aria-current={isActive ? "location" : undefined}
                     className={cn(
@@ -98,7 +100,7 @@ export function Navbar() {
                     )}
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 </li>
               );
             })}
