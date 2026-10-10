@@ -38,7 +38,7 @@ export const projects: Project[] = [
     image: "/images/web_ppe.jpg",
     categories: ["ai", "web", "software"],
     tech: ["Python", "PyTorch", "ONNX Runtime", "TensorRT", "ByteTrack", "Next.js 16", "Bun + Hono", "PostgreSQL", "Redis", "go2rtc", "Docker"],
-    links: [],
+    links: ["https://sgx-ppe.netlify.app/"],
     featured: true,
   },
   {
