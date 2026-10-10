@@ -31,6 +31,28 @@ export const categories: { label: string; value: Category | "all" }[] = [
 
 export const projects: Project[] = [
   {
+    title: "PPE Safety Monitoring Platform",
+    tagline: "Local-first AI that checks PPE on every person your CCTV cameras see",
+    description:
+      "Self-hosted, offline-capable PPE compliance platform built at Alta Vision. Ingests RTSP cameras, tracks every person, applies zone-specific PPE rules with temporal logic, and records evidence-backed violations (snapshot + clip). A human-gated learning loop mines hard frames, trains candidate models in idle GPU hours and validates them on a golden set — no model ever activates itself. White-label; Apple Silicon to NVIDIA TensorRT with no code changes.",
+    image: "/images/web_ppe.jpg",
+    categories: ["ai", "web", "software"],
+    tech: ["Python", "PyTorch", "ONNX Runtime", "TensorRT", "ByteTrack", "Next.js 16", "Bun + Hono", "PostgreSQL", "Redis", "go2rtc", "Docker"],
+    links: [],
+    featured: true,
+  },
+  {
+    title: "Fleet Flow",
+    tagline: "IoT + ML truck monitoring to optimise loading time",
+    description:
+      "Fleet monitoring platform for a high-volume FMCG site, which I led as project manager and software architect. Station cameras detect trucks and log every visit; the platform turns those visits into live vehicle presence, station availability, turnaround durations and lost-time analysis, with exportable reports and Android-box wallboards at each station. NestJS + Prisma/MySQL API with refresh-token rotation, RBAC and audit logging behind a Next.js 16 dashboard.",
+    image: "/images/web_fleetflow.png",
+    categories: ["iot", "ai", "web", "software"],
+    tech: ["Next.js 16", "React 19", "NestJS 11", "Prisma", "MySQL", "Redux Toolkit", "Tailwind CSS", "Recharts", "OpenAPI"],
+    links: [],
+    featured: true,
+  },
+  {
     title: "LogPup",
     tagline: "Engineering operations dashboard — apps, people, sprints & AI meeting intelligence",
     description:

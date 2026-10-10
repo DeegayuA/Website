@@ -38,6 +38,7 @@ export const metadata: Metadata = {
   description,
   keywords: [
     "Deeghayu Adhikari",
+    "Software Architect",
     "Software Engineer",
     "Electronic Engineer",
     "Sri Lanka",
@@ -47,7 +48,6 @@ export const metadata: Metadata = {
     "Embedded Systems",
     "Next.js Developer",
     "React Developer",
-    "Visiting Lecturer",
   ],
   authors: [{ name: site.name, url: site.url }],
   creator: site.name,

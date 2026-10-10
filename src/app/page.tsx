@@ -6,7 +6,7 @@ import { Experience } from "@/components/Experience";
 import { Certifications } from "@/components/Certifications";
 import { Contact } from "@/components/Contact";
 import { site, skills, socials } from "@/data/site";
-import { work, education } from "@/data/experience";
+import { education } from "@/data/experience";
 import { projects } from "@/data/projects";
 import {
   getRepoActivity,
@@ -46,11 +46,7 @@ function JsonLd() {
       { "@type": "CollegeOrUniversity", name: "University of Kelaniya" },
       { "@type": "CollegeOrUniversity", name: "University of Moratuwa" },
     ],
-    // Primary employer first; work[0] is the visiting-lecturer post
-    worksFor: [
-      { "@type": "Organization", name: "Alta Vision PLC" },
-      { "@type": "Organization", name: work[0].org },
-    ],
+    worksFor: [{ "@type": "Organization", name: "Alta Vision PLC" }],
     knowsAbout: [
       ...new Set([
         "Web Development",

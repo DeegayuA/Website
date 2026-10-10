@@ -90,6 +90,9 @@ export default async function CaseStudyPage({
   const index = caseStudies.findIndex((c) => c.slug === slug);
   const next = caseStudies[(index + 1) % caseStudies.length];
 
+  /* Private/internal projects have no repo activity or links to show */
+  const hasStatus = !!activity || project.links.length > 0;
+
   const navItems = [
     { id: "context", label: "Context" },
     ...study.approach.map((chapter, i) => ({
@@ -97,7 +100,8 @@ export default async function CaseStudyPage({
       label: chapter.title.split(/[—:,]/)[0].trim(),
     })),
     { id: "stack", label: "Stack" },
-    { id: "outcomes", label: "Outcomes" },
+    ...(study.roadmap ? [{ id: "roadmap", label: "Roadmap" }] : []),
+    ...(hasStatus ? [{ id: "outcomes", label: "Outcomes" }] : []),
   ];
 
   // Rich-results eligibility: breadcrumb + article nodes per case study
@@ -257,6 +261,30 @@ export default async function CaseStudyPage({
             </ul>
           </section>
 
+          {study.roadmap && (
+            <section id="roadmap" className="mt-14 scroll-mt-28">
+              <h2 className="font-display text-2xl font-bold sm:text-3xl">
+                What&apos;s next
+              </h2>
+              <ol className="mt-5 space-y-6">
+                {study.roadmap.map((milestone, i) => (
+                  <li key={milestone.title} className="border-l-2 border-line pl-4">
+                    <p className="font-mono text-[10px] uppercase tracking-wider text-muted">
+                      {String(i + 1).padStart(2, "0")} · {milestone.status}
+                    </p>
+                    <h3 className="mt-1 font-display text-lg font-bold">
+                      {milestone.title}
+                    </h3>
+                    <p className="mt-2 text-pretty text-sm leading-relaxed text-muted">
+                      {milestone.body}
+                    </p>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )}
+
+          {hasStatus && (
           <section id="outcomes" className="mt-14 scroll-mt-28">
             <h2 className="font-display text-2xl font-bold sm:text-3xl">
               Where it stands
@@ -342,6 +370,7 @@ export default async function CaseStudyPage({
               )}
             </div>
           </section>
+          )}
         </div>
       </div>
 

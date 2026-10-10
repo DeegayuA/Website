@@ -249,9 +249,9 @@ export function Hero() {
       <div className="flex items-end justify-between gap-6 px-6 pb-8 md:px-10 md:pb-10">
         <FadeIn afterPreload delay={0.15}>
           <p className="max-w-[230px] text-[clamp(0.8rem,1.1vw,1.05rem)] font-light leading-relaxed text-muted sm:max-w-[320px] md:max-w-[380px]">
-            Software + electronic engineer crafting{" "}
+            Software architect + electronic engineer designing{" "}
             <span className="font-medium text-foreground">AI-driven platforms</span>,{" "}
-            <span className="font-medium text-foreground">embedded IoT systems</span>, and{" "}
+            <span className="font-medium text-foreground">IoT systems</span>, and{" "}
             <span className="font-medium text-foreground">premium web products</span>.
           </p>
         </FadeIn>

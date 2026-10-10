@@ -39,6 +39,9 @@ test.describe("home", () => {
     await iotPill.scrollIntoViewIfNeeded();
     await iotPill.click();
     await expect(iotPill).toHaveAttribute("aria-pressed", "true");
+    // Mobile caps the grid at 3 cards; expand so the check survives new projects
+    const showAll = page.getByRole("button", { name: /show all/i });
+    if (await showAll.isVisible()) await showAll.click();
     // Grid re-renders with only IoT projects; GreenWing is one of them
     await expect(
       page.getByRole("heading", { name: /GreenWing/i }),

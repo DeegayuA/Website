@@ -18,6 +18,12 @@ export interface CaseStudyOutcome {
   label: string;
 }
 
+export interface CaseStudyMilestone {
+  title: string;
+  status: string;
+  body: string;
+}
+
 export interface CaseStudy {
   slug: string;
   projectTitle: string;
@@ -29,9 +35,132 @@ export interface CaseStudy {
   approach: CaseStudyChapter[];
   architecture: string[];
   outcomes: CaseStudyOutcome[];
+  /** Upcoming milestones, in delivery order — for projects still being built. */
+  roadmap?: CaseStudyMilestone[];
 }
 
 export const caseStudies: CaseStudy[] = [
+  {
+    slug: "ppe-safety-platform",
+    projectTitle: "PPE Safety Monitoring Platform",
+    displayTitle: "PPE Safety Platform",
+    headline:
+      "A local-first, offline-capable PPE compliance platform that runs on one on-site server — it watches existing RTSP cameras, tracks every person, checks the PPE their zone requires over seconds rather than single frames, keeps snapshot-and-clip evidence for every confirmed miss, and learns from what the safety team reviews.",
+    problem:
+      "Industrial sites need to know who is on the floor without a helmet or vest, but cloud video analytics means streaming CCTV off-site, and naive detectors raise an alarm on every flickering frame until people stop looking. Off-the-shelf PPE models also confuse cloth caps with helmets and miss small items seen from high, wide camera angles. The brief: run entirely on one local server, never decide from a single frame, attach proof to every event, and get better on each site's own footage — without a model ever being swapped in behind a person's back.",
+    role: "I lead the platform at Alta Vision as its architect and decision-maker — I set the product brief and requirements, signed off the architecture (Python vision and trainer services, a Bun + Hono API, a Next.js console, one-server deployment), and I make the product calls and own the milestone roadmap from the first client go-live to a white-label product.",
+    approach: [
+      {
+        title: "Tracks, not frames — violations confirmed over seconds",
+        body: "Each camera's light sub-stream runs person detection, ByteTrack tracking, then a PPE detector on batched person crops; an associator assigns every item to the right body region of the right track. Presence is smoothed per track and PPE type, and a person is judged by the smallest zone their feet stand in, after an entry grace period. A violation opens only after an item stays missing for 3 seconds and clears after 2 seconds of being seen, with one event per episode, a 60-second cooldown and an 80 px minimum person height — so a flicker never raises an alarm. Rules are a matrix of zone × PPE type, each with a severity and optional hours and weekdays.",
+      },
+      {
+        title: "Evidence with every event",
+        body: "The main stream is recorded continuously to local SSD as 60-second ffmpeg segments, stream-copied and never re-encoded. When an event closes, the recorder cuts a clip from 5 seconds before to 5 seconds after it, and annotated and raw snapshots come from a per-camera ring buffer of the last 3 seconds. Reviewers mark each event true or false positive, and false positives flow straight into the training queue. If the API is unreachable, events spool to disk and replay when it is back — detection never stops.",
+      },
+      {
+        title: "A learning loop with a human at the gate",
+        body: "The miner saves hard examples — PPE probabilities stuck in the uncertain band, low-confidence people, unusual-looking frames — rate-limited per person and camera. Reviewers correct boxes in a label editor and approve samples into immutable dataset versions. Training fine-tunes the active model during configured idle windows and pauses whenever live cameras need the GPU. Every candidate is scored against a permanent golden set it is never trained on, and activation stays manual: a passing score or a written reason, with one-click rollback.",
+      },
+      {
+        title: "People across cameras, privacy by default",
+        body: "Each confirmed track gets an appearance embedding, which re-attaches people after occlusion on the same camera and links them across cameras into a stable id such as P-1A2B3C4D with a journey of where they were seen. Face recognition is opt-in and matches only people an admin has named; face data of unnamed people is deleted after 7 days by default. PPE checking can be switched off per camera, which unloads the model and frees the GPU for security-only use.",
+      },
+      {
+        title: "One codebase from a MacBook to a GPU server",
+        body: "An InferenceProvider abstraction hides the backend behind one Detections contract — PyTorch on Apple Silicon MPS or CUDA, ONNX Runtime on CPU, CUDA or TensorRT — so it is developed on a Mac and deployed on Linux + NVIDIA with no code changes. Class maps let any model's vocabulary drive the configured PPE types, including \"no helmet\" classes counted as evidence of absence. Rule and setting changes hot-reload to every camera within 15 seconds, and go2rtc gives sub-second WebRTC live view with an annotated MJPEG fallback.",
+      },
+    ],
+    architecture: [
+      "Next.js 16 operator console: monitor wall with kiosk mode, zone editor, rules matrix, events, datasets, training, models, analytics, ⌘K palette",
+      "Bun + Hono + Drizzle API: auth, four-role RBAC, audit log, WebSocket events, WebRTC signalling proxy, idle-training scheduler",
+      "Zod contract package shared by the web app and the API",
+      "Python vision service: decode → detect → ByteTrack → PPE association → temporal rules → events, plus recorder and hard-example miner",
+      "Python trainer service: immutable dataset versions, idle-aware fine-tuning, golden-set evaluation, candidate registration",
+      "Inference providers: PyTorch (MPS / CUDA), ONNX Runtime (CPU / CUDA / TensorRT), and a DeepStream integration point",
+      "PostgreSQL 17 — or embedded, file-backed PGlite for single-box installs — with Redis for heartbeats, live frames and the training queue",
+      "go2rtc for sub-second WebRTC live view; ffmpeg stream-copy recording to local SSD with retention by free space and age",
+      "Caddy HTTPS (Let's Encrypt or an internal CA for offline sites), Docker Compose with the NVIDIA runtime, systemd units, one-click Windows and macOS installers",
+    ],
+    outcomes: [
+      { value: "3 s", label: "Missing before a violation opens — never one frame" },
+      { value: "0 cloud", label: "Video, evidence and models stay on the site server" },
+      { value: "10 PPE types", label: "Helmet to harness, plus custom site types" },
+      { value: "Human-gated", label: "No model goes live without a golden-set check" },
+    ],
+    roadmap: [
+      {
+        title: "Accounts",
+        status: "In progress",
+        body: "Request access from the sign-in page with admin approval, password reset that works offline through one-time admin links, invitations and change password. The server side is done; the screens are being built.",
+      },
+      {
+        title: "Client go-live",
+        status: "Next",
+        body: "Camera presets, NVR bulk add and areas; one event for a person seen by overlapping cameras; visits and incidents with evidence packs; a storage view with disk forecast and 90-day retention; Test bench A/B compare; branded PDF and CSV reports; a load test and handover documents.",
+      },
+      {
+        title: "Sell-ready white label",
+        status: "Planned",
+        body: "Signed licences with modules and camera limits, an Apps page that switches products on and off, and compiled releases with a licence server. The default model stack moves to licence-safe Apache-2.0 detectors such as RF-DETR, with every model's licence and provenance on record, plus a hygiene and food-safety PPE preset.",
+      },
+      {
+        title: "Security system",
+        status: "Later",
+        body: "No-go zones with schedules, watchlist alerts, camera tamper, alarms and a site map — plus safety checks: fire and smoke early warning, person down, phone use, forklift proximity, safe corridors and occupancy limits.",
+      },
+      {
+        title: "More apps",
+        status: "Later",
+        body: "A CCTV playback timeline with export and PTZ; people counting and area analytics with line counts, occupancy, heatmaps and dwell; vehicles and number plates; video search by text description; and time and attendance.",
+      },
+    ],
+  },
+  {
+    slug: "fleet-flow",
+    projectTitle: "Fleet Flow",
+    displayTitle: "Fleet Flow",
+    headline:
+      "An IoT + ML fleet monitoring platform for a high-volume FMCG site — cameras at each station detect trucks and log every visit, and the platform turns those visits into live presence, turnaround durations and lost-time analysis so the site can optimise truck loading time.",
+    problem:
+      "Every minute a truck waits at a loading site is dispatch capacity lost, but without per-station data nobody can see where that time goes — which stations are busy or idle, how long each vehicle actually takes, and how much of it is lost time. Fleet Flow puts cameras at each station to detect trucks and record their visits, so turnaround becomes something the site can measure, report on and optimise instead of estimate.",
+    role: "I led Fleet Flow as project manager and software architect: I owned scope and delivery, and made the technical decisions — the system architecture and stack, how camera data reaches the platform, the security model, and the quality gates the code has to pass.",
+    approach: [
+      {
+        title: "Detection decoupled from the platform",
+        body: "The camera side and the platform meet at the database, not in each other's code. Each station camera writes its detections into its own visit table — cam_1 through cam_10 — and the API derives live presence, visit history and durations from those rows. The detection model can be retrained or swapped without touching the API or the dashboards, and the platform runs and can be tested without a single live camera.",
+      },
+      {
+        title: "From raw visits to lost time",
+        body: "Visits only matter once they answer operational questions, so the platform rolls them up three ways: station views (availability, activity, which vehicles are on site right now), vehicle views (performance and duration insights per truck), and lost-time analysis that shows where turnaround time goes. Every registered vehicle gets a QR code, configurable reports preview in the browser and export to Excel or PDF, and Android-box wallboards put live station data on a screen at each station — served by the same Next.js app, so there is no second product to maintain.",
+      },
+      {
+        title: "Security and operability are requirements",
+        body: "Non-functional requirements are part of the design, not afterthoughts: JWT access tokens with refresh-token rotation, role-based access with granular permissions, an audit log and structured request logging, Helmet, a CORS allowlist and throttling, and liveness and readiness probes for monitoring. The API contract is published as Swagger/OpenAPI and checked into the repo, one validate script gates lint, formatting, type checks and the build, and a production checklist covers secrets, Swagger exposure and HTTPS.",
+      },
+      {
+        title: "A modular, typed stack",
+        body: "NestJS modules map one-to-one to the domain — auth, users, vehicles, stations, reports, health — over a Prisma schema with versioned migrations, and one setup command creates the database, migrates it and seeds the first admin and stations. The frontend is organised by feature, each with its own API client, hooks and types, with Redux Toolkit for state and React Hook Form + Zod for validated forms. Times default to the site's time zone, so durations and reports read in local time.",
+      },
+    ],
+    architecture: [
+      "Station cameras with IoT + ML truck detection, writing visits into per-camera tables (cam_1 … cam_10)",
+      "NestJS 11 REST API under /api/v1 — auth, users, vehicles, stations, reports and health modules",
+      "Prisma 6 on MySQL 8 or MariaDB, with versioned migrations and a one-command setup and seed",
+      "Next.js 16 App Router + React 19 dashboard; Redux Toolkit, Tailwind CSS 4, Radix / shadcn UI, Recharts",
+      "Android-box station wallboards served by the same Next.js app",
+      "JWT + Passport + bcrypt auth with refresh-token rotation; role-based access with granular permissions; audit log",
+      "Helmet, CORS allowlisting and throttling; liveness and readiness endpoints for monitoring",
+      "ExcelJS and PDFKit report exports; optional email delivery via Nodemailer",
+      "Swagger UI plus a checked-in OpenAPI document as the API contract",
+    ],
+    outcomes: [
+      { value: "PM + Architect", label: "Scope, delivery and the technical decisions" },
+      { value: "Live presence", label: "Which trucks are at which station, right now" },
+      { value: "Lost time", label: "Where truck turnaround time actually goes" },
+      { value: "Excel + PDF", label: "Configurable reports, previewed and exported" },
+    ],
+  },
   {
     slug: "logpup",
     projectTitle: "LogPup",

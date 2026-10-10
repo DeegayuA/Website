@@ -13,15 +13,14 @@ export const site = {
   sinhalaName: "දීඝායු සුවහස් අධිකාරි",
   /** Shown under your name in the hero — rotates through these. */
   roles: [
-    "Software Engineer",
-    "Electronic Engineer",
+    "Software Architect",
     "AI / ML Engineer",
+    "Electronic Engineer",
     "IoT & Embedded Systems",
-    "Visiting Lecturer",
   ],
   tagline:
-    "Software + electronic engineer crafting AI-driven platforms, embedded IoT systems, and premium web products.",
-  bio: "Software and electronic engineer from Sri Lanka. I build production web platforms, AI/ML models, and embedded IoT systems end to end — from silicon to interface — as an R&D Engineer at Alta Vision PLC. Alongside the work I lecture in web, mobile, and AI, while completing a Master of Data Science & AI at the University of Moratuwa (CSE) and a Master of IT at the University of Kelaniya (FOS), both pending graduation.",
+    "Software architect + electronic engineer designing AI-driven platforms, IoT systems, and premium web products — and deciding how they get built.",
+  bio: "Software architect and electronic engineer from Sri Lanka, working as an R&D Engineer at Alta Vision PLC. These days I spend less time writing code and more deciding how it should be built — system architecture, technical direction, and project leadership across AI/ML platforms, IoT systems, and production web products, from silicon to interface. I completed a Master of IT at the University of Kelaniya (FOS) and am completing a Master of Data Science & AI at the University of Moratuwa (CSE).",
   location: "Kadawatha, Sri Lanka",
   locationUrl: "https://goo.gl/maps/gNUBb7oCYTCLjALT8",
   email: "deeghayuadhikari01@gmail.com",
@@ -62,6 +61,7 @@ export const stats = [
 ];
 
 export const skills = [
+  "Software Architecture",
   "React",
   "Next.js",
   "TypeScript",
