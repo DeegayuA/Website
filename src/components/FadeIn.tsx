@@ -4,6 +4,12 @@ import { motion } from "motion/react";
 import type { ReactNode } from "react";
 import { usePreloadGate } from "@/lib/preload";
 
+/* Automated browsers (search renderers, AI agents, screenshot bots) never
+   scroll, so whileInView would leave everything below the fold at the SSR
+   opacity:0 forever. Undefined on the server, so SSR HTML is unchanged and
+   hydration matches; in a webdriver browser everything reveals on mount. */
+const isBot = typeof navigator !== "undefined" && navigator.webdriver;
+
 /* Explicit tag map keeps the motion component union small enough for tsc
    (indexing motion[] across every intrinsic blows the union-complexity limit). */
 const TAGS = {
@@ -52,13 +58,14 @@ export function FadeIn({
     return (
       <Component
         initial={{ opacity: 0, x, y }}
-        animate={ready ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x, y }}
+        animate={ready || isBot ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x, y }}
         transition={{
           delay,
           duration,
           ease: [0.25, 0.1, 0.25, 1],
         }}
         className={className}
+      data-fade=""
       >
         {children}
       </Component>
@@ -68,6 +75,7 @@ export function FadeIn({
   return (
     <Component
       initial={{ opacity: 0, x, y }}
+      animate={isBot ? { opacity: 1, x: 0, y: 0 } : undefined}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
       viewport={{ once: true, margin: "50px", amount: 0 }}
       transition={{
@@ -76,6 +84,7 @@ export function FadeIn({
         ease: [0.25, 0.1, 0.25, 1],
       }}
       className={className}
+      data-fade=""
     >
       {children}
     </Component>
@@ -106,6 +115,7 @@ export function FadeInStatic({
         ease: [0.25, 0.1, 0.25, 1],
       }}
       className={className}
+      data-fade=""
     >
       {children}
     </Component>

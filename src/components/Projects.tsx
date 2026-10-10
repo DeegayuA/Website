@@ -109,6 +109,13 @@ export function Projects({
         key={filter}
         variants={grid}
         initial="hidden"
+        /* Automated browsers never scroll — reveal immediately for them so
+           full-page captures see the grid (see FadeIn.tsx) */
+        animate={
+          typeof navigator !== "undefined" && navigator.webdriver
+            ? "visible"
+            : undefined
+        }
         whileInView="visible"
         viewport={{ once: true, margin: "-60px" }}
         className="grid grid-flow-row-dense grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4"

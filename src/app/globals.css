@@ -102,7 +102,7 @@ html[data-intro] body::before {
   inset: 0;
   z-index: 998;
   background: var(--background);
-  animation: veil-release 0.4s ease 5s forwards;
+  animation: veil-release 0.4s ease 3s forwards;
 }
 @keyframes veil-release {
   to {
@@ -447,6 +447,13 @@ html.lenis {
 .cv-section {
   content-visibility: auto;
   contain-intrinsic-size: auto 760px;
+}
+/* Automated browsers take stitched full-page captures without real
+   scrolling — content-visibility leaves those tiles unpainted (verified:
+   giant blank bands mid-capture). QualityProvider sets data-bot for
+   webdriver browsers; render everything for them. */
+html[data-bot] .cv-section {
+  content-visibility: visible;
 }
 
 /* ──────────────────────────────────────────────────────────────

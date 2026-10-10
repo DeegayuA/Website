@@ -29,16 +29,10 @@ function Char({
   const opacity = useTransform(progress, [start, end], [0.3, 1], {
     clamp: true,
   });
-  return (
-    <span className="relative inline">
-      {/* Placeholder span — invisible but reserves space */}
-      <span className="invisible">{char}</span>
-      {/* Animated span — absolutely positioned, fades in on scroll */}
-      <motion.span className="absolute left-0 top-0" style={{ opacity }}>
-        {char}
-      </motion.span>
-    </span>
-  );
+  /* Single span per character — opacity needs no placeholder/absolute
+     pair, and the doubled glyphs used to reach raw-HTML crawlers as
+     ~2k chars of "S S o o f f t t..." keyword noise. */
+  return <motion.span style={{ opacity }}>{char}</motion.span>;
 }
 
 /**
@@ -55,22 +49,20 @@ export function AnimatedText({ children, className }: AnimatedTextProps) {
   const chars = children.split("");
   const charCount = chars.length;
 
+  /* The sentence now exists exactly once in the DOM — real text nodes in
+     inline spans, so screen readers, crawlers and AI agents all read it
+     clean (min opacity is 0.3, never invisible). */
   return (
     <p ref={containerRef} className={className}>
-      {/* Screen readers get the intact sentence; the per-character split
-          (and its scroll-dimmed opacity) is presentation only */}
-      <span className="sr-only">{children}</span>
-      <span aria-hidden="true">
-        {chars.map((char, i) => (
-          <Char
-            key={i}
-            char={char}
-            progress={scrollYProgress}
-            start={i / charCount}
-            end={(i + 1) / charCount}
-          />
-        ))}
-      </span>
+      {chars.map((char, i) => (
+        <Char
+          key={i}
+          char={char}
+          progress={scrollYProgress}
+          start={i / charCount}
+          end={(i + 1) / charCount}
+        />
+      ))}
     </p>
   );
 }

@@ -108,9 +108,14 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html:
-              'try{if(!sessionStorage.getItem("dw-preloaded")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.dataset.intro="1"}catch(e){}',
+              // navigator.webdriver: crawlers/AI agents skip the veil entirely
+              'try{if(!navigator.webdriver&&!sessionStorage.getItem("dw-preloaded")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.dataset.intro="1"}catch(e){}',
           }}
         />
+        {/* No-JS baseline: reveal every entrance-animated element */}
+        <noscript>
+          <style>{`[data-fade]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
         <Providers>
           <AuroraBackground />
           <ScrollProgress />

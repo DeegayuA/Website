@@ -70,6 +70,11 @@ export function Contact() {
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-16">
           <FadeIn delay={0.1}>
             <form
+              /* No-JS baseline: Formspree accepts plain HTML POSTs, so the
+                 form still works for users/agents without JavaScript; the
+                 onSubmit fetch below is the progressive enhancement. */
+              action={FORM_ENDPOINT}
+              method="POST"
               onSubmit={onSubmit}
               aria-label="Contact form"
               className="glass glass-sheen bevel rounded-2xl p-6 sm:p-8"

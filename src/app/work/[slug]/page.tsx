@@ -122,7 +122,11 @@ export default async function CaseStudyPage({
       description: study.headline,
       image: `${site.url}${project.image}`,
       url: `${site.url}/work/${slug}`,
+      mainEntityOfPage: `${site.url}/work/${slug}`,
       author: { "@type": "Person", name: site.name, url: site.url },
+      // Real project dates from the repo's commit history, when available
+      ...(activity?.startDate ? { datePublished: activity.startDate } : {}),
+      ...(activity?.lastPush ? { dateModified: activity.lastPush } : {}),
     },
   ];
 

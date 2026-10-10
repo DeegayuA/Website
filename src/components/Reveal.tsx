@@ -2,6 +2,10 @@
 
 import { motion, type Variants } from "motion/react";
 
+/* Automated browsers never scroll — reveal immediately for them so
+   full-page captures and AI agents see the content (see FadeIn.tsx). */
+const isBot = typeof navigator !== "undefined" && navigator.webdriver;
+
 const variants: Variants = {
   hidden: { opacity: 0, y: 28 },
   visible: (delay: number = 0) => ({
@@ -29,9 +33,11 @@ export function Reveal({
       className={className}
       variants={variants}
       initial="hidden"
+      animate={isBot ? "visible" : undefined}
       whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}
       custom={delay}
+      data-fade=""
     >
       {children}
     </Tag>

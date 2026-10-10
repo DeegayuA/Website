@@ -5,7 +5,7 @@ import { Projects } from "@/components/Projects";
 import { Experience } from "@/components/Experience";
 import { Certifications } from "@/components/Certifications";
 import { Contact } from "@/components/Contact";
-import { site, socials } from "@/data/site";
+import { site, skills, socials } from "@/data/site";
 import { work, education } from "@/data/experience";
 import { projects } from "@/data/projects";
 import {
@@ -24,11 +24,12 @@ export const metadata = {
   alternates: { canonical: "/" },
 };
 
-/** Structured data for rich search results. */
+/** Structured data for rich search results — a linked @graph so crawlers
+    and AI agents resolve person/website/page as one entity. */
 function JsonLd() {
   const person = {
-    "@context": "https://schema.org",
     "@type": "Person",
+    "@id": `${site.url}/#person`,
     name: site.name,
     url: site.url,
     image: `${site.url}/images/profile.webp`,
@@ -41,33 +42,48 @@ function JsonLd() {
       addressLocality: "Kadawatha",
       addressCountry: "LK",
     },
-    alumniOf: { "@type": "CollegeOrUniversity", name: "University of Kelaniya" },
+    alumniOf: [
+      { "@type": "CollegeOrUniversity", name: "University of Kelaniya" },
+      { "@type": "CollegeOrUniversity", name: "University of Moratuwa" },
+    ],
     // Primary employer first; work[0] is the visiting-lecturer post
     worksFor: [
       { "@type": "Organization", name: "Alta Vision PLC" },
       { "@type": "Organization", name: work[0].org },
     ],
     knowsAbout: [
-      "Web Development",
-      "Machine Learning",
-      "Artificial Intelligence",
-      "Internet of Things",
-      "Electronics",
+      ...new Set([
+        "Web Development",
+        "Machine Learning",
+        "Artificial Intelligence",
+        "Internet of Things",
+        "Electronics",
+        ...skills,
+      ]),
     ],
     sameAs: socials.map((s) => s.href),
   };
   const website = {
-    "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": `${site.url}/#website`,
     name: site.name,
     url: site.url,
+    publisher: { "@id": `${site.url}/#person` },
     description: `Portfolio of ${site.name} — ${education[0].title} student at ${education[0].org}.`,
   };
+  const profilePage = {
+    "@type": "ProfilePage",
+    "@id": `${site.url}/#profile`,
+    url: site.url,
+    isPartOf: { "@id": `${site.url}/#website` },
+    mainEntity: { "@id": `${site.url}/#person` },
+  };
+  const graph = { "@context": "https://schema.org", "@graph": [person, website, profilePage] };
   return (
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{
-        __html: JSON.stringify([person, website]).replace(/</g, "\\u003c"),
+        __html: JSON.stringify(graph).replace(/</g, "\\u003c"),
       }}
     />
   );

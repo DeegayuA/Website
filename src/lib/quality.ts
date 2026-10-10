@@ -19,6 +19,9 @@ export type QualityTier = "high" | "medium" | "low";
 
 export function detectTier(): QualityTier {
   if (typeof window === "undefined") return "low";
+  // Automated browsers (crawlers, AI agents, Lighthouse) often run software
+  // WebGL yet score "high" — skip the fluid sim and flourishes for them.
+  if (navigator.webdriver) return "low";
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return "low";
 
   const fine = window.matchMedia("(pointer: fine)").matches;
@@ -59,6 +62,11 @@ export function QualityProvider({ children }: { children: React.ReactNode }) {
       setTier(next);
       document.documentElement.dataset.quality = next;
     };
+    // Full-page captures by automated browsers need every section painted —
+    // pairs with the html[data-bot] .cv-section override in globals.css
+    if (navigator.webdriver) {
+      document.documentElement.dataset.bot = "1";
+    }
     update();
 
     // Re-evaluate if the user toggles reduced-motion or switches pointer type

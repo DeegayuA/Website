@@ -1,0 +1,26 @@
+# Deeghayu Adhikari — Software + Electronic Engineer
+
+> Software and electronic engineer from Sri Lanka building AI-driven platforms, embedded IoT systems, and premium web products end to end — R&D Engineer at Alta Vision PLC, visiting lecturer in web/mobile/AI, and postgraduate student (Master of Data Science & AI, University of Moratuwa; Master of IT, University of Kelaniya).
+
+Portfolio: https://deeghayu.netlify.app
+All content on this site is server-rendered; case studies below carry the deepest technical detail.
+
+## Case studies
+
+- [LogPup](https://deeghayu.netlify.app/work/logpup): Engineering operations dashboard — apps, people, sprints & AI meeting intelligence (Next.js, React, Drizzle, Neon Postgres, Google Gemini)
+- [Solar SCADA Platform](https://deeghayu.netlify.app/work/solar-scada): Commercial SCADA & multi-plant monitoring for solar power plants
+- [AmpereArc Factory ERP](https://deeghayu.netlify.app/work/amperearc): Factory ERP for battery-storage manufacturing
+- [LifeSight](https://deeghayu.netlify.app/work/lifesight): AI health platform
+- [GreenWing](https://deeghayu.netlify.app/work/greenwing): Sustainability platform
+- [Solar Battery Solucion](https://deeghayu.netlify.app/work/solar-battery-solucion): Bilingual commercial & industrial energy-storage platform for the Spanish market
+
+## Profile
+
+- [CV (PDF)](https://deeghayu.netlify.app/cv/Deeghayu_Adhikari_CV.pdf)
+- [GitHub](https://github.com/DeegayuA)
+- [LinkedIn](https://www.linkedin.com/in/deeghayu-adhikari-1994051a3/)
+- Contact: deeghayuadhikari01@gmail.com · +94 70 220 70 70 · Kadawatha, Sri Lanka
+
+## Skills
+
+React, Next.js, TypeScript, Node.js, Python, Machine Learning, TensorFlow, IoT / ESP32, Firebase, Tailwind CSS, PHP, Java, SQL, OPC UA

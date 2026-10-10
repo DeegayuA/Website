@@ -9,6 +9,7 @@ import { PRELOAD_EVENT, PRELOAD_KEY } from "@/lib/preload";
 const emptySubscribe = () => () => {};
 const getCanPlay = () =>
   !(
+    navigator.webdriver || // bots/AI agents get the page immediately
     sessionStorage.getItem(PRELOAD_KEY) ||
     window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
@@ -34,7 +35,9 @@ const EN_IN_MS = 1000;
 const STAGGER_MS = 100;
 const SETTLE_MS = 180;
 const FADE_MS = 550;
-const READY_CAP_MS = 3500;
+/* Low cap: JS-rendering crawlers without navigator.webdriver (e.g. some
+   search renderers) must never wait long for window.load */
+const READY_CAP_MS = 2200;
 const INTRO_EASE = [0.19, 1, 0.22, 1] as const;
 const INTRO_TOTAL_MS = INTRO_DELAY + EN_IN_MS + STAGGER_MS + SETTLE_MS;
 

@@ -88,7 +88,9 @@ function NameRotator() {
      stopped, and if less than 1s remains it gets 2s of grace so the name
      never swaps the instant the pointer walks away. */
   useEffect(() => {
-    if (reduced) return;
+    // Automated browsers get the English layer pinned — a late screenshot
+    // should never capture the name mid-rotation in Sinhala glyphs.
+    if (reduced || navigator.webdriver) return;
     const PERIOD = 5000;
     const MIN_REMAINING = 1000;
     const GRACE = 2000;
